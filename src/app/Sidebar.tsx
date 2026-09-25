@@ -219,7 +219,7 @@ export function MobileTabBar() {
   return (
     <nav
       aria-label={t('nav.menu')}
-      className="glass fixed inset-x-0 bottom-0 z-40 border-t border-line pb-[env(safe-area-inset-bottom)] md:hidden"
+      className="glass glass-dense fixed inset-x-0 bottom-0 z-40 border-t border-line pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       <ul className="mx-auto grid h-14 max-w-lg grid-cols-5">
         {NAV_ITEMS.map((item) => {

@@ -4,6 +4,23 @@
 
 _English summary at the end._
 
+![Главная: продолжить, планы и популярное](docs/screenshots/home.jpg)
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/title.jpg" alt="Страница сериала с сериями"></td>
+    <td><img src="docs/screenshots/board.jpg" alt="Доска статусов"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/discover.jpg" alt="Обзор и топы"></td>
+    <td><img src="docs/screenshots/stats.jpg" alt="Статистика"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/light-en.jpg" alt="Светлая тема, английский интерфейс"></td>
+    <td align="center"><img src="docs/screenshots/mobile-title.jpg" alt="Мобильная версия" width="260"></td>
+  </tr>
+</table>
+
 ## Возможности
 
 - **Главная.** Приветствие, «Продолжить» с кнопкой «+1 серия», планы, популярное по категориям, лента недавних действий.

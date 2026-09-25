@@ -258,8 +258,13 @@
   }
   .glass {
     background: color-mix(in oklab, var(--panel) 74%, transparent);
-    backdrop-filter: blur(20px) saturate(1.4);
+    /* Prefixed first: Lightning CSS drops an unprefixed declaration that a later alias overrides. */
     -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+  }
+  /* Denser variant for small labels over busy content, e.g. the mobile tab bar. */
+  .glass-dense {
+    background: color-mix(in oklab, var(--panel) 90%, transparent);
   }
   .display {
     letter-spacing: -0.022em;
