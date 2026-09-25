@@ -1,0 +1,14 @@
+services:
+  mediashelf:
+    build: .
+    ports:
+      - '4173:4173'
+    environment:
+      ALLOW_REGISTRATION: 'true'
+      # Behind an HTTPS reverse proxy also set TRUST_PROXY: 'true'
+    volumes:
+      - mediashelf-data:/data
+    restart: unless-stopped
+
+volumes:
+  mediashelf-data:
