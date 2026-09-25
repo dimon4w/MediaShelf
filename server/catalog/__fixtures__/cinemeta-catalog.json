@@ -1,0 +1,71 @@
+{
+ "metas": [
+  {
+   "id": "tt27165187",
+   "imdb_id": "tt27165187",
+   "type": "movie",
+   "name": "The End of Oak Street",
+   "poster": "https://images.metahub.space/poster/small/tt27165187/img",
+   "background": "https://images.metahub.space/background/medium/tt27165187/img",
+   "genres": [
+    "Action",
+    "Adventure",
+    "Mystery"
+   ],
+   "genre": [
+    "Action",
+    "Adventure",
+    "Mystery"
+   ],
+   "releaseInfo": "2026",
+   "imdbRating": "6.5",
+   "runtime": "100 min",
+   "year": "2026"
+  },
+  {
+   "id": "tt28014327",
+   "imdb_id": "tt28014327",
+   "type": "movie",
+   "name": "Mayday",
+   "poster": "https://images.metahub.space/poster/small/tt28014327/img",
+   "background": "https://images.metahub.space/background/medium/tt28014327/img",
+   "genres": [
+    "Action",
+    "Adventure",
+    "Comedy"
+   ],
+   "genre": [
+    "Action",
+    "Adventure",
+    "Comedy"
+   ],
+   "releaseInfo": "2026",
+   "imdbRating": "6.9",
+   "runtime": "111 min",
+   "year": "2026"
+  },
+  {
+   "id": "tt35298123",
+   "imdb_id": "tt35298123",
+   "type": "movie",
+   "name": "Teenage Sex and Death at Camp Miasma",
+   "poster": "https://images.metahub.space/poster/small/tt35298123/img",
+   "background": "https://images.metahub.space/background/medium/tt35298123/img",
+   "genres": [
+    "Comedy",
+    "Horror",
+    "Romance"
+   ],
+   "genre": [
+    "Comedy",
+    "Horror",
+    "Romance"
+   ],
+   "releaseInfo": "2026",
+   "imdbRating": "7.1",
+   "runtime": "112 min",
+   "year": "2026"
+  }
+ ],
+ "hasMore": true
+}

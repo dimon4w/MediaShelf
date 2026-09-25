@@ -1,0 +1,100 @@
+{
+ "head": {
+  "vars": [
+   "item",
+   "imdb",
+   "steam",
+   "mal",
+   "type",
+   "label",
+   "labelEn"
+  ]
+ },
+ "results": {
+  "bindings": [
+   {
+    "item": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q19961406"
+    },
+    "labelEn": {
+     "xml:lang": "en",
+     "type": "literal",
+     "value": "The Science of Interstellar"
+    },
+    "label": {
+     "xml:lang": "ru",
+     "type": "literal",
+     "value": "Интерстеллар. Наука за кадром"
+    },
+    "type": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q7725634"
+    }
+   },
+   {
+    "item": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q116727469"
+    },
+    "labelEn": {
+     "xml:lang": "en",
+     "type": "literal",
+     "value": "Looking back at spring 2021 as we forge ahead"
+    },
+    "type": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q17928402"
+    }
+   },
+   {
+    "item": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q1079"
+    },
+    "labelEn": {
+     "xml:lang": "en",
+     "type": "literal",
+     "value": "Breaking Bad"
+    },
+    "label": {
+     "xml:lang": "ru",
+     "type": "literal",
+     "value": "Во все тяжкие"
+    },
+    "type": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q5398426"
+    },
+    "imdb": {
+     "type": "literal",
+     "value": "tt0903747"
+    }
+   },
+   {
+    "item": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q13417189"
+    },
+    "labelEn": {
+     "xml:lang": "en",
+     "type": "literal",
+     "value": "Interstellar"
+    },
+    "label": {
+     "xml:lang": "ru",
+     "type": "literal",
+     "value": "Интерстеллар"
+    },
+    "type": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q11424"
+    },
+    "imdb": {
+     "type": "literal",
+     "value": "tt0816692"
+    }
+   }
+  ]
+ }
+}

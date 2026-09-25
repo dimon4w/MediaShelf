@@ -1,0 +1,90 @@
+{
+ "1206340": {
+  "success": true,
+  "data": {
+   "type": "game",
+   "name": "Hades",
+   "steam_appid": 1145360,
+   "required_age": 0,
+   "is_free": false,
+   "controller_support": "full",
+   "dlc": [
+    1206340
+   ],
+   "short_description": "Defy the god of the dead as you hack and slash out of the Underworld in this rogue-like dungeon crawler from the creators of Bastion, Transistor, and Pyre.",
+   "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/header.jpg?t=1758127023",
+   "capsule_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/capsule_231x87.jpg?t=1758127023",
+   "capsule_imagev5": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/capsule_184x69.jpg?t=1758127023",
+   "website": "http://www.supergiantgames.com",
+   "developers": [
+    "Supergiant Games"
+   ],
+   "publishers": [
+    "Supergiant Games"
+   ],
+   "price_overview": {
+    "currency": "USD",
+    "initial": 2499,
+    "final": 624,
+    "discount_percent": 75,
+    "initial_formatted": "$24.99",
+    "final_formatted": "$6.24"
+   },
+   "platforms": {
+    "windows": true,
+    "mac": true,
+    "linux": false
+   },
+   "metacritic": {
+    "score": 93,
+    "url": "https://www.metacritic.com/game/pc/hades?ftag=MCD-06-10aaa1f"
+   },
+   "genres": [
+    {
+     "id": "1",
+     "description": "Action"
+    },
+    {
+     "id": "23",
+     "description": "Indie"
+    },
+    {
+     "id": "3",
+     "description": "RPG"
+    }
+   ],
+   "screenshots": [
+    {
+     "id": 0,
+     "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/ss_c0fed447426b69981cf1721756acf75369801b31.600x338.jpg?t=1758127023",
+     "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/ss_c0fed447426b69981cf1721756acf75369801b31.1920x1080.jpg?t=1758127023"
+    },
+    {
+     "id": 1,
+     "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/ss_8a9f0953e8a014bd3df2789c2835cb787cd3764d.600x338.jpg?t=1758127023",
+     "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/ss_8a9f0953e8a014bd3df2789c2835cb787cd3764d.1920x1080.jpg?t=1758127023"
+    }
+   ],
+   "movies": [
+    {
+     "id": 256801252,
+     "name": "Hades - v1.0 Launch Trailer",
+     "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256801252/movie.293x165.jpg?t=1600353465",
+     "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1145360/312686/b0312c49135823cc34946e98148abfb8da71f0fb/1750627549/dash_av1.mpd?t=1600353465",
+     "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1145360/312686/b0312c49135823cc34946e98148abfb8da71f0fb/1750627549/dash_h264.mpd?t=1600353465",
+     "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1145360/312686/b0312c49135823cc34946e98148abfb8da71f0fb/1750627549/hls_264_master.m3u8?t=1600353465",
+     "highlight": true
+    }
+   ],
+   "recommendations": {
+    "total": 285929
+   },
+   "release_date": {
+    "coming_soon": false,
+    "date": "Sep 17, 2020"
+   },
+   "background": "https://store.akamai.steamstatic.com/images/storepagebackground/app/1145360?t=1758127023",
+   "background_raw": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/page_bg_raw.jpg?t=1758127023"
+  }
+ }
+}

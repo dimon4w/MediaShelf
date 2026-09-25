@@ -1,0 +1,90 @@
+{
+ "response": {
+  "metadata": {
+   "total_matching_records": 24969,
+   "start": 0,
+   "count": 4
+  },
+  "store_items": [
+   {
+    "item_type": 0,
+    "id": 3669870,
+    "success": 1,
+    "visible": true,
+    "name": "CONTROL Resonant",
+    "appid": 3669870,
+    "type": 0,
+    "tagids": [
+     1646,
+     4231,
+     1742,
+     3854,
+     4145,
+     10808,
+     4166,
+     1697,
+     3942,
+     1710,
+     3835,
+     19
+    ],
+    "release": {
+     "steam_release_date": 1790258475
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 2035,
+      "percent_positive": 87,
+      "review_score": 8,
+      "review_score_label": "Very Positive"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/3669870/${FILENAME}?t=1790259464",
+     "library_capsule": "7d4b4f430dc4d07e6562eb445456f9615cb52f77/library_capsule.jpg",
+     "library_hero": "6800d1c970b28815caa97e694ce811ca090f82e2/library_hero.jpg"
+    }
+   },
+   {
+    "item_type": 0,
+    "id": 1867240,
+    "success": 1,
+    "visible": true,
+    "name": "WARDOGS",
+    "appid": 1867240,
+    "type": 0,
+    "tagids": [
+     1663,
+     19,
+     3859,
+     4168,
+     1708,
+     1775,
+     4175,
+     3993,
+     4684,
+     1774,
+     599,
+     5711
+    ],
+    "release": {
+     "steam_release_date": 1789055884,
+     "is_early_access": true
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 77192,
+      "percent_positive": 78,
+      "review_score": 6,
+      "review_score_label": "Mostly Positive"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/1867240/${FILENAME}?t=1789503126",
+     "library_capsule": "31dd6ce5538a3064749d769527656f9002a382b0/library_capsule.jpg",
+     "library_hero": "9e3d0dba457f3d33734990866160be80c399f67c/library_hero.jpg"
+    }
+   }
+  ]
+ }
+}

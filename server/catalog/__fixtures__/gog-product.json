@@ -1,0 +1,25 @@
+{
+ "id": 1207664663,
+ "title": "The Witcher 3: Wild Hunt - Complete Edition",
+ "slug": "the_witcher_3_wild_hunt",
+ "content_system_compatibility": {
+  "windows": true,
+  "osx": false,
+  "linux": false
+ },
+ "links": {
+  "purchase_link": "https://www.gog.com/en/checkout/manual/the_witcher_3_wild_hunt",
+  "product_card": "https://www.gog.com/game/the_witcher_3_wild_hunt",
+  "support": "https://www.gog.com/support/the_witcher_3_wild_hunt",
+  "forum": "https://www.gog.com/forum/the_witcher_3_wild_hunt"
+ },
+ "release_date": "2015-05-19T01:00:00+0200",
+ "images": {
+  "background": "//images-1.gog-statics.com/a31cc28555c4e773d8962b993f9d1dd62aa6895f2077a5d755eb8a01ed0bba91.jpg",
+  "logo": "//images-4.gog-statics.com/45a0d9d39f01bd10a9d967194d81e0660da0cd93038501be48b32ac4667a8591_glx_logo.jpg"
+ },
+ "description": {
+  "lead": "<div style=\"overflow:hidden;\"><a href=\"https://www.gog.com/game/the_witcher_3_wild_hunt_game_of_the_year_edition\"><img src=\"https://items.gog.com/the_witcher_3_wild_hunt/COVER_970x300_EN.png\"></a></div>\r\n<p>\r\n<br>\r\n&nbsp;\r\n</p>\r\n<hr>\r\n<p>\r\n<img src=\"https://items.gog.com/the_witcher_3_wild_hunt/HeaderEN.jpg\">&nbsp;<br>\r\n&nbsp;\r\n</p>\r\n<hr><div style=\"overflow:hidden;\"><img style=\"float:left;margin:5px 15px 0 10px;\" src=\"https://items.gog.com/the_witcher_3_wild_hunt/rewards_logo.png\"><br>\r\n<a href=\"https://www.thewitcher.com/my-rewards\" target=\"”_blank”\"><span><b>Rewards for owning The Witcher 3",
+  "full": "<div style=\"overflow:hidden;\"><a href=\"https://www.gog.com/game/the_witcher_3_wild_hunt_game_of_the_year_edition\"><img src=\"https://items.gog.com/the_witcher_3_wild_hunt/COVER_970x300_EN.png\"></a></div>\r\n<p>\r\n<br>\r\n&nbsp;\r\n</p>\r\n<hr>\r\n<p>\r\n<img src=\"https://items.gog.com/the_witcher_3_wild_hunt/HeaderEN.jpg\">&nbsp;<br>\r\n&nbsp;\r\n</p>\r\n<hr><div style=\"overflow:hidden;\"><img style=\"float:left;margin:5px 15px 0 10px;\" src=\"https://items.gog.com/the_witcher_3_wild_hunt/rewards_logo.png\"><br>\r\n<a href=\"https://www.thewitcher.com/my-rewards\" target=\"”_blank”\"><span><b>Rewards for owning The Witcher 3: Wild Hunt</b></span></a><br>\r\n<span>Launch The Witcher 3: Wild Hunt via <b>GOG GALAXY 2.0</b> and start playing. Your rewards will be waiting for you in the Royal Palace in Vizima. Check the letter from Yennefer in your inventory for help locating them!</span></div>\r\n<p>\r\n<br>\r\n&nbsp;\r\n</p>\r\n<hr>\r"
+ }
+}
