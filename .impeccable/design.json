@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "title": "Design System: MediaShelf — личная программа кинопоказов",
+  "extensions": {
+    "colorMeta": {
+      "bg": { "role": "neutral", "displayName": "Угольно-графитовый фон" },
+      "accent": { "role": "primary", "displayName": "Приглушённое золото" }
+    },
+    "motion": [
+      { "name": "roulette", "value": "3.8s", "purpose": "Прокрутка карточек с замедлением; без длительной анимации при reduced motion" }
+    ],
+    "layout": {
+      "maxWidth": "1440px",
+      "navigation": "Скрывающийся header и фиксированная поисковая панель",
+      "onlineArtwork": "Постеры 2:3 на всех размерах; contain, отдельный управляемый preview",
+      "mobileBreakpoints": [1200, 1000, 780, 540]
+    },
+    "sourceOfTruth": "DESIGN.md и src/styles.css"
+  }
+}

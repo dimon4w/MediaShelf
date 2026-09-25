@@ -1,0 +1,14 @@
+node_modules/
+.cache/
+dist/
+*.tsbuildinfo
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+*.local
+.opencode/skills/impeccable/scripts/bin/
+.impeccable/review/
+.impeccable/live/
+.impeccable/config.local.json
