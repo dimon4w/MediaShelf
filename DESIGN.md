@@ -1,78 +1,49 @@
----
-name: MediaShelf
-description: Почти чёрная библиотека историй с постерами, бело-серой типографикой и приглушённым золотом.
-colors:
-  bg: '#0b0c0e'
-  surface: '#141518'
-  raised: '#202126'
-  hover: '#292a30'
-  accent: '#d4b578'
-  accent-hover: '#e7cca0'
-  accent-ink: '#17130d'
-  text: '#f3f3f1'
-  muted: '#b1b2b9'
-  quiet: '#92939d'
-  line: '#303137'
-  line-strong: '#70727d'
-  selected: '#2c271e'
-  danger: '#e3b8b2'
-typography:
-  display:
-    fontFamily: 'Unbounded Variable, sans-serif'
-    fontWeight: 500
-    lineHeight: 1.3
-  body:
-    fontFamily: 'Manrope Variable, sans-serif'
-    fontSize: '16px'
-    lineHeight: 1.6
----
+# MediaShelf — design
 
-# MediaShelf — личная программа кинопоказов
+Strict black and white, in the spirit of Apple and ChatGPT. The layout follows Hoplite: a sidebar with the content in an inset rounded panel. Colour comes only from posters and backdrops, never from UI chrome. Error red is the single semantic exception.
 
-## Направление
+## References
 
-Почти чёрная основа, белая и серая типографика, один сдержанный золотой акцент. Главный визуальный объект — постер. Минимальные функциональные радиусы 4/8px, тонкие разделители, без декоративного стекла, свечений и вложенных карточек. 3D и прежние бежевая/бирюзовая системы отменены пользователем.
+- Vercel Geist — [colors](https://vercel.com/geist/colors), [materials](https://vercel.com/geist/materials), [guidelines](https://vercel.com/design/guidelines): grey scale, radii, focus rings.
+- ChatGPT on [Refero](https://styles.refero.design/style/52a007ed-ad1b-46a6-bd44-b76f91df6d0c) and [Mobbin](https://mobbin.com/explore/screens/676c84f0-d096-4f29-8d7f-e5f0184baa10): no colour, hairlines instead of shadows, centred prompt box on Home.
+- Apple TV ([redesign notes](https://www.apple.com/newsroom/2025/06/apple-tv-brings-a-beautiful-redesign-and-enhanced-home-entertainment-experience/), [Mobbin](https://mobbin.com/explore/screens/ccb3a50b-bc51-4196-afd0-1fd7f8779754)): tall posters, backdrop hero, glass only on controls.
+- Linear: [Refero](https://styles.refero.design/style/90ce5883-bb24-4466-93f7-801cd617b0d1) (stacked near-blacks, tight display tracking) and its [status board](https://mobbin.com/explore/screens/423b83f6-5340-41cd-a537-dd39a0d56ced).
+- Letterboxd [year in review](https://letterboxd.com/year-in-review/) for stats; the [60fps slot reel](https://60fps.design/shots/stompers-pack-tear-and-pick-interaction) for Shuffle.
 
-Manrope используется для интерфейса, Unbounded — ограниченно для выразительного названия в витрине. Основной текст 16px, вторичный 14px, компактные метаданные 12px. Размеры заголовков адаптивны. Шкала отступов: 4/8/12/16/24/32/48/64px.
+## Tokens (`src/styles/index.css`)
 
-## Иерархия
+| Role                    | Dark                   | Light                 |
+| ----------------------- | ---------------------- | --------------------- |
+| Page + sidebar          | `#0a0a0a`              | `#f5f5f5`             |
+| Content panel           | `#141414`              | `#ffffff`             |
+| Raised (cards, inputs)  | `#1c1c1c`              | `#f4f4f4`             |
+| Floating (menus)        | `#1f1f1f`              | `#ffffff`             |
+| Text primary            | `#ededed`              | `#171717`             |
+| Text secondary/tertiary | `#a1a1a1` / `#8f8f8f`  | `#4d4d4d` / `#737373` |
+| Hairline                | white 9%               | black 9%              |
+| Primary button          | `#ededed` on `#0a0a0a` | `#171717` on white    |
 
-1. Верхний header: бренд, каталог, полка, статистика, настройки и действия. Скрывается вниз, возвращается вверх и по Tab/Home. Высота измеряется ResizeObserver; место в потоке сохраняется.
-2. Фиксированная поисковая панель: категории, быстрые жанры, поиск. Остаётся видимой при скрытом header.
-3. Компактная витрина с пятью случайно выбранными популярными произведениями; набор стабилен в течение посещения.
-4. Онлайн-каталог, затем тематические подборки и продолжение начатого.
-5. Первый вход сразу показывает каталог. Платформы и регион настраиваются отдельным действием.
+- **Type:** Inter Variable with optical sizes, plus Geist Mono for keyboard hints. Base size 14/20. Display sizes use −0.022em tracking at weight 650. Numbers use `tabular-nums`.
+- **Radii:** 6 (chips), 8 (buttons, inputs, posters), 12 (cards, menus, dialogs), 16 (panel, hero).
+- **Motion:**
+  - Ease-out `cubic-bezier(.23,1,.32,1)`.
+  - 150–250 ms for UI, springs with no bounce.
+  - The Shuffle reel decelerates over 2.6 s.
+  - Everything respects reduced motion.
+- **Blur:** only on the sticky title bar after scrolling and on the mobile tab bar.
+- **Status glyphs**, distinguished by shape rather than colour:
+  - dashed ring — planned
+  - half-filled — in progress
+  - pause bars — paused
+  - filled check — completed
+  - dash — dropped
 
-## Постеры и preview
+## Layout
 
-Обычная карточка имеет пропорции 2:3 на всех размерах. Используется основной вертикальный постер с `contain`; широкий screenshot не подменяет обложку. Для отсутствующего изображения предусмотрена типографическая замена. Ошибочные обложки понижаются в выдаче.
-
-Preview открывается с задержкой 420ms при наведении мышью либо явной кнопкой. Касание/клавиатура закрепляют его. Внутри — настоящее видео с управлением или реальные кадры. Размер карточки не меняется, личные бейджи не перекрывают preview. Есть Escape, закрытие снаружи и возврат фокуса. Кадры сохраняют пропорции 16:9; текст и управление уступают место медиа. Вне viewport и на скрытой вкладке видео ставится на паузу.
-
-## Управление и данные
-
-Категории, сортировка и сезон используют один `ChoiceMenu` на Radix: выбранное значение, стрелки/Home/End, Escape, границы viewport и внутренний scroll. Поиск — combobox с подсказками, `/`, Ctrl/Cmd+K, Enter и Escape.
-
-Фильтры раскрываются над выдачей. Игровые параметры сгруппированы в отдельный disclosure. Источник и подключения доступны здесь, а происхождение конкретной записи — в подробностях. Сортировка по популярности, названию, личной оценке и году не смешивается с режимом состава каталога.
-
-Цена состоит из суммы и кода валюты; магазин подписан и имеет иконку, регион указан отдельно. Steam первым только при подтверждённом предложении. Неизвестная цена не равна бесплатной. Публичные IMDb/Steam оценки не заменяют личную оценку.
-
-## Личная история
-
-Сохранённая карточка открывается с личными действиями и прогрессом. Описание, публичные оценки и магазины раскрываются вторым уровнем. Название и крестик находятся вне прокручиваемого содержимого диалога. На телефоне заголовок расположен рядом с небольшим постером.
-
-Прохождения игры независимы: платформа, магазин, процент, набор статусов. «Пройдено» совместимо с 80% и «Играю»; статусы не меняют проценты. Удаление прохождения подтверждается на месте. На доске есть раздел «Без отметок», поэтому разрешённое пустое состояние не прячет работу. Фильмы имеют только «В планах»/«Просмотрено».
-
-Сезоны содержат реальные эпизоды, каждый со своей отметкой и отзывом. Строка широкая на ПК, двухстрочная на телефоне. Выбранный сезон запоминается на время вкладки. Старый общий счётчик остаётся непривязанным до явного распределения. Обновление источника сохраняет ручные строки и отзывы; просмотр спецвыпусков не обязателен для завершённого сериала. Автоматический completed допускается только при подтверждённом завершении сериала.
-
-## Рулетка и движение
-
-Две колонки на широком экране, естественный вертикальный поток на телефоне. Результат и действия не перекрываются. «Открыть» — главное действие после выбора; «Крутить ещё» вторично. Источник и четыре категории доступны, пустая выборка объяснена.
-
-Прокрутка ленты 3,8s — основной выразительный момент. При system reduced-motion или ручном спокойном режиме сразу показывается победитель. Video autoplay также отключён. Обратная связь сохраняется; глобального `0.01ms`-обнуления анимаций нет.
-
-## Адаптивность и проверка
-
-Постерная сетка перестраивается 6/5/3/2 колонки. Проверочные ширины: 1440, 1024, 768, 390px; дополнительно 320px и увеличенный текст. Верхняя навигация переносится, модальные окна ограничены высотой viewport, интерактивные границы и keyboard focus контрастны. Основные touch targets — от 44px.
-
-Источник точных значений — `src/styles.css`. Проходы и исправления — `DESIGN-REVIEW.md`; screenshots и измерения — `.impeccable/review/pass-1`, `pass-2`, `pass-3`. Оценки независимых аудитов описывают состояние до исправлений, а не сертификацию доступности.
+- **Desktop:**
+  - Sidebar, 248 px (collapsible to 64): brand, search (Ctrl K), a primary "Add" button, navigation, "Continue" mini-cards, account menu.
+  - Content sits in a rounded panel inset 8 px, with a sticky title bar.
+- **Mobile:**
+  - Compact title bar with search and avatar.
+  - Bottom tab bar: Home, Discover, Library, Shuffle, Stats.
+- **Title hero:** always rendered in the dark palette (`.dark` scope) over the backdrop, so white text and buttons stay legible in both themes.

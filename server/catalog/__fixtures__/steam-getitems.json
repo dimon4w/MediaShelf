@@ -1,0 +1,358 @@
+{
+ "response": {
+  "store_items": [
+   {
+    "item_type": 0,
+    "id": 1145360,
+    "success": 1,
+    "visible": true,
+    "name": "Hades",
+    "appid": 1145360,
+    "type": 0,
+    "tagids": [
+     42804,
+     3959,
+     1646,
+     492,
+     16094,
+     19,
+     1716,
+     4182,
+     1756,
+     1742,
+     1720,
+     122
+    ],
+    "release": {
+     "steam_release_date": 1600353507,
+     "original_steam_release_date": 1575997560
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 285871,
+      "percent_positive": 97,
+      "review_score": 9,
+      "review_score_label": "Overwhelmingly Positive"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/1145360/${FILENAME}?t=1758127023",
+     "header": "header.jpg",
+     "library_capsule": "library_600x900.jpg",
+     "library_hero": "library_hero.jpg",
+     "raw_page_background": "page_bg_raw.jpg"
+    },
+    "tags": [
+     {
+      "tagid": 42804,
+      "weight": 1050
+     },
+     {
+      "tagid": 3959,
+      "weight": 765
+     },
+     {
+      "tagid": 1646,
+      "weight": 748
+     },
+     {
+      "tagid": 492,
+      "weight": 735
+     },
+     {
+      "tagid": 16094,
+      "weight": 730
+     },
+     {
+      "tagid": 19,
+      "weight": 636
+     },
+     {
+      "tagid": 1716,
+      "weight": 620
+     },
+     {
+      "tagid": 4182,
+      "weight": 579
+     },
+     {
+      "tagid": 1756,
+      "weight": 555
+     },
+     {
+      "tagid": 1742,
+      "weight": 545
+     },
+     {
+      "tagid": 1720,
+      "weight": 511
+     },
+     {
+      "tagid": 122,
+      "weight": 500
+     }
+    ],
+    "basic_info": {
+     "short_description": "Defy the god of the dead as you hack and slash out of the Underworld in this rogue-like dungeon crawler from the creators of Bastion, Transistor, and Pyre.",
+     "publishers": [
+      {
+       "name": "Supergiant Games",
+       "creator_clan_account_id": 3584665
+      }
+     ],
+     "developers": [
+      {
+       "name": "Supergiant Games",
+       "creator_clan_account_id": 3584665
+      }
+     ]
+    },
+    "platforms": {
+     "windows": true,
+     "mac": true,
+     "vr_support": {},
+     "steam_deck_compat_category": 3,
+     "steam_os_compat_category": 2,
+     "steam_frame_compat_category": 3,
+     "steam_machine_compat_category": 3
+    },
+    "screenshots": {
+     "all_ages_screenshots": [
+      {
+       "filename": "steam/apps/1145360/ss_c0fed447426b69981cf1721756acf75369801b31.jpg?t=1758127023",
+       "ordinal": 1
+      },
+      {
+       "filename": "steam/apps/1145360/ss_8a9f0953e8a014bd3df2789c2835cb787cd3764d.jpg?t=1758127023",
+       "ordinal": 2
+      }
+     ]
+    },
+    "trailers": {
+     "highlights": [
+      {
+       "trailer_name": "Hades - v1.0 Launch Trailer",
+       "trailer_url_format": "steam/apps/${FILENAME}?t=1600353465",
+       "trailer_category": 0,
+       "adaptive_trailers": [
+        {
+         "cdn_path": "1145360/312686/b0312c49135823cc34946e98148abfb8da71f0fb/1750627549/hls_264_master.m3u8",
+         "encoding": "hls_h264"
+        }
+       ],
+       "screenshot_medium": "256801252/movie.293x165.jpg",
+       "screenshot_full": "256801252/movie_full.jpg",
+       "trailer_base_id": 312686,
+       "all_ages": true
+      }
+     ]
+    }
+   },
+   {
+    "item_type": 0,
+    "id": 730,
+    "success": 1,
+    "visible": true,
+    "name": "Counter-Strike 2",
+    "appid": 730,
+    "type": 0,
+    "is_free": true,
+    "tagids": [
+     1663,
+     1774,
+     3859,
+     3878,
+     19,
+     5711,
+     5055,
+     1708,
+     3839,
+     1775,
+     3843,
+     1685
+    ],
+    "release": {
+     "steam_release_date": 1345568400
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 9884115,
+      "percent_positive": 85,
+      "review_score": 8,
+      "review_score_label": "Very Positive"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/730/${FILENAME}?t=1789251637",
+     "header": "162664aa5da85f418105350c5d67ca565f6c3713/header.jpg",
+     "library_capsule": "library_600x900.jpg",
+     "library_hero": "library_hero.jpg"
+    }
+   },
+   {
+    "item_type": 0,
+    "id": 292030,
+    "success": 1,
+    "visible": true,
+    "name": "The Witcher 3: Wild Hunt - Complete Edition",
+    "appid": 292030,
+    "type": 0,
+    "tagids": [
+     1695,
+     122,
+     1742,
+     4166,
+     1684,
+     21,
+     4182,
+     6650,
+     6426,
+     1756,
+     1697,
+     4172
+    ],
+    "release": {
+     "steam_release_date": 1431937260,
+     "original_release_date": 0
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 824153,
+      "percent_positive": 96,
+      "review_score": 9,
+      "review_score_label": "Overwhelmingly Positive"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/292030/${FILENAME}?t=1788333513",
+     "header": "97cca1147b256f450331044255b1dbd2d57d609e/header_alt_assets_4.jpg",
+     "library_capsule": "47b9d2d162fffa30c2123b5d995cd73f83643673/library_capsule.jpg",
+     "library_hero": "b7b91c8dc934090721da9ada409a152db30ef4d5/library_hero.jpg"
+    }
+   },
+   {
+    "item_type": 0,
+    "id": 431960,
+    "success": 1,
+    "visible": true,
+    "name": "Wallpaper Engine",
+    "appid": 431960,
+    "type": 6,
+    "tagids": [
+     87,
+     4085,
+     8013,
+     84,
+     872,
+     3839,
+     492,
+     4726,
+     10397,
+     19,
+     4182,
+     4136
+    ],
+    "release": {
+     "steam_release_date": 1542391380,
+     "original_steam_release_date": 1476126060
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 945903,
+      "percent_positive": 97,
+      "review_score": 9,
+      "review_score_label": "Overwhelmingly Positive"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/431960/${FILENAME}?t=1779452230",
+     "header": "header.jpg",
+     "library_capsule": "library_600x900.jpg",
+     "library_hero": "library_hero.jpg"
+    }
+   },
+   {
+    "item_type": 0,
+    "id": 5006530,
+    "success": 1,
+    "visible": true,
+    "name": "The Witcher 3: Wild Hunt — Songs of the Past",
+    "appid": 5006530,
+    "type": 4,
+    "tagids": [
+     1695,
+     122,
+     1742,
+     4166,
+     1684,
+     21,
+     4182,
+     6650,
+     6426,
+     1756,
+     1697,
+     4172
+    ],
+    "release": {
+     "is_coming_soon": true,
+     "custom_release_date_message": "Coming soon",
+     "coming_soon_display": "text_comingsoon"
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 0,
+      "percent_positive": 0,
+      "review_score": 0,
+      "review_score_label": "No user reviews"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/5006530/${FILENAME}?t=1788763575",
+     "header": "aa82bdf347becaa26859e7fd9576af87a6c1345e/header_alt_assets_0.jpg"
+    }
+   },
+   {
+    "item_type": 0,
+    "id": 20920,
+    "success": 1,
+    "visible": true,
+    "name": "The Witcher 2: Assassins of Kings Enhanced Edition",
+    "appid": 20920,
+    "type": 0,
+    "tagids": [
+     122,
+     1684,
+     1742,
+     6426,
+     4182,
+     1697,
+     6650,
+     21,
+     4604,
+     6971,
+     1695,
+     19
+    ],
+    "release": {
+     "steam_release_date": 1334626800,
+     "original_release_date": 1305615600,
+     "mac_release_date": 1350579600
+    },
+    "reviews": {
+     "summary_filtered": {
+      "review_count": 80927,
+      "percent_positive": 89,
+      "review_score": 8,
+      "review_score_label": "Very Positive"
+     }
+    },
+    "assets": {
+     "asset_url_format": "steam/apps/20920/${FILENAME}?t=1761657279",
+     "header": "header.jpg",
+     "library_capsule": "library_600x900.jpg",
+     "library_hero": "library_hero.jpg"
+    }
+   }
+  ]
+ }
+}

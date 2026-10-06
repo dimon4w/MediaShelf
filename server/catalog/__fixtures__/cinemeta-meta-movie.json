@@ -1,0 +1,55 @@
+{
+ "meta": {
+  "id": "tt0816692",
+  "imdb_id": "tt0816692",
+  "type": "movie",
+  "name": "Interstellar",
+  "description": "When Earth becomes uninhabitable in the future, a farmer and ex-NASA pilot, Joseph Cooper, is tasked to pilot a spacecraft, along with a team of researchers, to find a new planet for humans.",
+  "releaseInfo": "2014",
+  "released": "2014-11-07T00:00:00.000Z",
+  "imdbRating": "8.7",
+  "runtime": "169 min",
+  "genres": [
+   "Adventure",
+   "Drama",
+   "Sci-Fi"
+  ],
+  "director": [
+   "Christopher Nolan"
+  ],
+  "writer": [
+   "Jonathan Nolan",
+   "Christopher Nolan"
+  ],
+  "country": "United States, United Kingdom, Canada",
+  "poster": "https://images.metahub.space/poster/small/tt0816692/img",
+  "background": "https://images.metahub.space/background/medium/tt0816692/img",
+  "trailers": [
+   {
+    "source": "LY19rHKAaAg",
+    "type": "Trailer"
+   },
+   {
+    "source": "R8teZZ-loaI",
+    "type": "Trailer"
+   },
+   {
+    "source": "ePbKGoIGAXY",
+    "type": "Trailer"
+   },
+   {
+    "source": "zSWdZVtXT7E",
+    "type": "Trailer"
+   },
+   {
+    "source": "827FNDpQWrQ",
+    "type": "Trailer"
+   }
+  ],
+  "cast": [
+   "Matthew McConaughey",
+   "Anne Hathaway",
+   "Jessica Chastain"
+  ]
+ }
+}

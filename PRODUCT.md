@@ -1,61 +1,31 @@
-# MediaShelf
+# MediaShelf — product
 
 <!-- impeccable:product-schema 1 -->
 
 ## Platform
 
-web
+web (desktop, mobile, installable PWA shell)
 
 ## Users
 
-Пользователь ведёт личную коллекцию просмотренных фильмов, сериалов и аниме,
-а также пройденных игр. Основной сценарий — найти историю, добавить на полку,
-отметить статус, прогресс и собственное впечатление.
+People who track what they watch and play: movies, series, anime and games. The main flows are finding a title, saving it with a status, tracking progress (episodes or playthroughs), rating it and, when undecided, letting Shuffle pick. The owner self-hosts it on a laptop and may publish it later.
 
-## Product Purpose
+## Product principles
 
-Объединить четыре формата в удобную персональную медиатеку. Пользователь поручил
-самостоятельно выбрать выразительный профессиональный дизайн, добавить анимации,
-исправить ошибки и подключить внешние каталоги.
+- Personal records come first. External catalogs only supply metadata and never block the library.
+- Every action is instant (optimistic) and reversible where it matters (status undo toast).
+- One status per title. Movies are planned or watched. Series move automatically on episode marks.
+- Russian first, English complete. Titles and descriptions are localised when the source allows.
+- Keyboard, touch, reduced motion and both themes are first-class.
 
-## Operating Context
+## Capabilities
 
-Существующее приложение: React 19, TypeScript, Vite, Motion, Zustand, Radix UI,
-Zod. Запуск на Windows с Node.js 24. Проверка в Microsoft Edge через Playwright.
-Проект находится в D:\Projects\MediaShelf. Дизайн-инструменты установлены локально
-для пробной работы в этом проекте.
+- Accounts: registration, sign-in, sessions, password change, export/import, deletion.
+- Catalog: charts (trending, all-time, new), search (including Cyrillic), title details, episodes, prices.
+- Library: statuses, ratings, favourites, notes, dates, episode marks and notes, game playthroughs.
+- Views: grid, list, drag-and-drop board. Shuffle. Stats. Command palette.
 
-## Capabilities and Constraints
+## Constraints
 
-- Четыре категории, поиск, фильтры, личные оценки, избранное, заметки и доска статусов.
-- Существующая коллекция хранится в localStorage под ключом mediashelf-library.
-- Резервные копии версий 1 и 2 должны оставаться совместимыми.
-- Новые копии используют версию 3: несколько прохождений игры, независимые проценты/отметки и поэпизодные отзывы.
-- Список эпизодов берётся из реальных источников, обновление сохраняет ручные записи. Прежний общий счётчик не превращается в конкретные просмотренные серии без явного действия.
-- Для фильмов доступны только «В планах» и «Просмотрено».
-- Steam имеет приоритет среди подтверждённых предложений. Цены Steam/GOG, внешние оценки IMDb/Steam и личная оценка разделены.
-- Пользователь выбирает несколько систем и магазинов; для одной игры может вести отдельные прохождения Xbox и PC / Epic Games.
-- 3D полностью удалён. Почти чёрная основа, бело-серый текст и приглушённое золото; постеры 2:3, настоящие preview, скрывающийся header и фиксированная поисковая панель.
-- Внешние базы предоставляют каталог и метаданные; личные записи остаются локальными.
-- Недоступность внешнего API не должна мешать открывать сохранённую полку.
-- Использовать реальные источники и показывать происхождение внешних карточек.
-- Пользователь не предоставлял облачный аккаунт, домен или API-ключи.
-
-## Brand Commitments
-
-Сохранить название MediaShelf и русский интерфейс. Выбор нового визуального
-направления пользователь явно делегировал исполнителю.
-
-## Evidence on Hand
-
-32 встроенных произведения и локальные обложки в public/covers. Существующие
-браузерные и модульные тесты. Скриншоты исходной версии сделаны на 1440 и 390 px.
-Резервная копия исходников сохранена перед редизайном во временной папке.
-
-## Product Principles
-
-- Содержание и личные записи важнее декоративных эффектов.
-- Анимация объясняет переход и помогает почувствовать коллекцию.
-- Поиск и сохранение работают предсказуемо, включая ошибки сети.
-- Мобильная версия, клавиатура и уменьшение движения поддерживаются наравне с ПК.
-- Возникающие во время реализации вопросы пользователь предпочитает обсуждать после работы; правки может присылать в процессе.
+- No API keys. Sources: Steam, GOG, IMDb suggestions, Cinemeta, TVmaze, Shikimori, AniList, Jikan, Wikidata, Wikipedia.
+- Runs with Node.js 24 on Windows without native modules (node:sqlite, scrypt from node:crypto).

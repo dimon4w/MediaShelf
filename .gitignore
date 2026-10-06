@@ -1,6 +1,9 @@
 node_modules/
-.cache/
 dist/
+data/
+*.db
+*.db-wal
+*.db-shm
 *.tsbuildinfo
 playwright-report/
 test-results/
@@ -8,7 +11,6 @@ test-results/
 .env.*
 !.env.example
 *.local
+.context/
+.hoplite/
 .opencode/skills/impeccable/scripts/bin/
-.impeccable/review/
-.impeccable/live/
-.impeccable/config.local.json

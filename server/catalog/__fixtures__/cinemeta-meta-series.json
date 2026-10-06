@@ -1,0 +1,79 @@
+{
+ "meta": {
+  "id": "tt0903747",
+  "imdb_id": "tt0903747",
+  "type": "series",
+  "name": "Breaking Bad",
+  "description": "A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine with a former student to secure his family's future.",
+  "releaseInfo": "2008–2013",
+  "released": "2008-01-20T00:00:00.000Z",
+  "status": "Ended",
+  "imdbRating": "9.5",
+  "runtime": "49 min",
+  "genres": [
+   "Crime",
+   "Drama",
+   "Thriller"
+  ],
+  "director": null,
+  "writer": [
+   "Vince Gilligan"
+  ],
+  "country": "United States",
+  "poster": "https://images.metahub.space/poster/small/tt0903747/img",
+  "background": "https://images.metahub.space/background/medium/tt0903747/img",
+  "trailers": [
+   {
+    "source": "VFLkMDEO-Xc",
+    "type": "Trailer"
+   },
+   {
+    "source": "XZ8daibM3AE",
+    "type": "Trailer"
+   }
+  ],
+  "cast": [
+   "Bryan Cranston",
+   "Aaron Paul",
+   "Anna Gunn"
+  ],
+  "videos": [
+   {
+    "id": "tt0903747:0:1",
+    "name": "Good Cop Bad Cop",
+    "season": 0,
+    "number": 1,
+    "episode": 1,
+    "firstAired": "2009-02-18T05:00:00.000Z",
+    "released": "2009-02-18T05:00:00.000Z"
+   },
+   {
+    "id": "tt0903747:1:1",
+    "name": "Pilot",
+    "season": 1,
+    "number": 1,
+    "episode": 1,
+    "firstAired": "2008-01-21T05:00:00.000Z",
+    "released": "2008-01-21T05:00:00.000Z"
+   },
+   {
+    "id": "tt0903747:1:2",
+    "name": "Cat's in the Bag...",
+    "season": 1,
+    "number": 2,
+    "episode": 2,
+    "firstAired": "2008-01-28T05:00:00.000Z",
+    "released": "2008-01-28T05:00:00.000Z"
+   },
+   {
+    "id": "tt0903747:2:1",
+    "name": "Seven Thirty-Seven",
+    "season": 2,
+    "number": 1,
+    "episode": 1,
+    "firstAired": "2009-03-09T05:00:00.000Z",
+    "released": "2009-03-09T05:00:00.000Z"
+   }
+  ]
+ }
+}

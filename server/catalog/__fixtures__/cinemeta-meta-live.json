@@ -1,0 +1,67 @@
+{
+ "meta": {
+  "id": "tt0903747",
+  "imdb_id": "tt0903747",
+  "type": "series",
+  "name": "Breaking Bad",
+  "releaseInfo": "2008–2013",
+  "imdbRating": "9.5",
+  "runtime": "49 min",
+  "genres": [
+   "Drama",
+   "Crime"
+  ],
+  "status": "Ended",
+  "country": "United States",
+  "poster": "https://live.metahub.space/poster/small/tt0903747/img",
+  "background": "https://live.metahub.space/background/medium/tt0903747/img",
+  "director": [],
+  "trailers": [],
+  "description": "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting",
+  "credits_crew": [
+   {
+    "name": "Vince Gilligan",
+    "job": "Creator",
+    "department": "Creator"
+   },
+   {
+    "name": "Bryan Cranston",
+    "job": "Producer",
+    "department": "Production"
+   },
+   {
+    "name": "Diane Mercer",
+    "job": "Producer",
+    "department": "Production"
+   }
+  ],
+  "credits_cast": [
+   {
+    "name": "Bryan Cranston",
+    "character": "Walter White"
+   },
+   {
+    "name": "Aaron Paul",
+    "character": "Jesse Pinkman"
+   }
+  ],
+  "videos": [
+   {
+    "id": "tt0903747:1:1",
+    "title": "Pilot",
+    "season": 1,
+    "episode": 1,
+    "number": 1,
+    "released": "2008-01-20T00:00:00.000Z"
+   },
+   {
+    "id": "tt0903747:1:2",
+    "title": "Cat's in the Bag...",
+    "season": 1,
+    "episode": 2,
+    "number": 2,
+    "released": "2008-01-27T00:00:00.000Z"
+   }
+  ]
+ }
+}

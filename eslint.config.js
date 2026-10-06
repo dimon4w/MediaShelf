@@ -7,12 +7,13 @@ export default tseslint.config(
   {
     ignores: [
       'dist',
-      '.cache',
+      'data',
       'node_modules',
       'playwright-report',
       'test-results',
       '.opencode',
-      '.impeccable',
+      '.context',
+      '.hoplite',
     ],
   },
   js.configs.recommended,
@@ -20,6 +21,12 @@ export default tseslint.config(
   {
     files: ['**/*.{ts,tsx,js,mjs}'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' },
+      ],
+    },
   },
   {
     files: ['src/**/*.{ts,tsx}'],

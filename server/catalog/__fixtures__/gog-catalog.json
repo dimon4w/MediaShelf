@@ -1,0 +1,250 @@
+{
+ "productCount": 59,
+ "products": [
+  {
+   "id": "1441199941",
+   "releaseDate": "2024.05.21",
+   "productType": "game",
+   "title": "The Witcher 3 REDkit",
+   "coverVertical": "https://images.gog-statics.com/1da93b20a0389c37d3da140a7b320489030f8d3df31cf9ae11869ebdcabc5e94.jpg",
+   "price": {
+    "discount": null,
+    "finalMoney": {
+     "amount": "0.00",
+     "currency": "USD",
+     "discount": "0.00"
+    },
+    "baseMoney": {
+     "amount": "0.00",
+     "currency": "USD"
+    }
+   },
+   "genres": [
+    {
+     "name": "Role-playing"
+    },
+    {
+     "name": "Action"
+    },
+    {
+     "name": "Fantasy"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/the_witcher_3_redkit"
+  },
+  {
+   "id": "1971477531",
+   "releaseDate": "2018.10.23",
+   "productType": "game",
+   "title": "GWENT: The Witcher Card Game",
+   "coverVertical": "https://images.gog-statics.com/c6aa604bc3fb7a93a221b466d99c3ccb726156c271e4bb8008cea7760c1598c7.jpg",
+   "price": {
+    "discount": null,
+    "finalMoney": {
+     "amount": "0.00",
+     "currency": "USD",
+     "discount": "0.00"
+    },
+    "baseMoney": {
+     "amount": "0.00",
+     "currency": "USD"
+    }
+   },
+   "genres": [
+    {
+     "name": "Strategy"
+    },
+    {
+     "name": "Turn-based"
+    },
+    {
+     "name": "Fantasy"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/gwent_the_witcher_card_game"
+  },
+  {
+   "id": "1640424747",
+   "releaseDate": "2016.08.30",
+   "productType": "pack",
+   "title": "The Witcher 3: Wild Hunt - Complete Edition",
+   "coverVertical": "https://images.gog-statics.com/6278561a6c70684ab3cd86065ba337c4ae9dd5e3f63b5bd9997d2eba602d17cd.jpg",
+   "price": {
+    "discount": "-50%",
+    "finalMoney": {
+     "amount": "24.99",
+     "currency": "USD",
+     "discount": "25.00"
+    },
+    "baseMoney": {
+     "amount": "49.99",
+     "currency": "USD"
+    }
+   },
+   "genres": [
+    {
+     "name": "Role-playing"
+    },
+    {
+     "name": "Adventure"
+    },
+    {
+     "name": "Fantasy"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/the_witcher_3_wild_hunt_game_of_the_year_edition"
+  },
+  {
+   "id": "1207658930",
+   "releaseDate": "2012.04.17",
+   "productType": "game",
+   "title": "The Witcher 2: Assassins of Kings Enhanced Edition",
+   "coverVertical": "https://images.gog-statics.com/e19cac8a80476f260cc9477d54230e406107f2f61a983239af4a79f3aa84a5cc.jpg",
+   "price": {
+    "discount": "-85%",
+    "finalMoney": {
+     "amount": "2.99",
+     "currency": "USD",
+     "discount": "17.00"
+    },
+    "baseMoney": {
+     "amount": "19.99",
+     "currency": "USD"
+    }
+   },
+   "genres": [
+    {
+     "name": "Role-playing"
+    },
+    {
+     "name": "Action"
+    },
+    {
+     "name": "Fantasy"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/the_witcher_2",
+   "coverHorizontal": "https://images.gog-statics.com/8355e657a19311b158a3553a154e109199d6991c7791a20c3305af1f84d15ed7.png",
+   "galaxyBackgroundImage": "https://images.gog-statics.com/a1bb20bfc2ed9e38b55481e87cd4dd468f2c0304da993f068b7d842ed06d0d1e.jpg",
+   "developers": [
+    "CD PROJEKT RED"
+   ],
+   "publishers": [
+    "CD PROJEKT RED"
+   ]
+  },
+  {
+   "id": "1179418179",
+   "releaseDate": null,
+   "productType": "pack",
+   "title": "The Witcher 3: Wild Hunt — Songs of the Past",
+   "coverVertical": "https://images.gog-statics.com/35f56400e4b4c997ed92c0f9eec28f4e8f06b3d59eed79bddfc410472ac2c365.jpg",
+   "price": null,
+   "genres": [
+    {
+     "name": "Role-playing"
+    },
+    {
+     "name": "Adventure"
+    },
+    {
+     "name": "Fantasy"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/the_witcher_3_wild_hunt_songs_of_the_past"
+  },
+  {
+   "id": "1647345860",
+   "releaseDate": "2026.03.18",
+   "productType": "dlc",
+   "title": "Creature Kitchen Soundtrack",
+   "coverVertical": "https://images.gog-statics.com/2d4dbabdd3368815051da868a9739176c9468aaa4dce33707746b72b78615f29.jpg",
+   "price": {
+    "discount": null,
+    "finalMoney": {
+     "amount": "0.00",
+     "currency": "USD",
+     "discount": "0.00"
+    },
+    "baseMoney": {
+     "amount": "0.00",
+     "currency": "USD"
+    }
+   },
+   "genres": [
+    {
+     "name": "Simulation"
+    },
+    {
+     "name": "Horror"
+    },
+    {
+     "name": "Puzzle"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/creature_kitchen_soundtrack"
+  },
+  {
+   "id": "1765156887",
+   "releaseDate": "2026.02.06",
+   "productType": "game",
+   "title": "Creature Kitchen",
+   "coverVertical": "https://images.gog-statics.com/5743e546e1e2aec9ecb1046cd17091e489fe1cc5d0098b769b23969d918837c4.jpg",
+   "price": {
+    "discount": "-20%",
+    "finalMoney": {
+     "amount": "6.39",
+     "currency": "USD",
+     "discount": "1.60"
+    },
+    "baseMoney": {
+     "amount": "7.99",
+     "currency": "USD"
+    }
+   },
+   "genres": [
+    {
+     "name": "Simulation"
+    },
+    {
+     "name": "Horror"
+    },
+    {
+     "name": "Puzzle"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/creature_kitchen"
+  },
+  {
+   "id": "1304876527",
+   "releaseDate": "2026.02.06",
+   "productType": "game",
+   "title": "Creature Kitchen Demo",
+   "coverVertical": "https://images.gog-statics.com/c290efa5bfe414a20fff0c9263ea1c094a31be0dcc0d6b1116bb9ae1d7a76b20.jpg",
+   "price": {
+    "discount": null,
+    "finalMoney": {
+     "amount": "0.00",
+     "currency": "USD",
+     "discount": "0.00"
+    },
+    "baseMoney": {
+     "amount": "0.00",
+     "currency": "USD"
+    }
+   },
+   "genres": [
+    {
+     "name": "Simulation"
+    },
+    {
+     "name": "Horror"
+    },
+    {
+     "name": "Puzzle"
+    }
+   ],
+   "storeLink": "https://www.gog.com/en/game/creature_kitchen_demo"
+  }
+ ]
+}

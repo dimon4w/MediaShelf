@@ -1,0 +1,23 @@
+[
+ {
+  "id": 64562,
+  "url": "https://youtu.be/zYnoUjuv7EE",
+  "name": "23",
+  "kind": "episode_preview",
+  "hosting": "youtube"
+ },
+ {
+  "id": 60372,
+  "url": "https://youtu.be/QoGM9hCxr4k",
+  "name": "OP1 «Yuusha» — YOASOBI",
+  "kind": "op",
+  "hosting": "youtube"
+ },
+ {
+  "id": 57417,
+  "url": "https://youtu.be/YkTL8D7dpcw",
+  "name": "PV2 (AniMeow) Субтитры",
+  "kind": "pv",
+  "hosting": "youtube"
+ }
+]

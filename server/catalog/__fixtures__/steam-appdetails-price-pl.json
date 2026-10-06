@@ -1,0 +1,15 @@
+{
+ "1145360": {
+  "success": true,
+  "data": {
+   "price_overview": {
+    "currency": "PLN",
+    "initial": 11499,
+    "final": 2874,
+    "discount_percent": 75,
+    "initial_formatted": "114,99 zł",
+    "final_formatted": "28,74 zł"
+   }
+  }
+ }
+}

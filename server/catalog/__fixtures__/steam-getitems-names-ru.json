@@ -1,0 +1,33 @@
+{
+ "response": {
+  "store_items": [
+   {
+    "item_type": 0,
+    "id": 1145360,
+    "success": 1,
+    "visible": true,
+    "name": "Hades",
+    "appid": 1145360,
+    "type": 0
+   },
+   {
+    "item_type": 0,
+    "id": 292030,
+    "success": 1,
+    "visible": true,
+    "name": "Ведьмак 3: Дикая Охота — Полное издание",
+    "appid": 292030,
+    "type": 0
+   },
+   {
+    "item_type": 0,
+    "id": 20920,
+    "success": 1,
+    "visible": true,
+    "name": "The Witcher 2: Assassins of Kings Enhanced Edition",
+    "appid": 20920,
+    "type": 0
+   }
+  ]
+ }
+}

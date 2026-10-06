@@ -1,15 +1,30 @@
 {
   "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2023",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "lib": ["ES2023", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": false,
+    "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
     "noEmit": true,
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "types": ["node"]
   },
-  "include": ["vite.config.ts", "playwright.config.ts", "tests", "server"]
+  "include": [
+    "server",
+    "shared",
+    "tests",
+    "src/**/*.test.ts",
+    "vite.config.ts",
+    "playwright.config.ts"
+  ]
 }
