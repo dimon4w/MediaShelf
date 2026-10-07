@@ -99,8 +99,13 @@ export function useLogin() {
   })
 }
 
-export function useRegister() {
-  const client = useQueryClient()
+export interface RegisterStartResult {
+  sent: boolean
+  delivered: boolean
+  devCode?: string
+}
+
+export function useRegisterStart() {
   return useMutation({
     mutationFn: (input: {
       name: string
@@ -108,7 +113,22 @@ export function useRegister() {
       password: string
       locale: string
       theme: string
-    }) => api<{ user: User }>('POST', '/auth/register', input),
+    }) => api<RegisterStartResult>('POST', '/auth/register/start', input),
+  })
+}
+
+export function useRegisterResend() {
+  return useMutation({
+    mutationFn: (input: { email: string }) =>
+      api<RegisterStartResult>('POST', '/auth/register/resend', input),
+  })
+}
+
+export function useRegisterVerify() {
+  const client = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { email: string; code: string; locale: string; theme: string }) =>
+      api<{ user: User }>('POST', '/auth/register/verify', input),
     onSuccess: ({ user }) => {
       resetUserData(client)
       client.setQueryData<SessionResponse>(keys.session, { registrationOpen: true, user })
@@ -542,5 +562,26 @@ export function useOffers(id: string, enabled: boolean) {
       ),
     enabled,
     staleTime: 30 * 60_000,
+  })
+}
+
+export interface SteamAchievement {
+  name: string
+  displayName: string
+  icon: string | null
+  percent: number
+}
+
+export function useAchievements(appid: string | null) {
+  const { locale } = useI18n()
+  return useQuery({
+    queryKey: ['achievements', appid, locale] as const,
+    queryFn: ({ signal }) =>
+      get<{ achievements: SteamAchievement[] }>(
+        `/catalog/steam/${appid}/achievements${query({ lang: locale })}`,
+        signal,
+      ).then((d) => d.achievements),
+    enabled: Boolean(appid),
+    staleTime: 60 * 60_000,
   })
 }

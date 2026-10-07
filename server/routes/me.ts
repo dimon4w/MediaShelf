@@ -15,11 +15,12 @@ import { deleteUser, findUserByEmail, findUserById, toUser, updateUser } from '.
 import { limit, requireUser, type AppDeps, type AppEnv } from '../context.ts'
 import { ApiError, notFound } from '../http/errors.ts'
 import { exportLibrary, importLibrary } from '../library/transfer.ts'
+import { fetchOwnedGames, importSteamLibrary } from '../library/steam-import.ts'
 import { refreshEpisodeCounters } from '../library/entries.ts'
 import { sql } from '../db/index.ts'
 
 export function meRoutes(deps: AppDeps) {
-  const { db, limits, titles } = deps
+  const { db, config, limits, titles } = deps
   const app = new Hono<AppEnv>()
 
   app.patch('/', async (c) => {
@@ -99,7 +100,7 @@ export function meRoutes(deps: AppDeps) {
     const user = requireUser(c)
     const data = exportLibrary(db, toUser(user))
     const date = new Date().toISOString().slice(0, 10)
-    c.header('Content-Disposition', `attachment; filename="mediadeck-${date}.json"`)
+    c.header('Content-Disposition', `attachment; filename="mediashelf-${date}.json"`)
     return c.json(data)
   })
 
@@ -113,6 +114,29 @@ export function meRoutes(deps: AppDeps) {
     ).all(user.id) as { title_id: string }[]
     for (const { title_id } of ids) refreshEpisodeCounters(db, user.id, title_id)
     return c.json(result)
+  })
+
+  app.delete('/steam', (c) => {
+    const user = requireUser(c)
+    const preferences = { ...JSON.parse(user.preferences) }
+    delete preferences.steamId
+    updateUser(db, user.id, { preferences })
+    return c.json({ user: toUser({ ...user, preferences: JSON.stringify(preferences) }) })
+  })
+
+  app.get('/steam', (c) => {
+    const user = requireUser(c)
+    const { steamId } = JSON.parse(user.preferences) as { steamId?: string }
+    return c.json({ steamId: steamId ?? null, importReady: true })
+  })
+
+  app.post('/steam/import', async (c) => {
+    const user = requireUser(c)
+    limit(limits, 'sensitive', user.id)
+    const { steamId } = JSON.parse(user.preferences) as { steamId?: string }
+    if (!steamId) throw new ApiError(400, 'STEAM_NOT_LINKED', 'Steam is not linked')
+    const { games, partial } = await fetchOwnedGames(config.steamApiKey, steamId)
+    return c.json({ ...importSteamLibrary(db, titles, user.id, games), partial })
   })
 
   return app

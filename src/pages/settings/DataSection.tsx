@@ -45,7 +45,7 @@ async function downloadExport() {
   const match = /filename\*=UTF-8''([^;]+)|filename="?([^";]+)"?/i.exec(disposition)
   const filename = match
     ? decodeURIComponent(match[1] ?? match[2])
-    : `mediadeck-${localDate()}.json`
+    : `mediashelf-${localDate()}.json`
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -79,8 +79,8 @@ function ExportButton() {
 const isExportFile = (value: unknown) =>
   typeof value === 'object' &&
   value !== null &&
-  ((value as { format?: unknown }).format === 'mediadeck' ||
-    (value as { format?: unknown }).format === 'mediashelf')
+  ((value as { format?: unknown }).format === 'mediashelf' ||
+    (value as { format?: unknown }).format === 'mediadeck')
 
 function ImportButton() {
   const { t } = useI18n()

@@ -1,6 +1,6 @@
 import { createTtlCache } from './ttl-cache.ts'
 
-export const USER_AGENT = 'MediaDeck/4.0 (personal media library)'
+export const USER_AGENT = 'MediaShell/4.0 (personal media library)'
 
 export class HttpError extends Error {
   readonly status: number

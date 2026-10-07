@@ -33,7 +33,7 @@ const app = createApp({
 const server = serve({ fetch: app.fetch, port: config.port, hostname: config.host }, (info) => {
   const host = info.address.includes(':') ? `[${info.address}]` : info.address
   const shown = host === '0.0.0.0' || host === '[::]' ? 'localhost' : host
-  console.log(`\n  MediaDeck ${config.dev ? 'API (dev)' : ''} → http://${shown}:${info.port}`)
+  console.log(`\n  MediaShell ${config.dev ? 'API (dev)' : ''} → http://${shown}:${info.port}`)
   console.log(
     `  Data: ${config.dbFile}${config.catalogMode === 'fixtures' ? '  (offline fixtures)' : ''}\n`,
   )
@@ -42,7 +42,7 @@ const server = serve({ fetch: app.fetch, port: config.port, hostname: config.hos
 server.on('error', (error: NodeJS.ErrnoException) => {
   if (error.code === 'EADDRINUSE')
     console.error(
-      `\n  Port ${config.port} is already in use. Is MediaDeck already running?\n  Close it or set another PORT in .env.\n`,
+      `\n  Port ${config.port} is already in use. Is MediaShell already running?\n  Close it or set another PORT in .env.\n`,
     )
   else console.error(error)
   db.close()

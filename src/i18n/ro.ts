@@ -3,7 +3,7 @@ import type { DeepPartial, Messages } from './ru.ts'
 
 export const ro: DeepPartial<Messages> = {
   app: {
-    name: 'MediaDeck',
+    name: 'MediaShell',
     tagline: 'Jocuri, filme, seriale și anime — într-o singură bibliotecă',
   },
   common: {
@@ -151,7 +151,7 @@ export const ro: DeepPartial<Messages> = {
     guestText:
       'Marchează progresul și episoadele, ține partide pe platforme diferite, notează și găsește ce să vizionezi seara.',
     featureEpisodesTitle: 'Episoade și sezoane',
-    featureEpisodesText: 'Bifează episoadele — MediaDeck îți spune care urmează.',
+    featureEpisodesText: 'Bifează episoadele — MediaShell îți spune care urmează.',
     featurePlaythroughsTitle: 'Partide',
     featurePlaythroughsText: 'Mai multe partide ale aceluiași joc: PC, consolă, progres separat.',
     featureShuffleTitle: 'Noroc',
@@ -210,10 +210,10 @@ export const ro: DeepPartial<Messages> = {
     loginForLibrary: 'Autentifică-te ca să alegi din biblioteca ta.',
   },
   auth: {
-    loginTitle: 'Autentificare la MediaDeck',
+    loginTitle: 'Autentificare la MediaShell',
     loginSubtitle: 'Bine ai revenit! Biblioteca te așteaptă.',
     registerTitle: 'Creează un cont',
-    registerSubtitle: 'Biblioteca va fi stocată pe acest server MediaDeck.',
+    registerSubtitle: 'Biblioteca va fi stocată pe acest server MediaShell.',
     name: 'Nume',
     namePlaceholder: 'Cum să te numim',
     email: 'E-mail',
@@ -266,7 +266,7 @@ export const ro: DeepPartial<Messages> = {
   },
   errors: {
     generic: 'Ceva n-a mers. Încearcă din nou.',
-    network: 'Fără conexiune la serverul MediaDeck.',
+    network: 'Fără conexiune la serverul MediaShell.',
     UNAUTHORIZED: 'Autentifică-te.',
     INVALID_CREDENTIALS: 'E-mail sau parolă greșită.',
     EMAIL_TAKEN: 'Acest e-mail este deja înregistrat.',

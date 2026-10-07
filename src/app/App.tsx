@@ -18,6 +18,8 @@ const ShufflePage = lazy(() => import('@/pages/ShufflePage'))
 const StatsPage = lazy(() => import('@/pages/StatsPage'))
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
 const AuthPage = lazy(() => import('@/pages/AuthPage'))
+const VerifyEmailPage = lazy(() => import('@/pages/VerifyEmailPage'))
+const WelcomePage = lazy(() => import('@/pages/WelcomePage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 // An expired or revoked session surfaces as 401 on any request: forget the user so guards
@@ -122,10 +124,22 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: '/verify-email',
+        element: page(<VerifyEmailPage />),
+      },
+      {
         element: <AppShell />,
         errorElement: <RouteError />,
         children: [
           { index: true, element: page(<HomePage />) },
+          {
+            path: 'welcome',
+            element: page(
+              <RequireAuth>
+                <WelcomePage />
+              </RequireAuth>,
+            ),
+          },
           { path: 'discover', element: page(<DiscoverPage />) },
           { path: 'title/:id', element: page(<TitlePage />) },
           {

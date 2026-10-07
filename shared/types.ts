@@ -174,11 +174,12 @@ export interface UserPreferences {
   avatar?: string
   /** Avatar outline colour id; unset = theme foreground. */
   avatarColor?: string
+  /** Linked SteamID64; set only by the server after Steam OpenID login. */
+  steamId?: string
 }
 
 export const AVATAR_COLORS = [
   'auto',
-  'white',
   'blue',
   'violet',
   'pink',
@@ -318,6 +319,14 @@ export const ERROR_CODES = [
   'INVALID_CREDENTIALS',
   'EMAIL_TAKEN',
   'REGISTRATION_CLOSED',
+  'CODE_WRONG',
+  'CODE_EXPIRED',
+  'NO_PENDING',
+  'RESEND_TOO_SOON',
+  'TOO_MANY_ATTEMPTS',
+  'STEAM_NOT_LINKED',
+  'STEAM_NOT_CONFIGURED',
+  'PROFILE_PRIVATE',
   'WRONG_PASSWORD',
   'STATUS_NOT_ALLOWED',
   'TITLE_NOT_FOUND',

@@ -1,5 +1,13 @@
 import { resolve } from 'node:path'
 
+export interface SmtpConfig {
+  host: string
+  port: number
+  user: string
+  pass: string
+  from: string
+}
+
 export interface Config {
   host: string
   port: number
@@ -16,6 +24,12 @@ export interface Config {
   catalogMode: 'live' | 'fixtures'
   /** Extra origins allowed to send mutating requests, e.g. https://media.example.com */
   allowedOrigins: string[]
+  /** Outgoing mail for verification codes; null = log to console and expose dev code. */
+  smtp: SmtpConfig | null
+  /** Public base URL used for links inside emails, e.g. the tunnel URL. Empty = no links. */
+  publicUrl: string
+  /** Site-wide Steam Web API key for library imports; null = import disabled. */
+  steamApiKey: string | null
 }
 
 function flag(value: string | undefined, fallback: boolean) {
@@ -59,5 +73,17 @@ export function loadConfig(argv = process.argv.slice(2), env = process.env): Con
       .split(',')
       .map((origin) => origin.trim().replace(/\/+$/, ''))
       .filter(Boolean),
+    smtp:
+      env.SMTP_HOST && env.SMTP_USER && env.SMTP_PASS
+        ? {
+            host: env.SMTP_HOST,
+            port: Number(env.SMTP_PORT ?? 465),
+            user: env.SMTP_USER,
+            pass: env.SMTP_PASS,
+            from: env.SMTP_FROM ?? env.SMTP_USER,
+          }
+        : null,
+    publicUrl: (env.PUBLIC_URL ?? '').replace(/\/+$/, ''),
+    steamApiKey: env.STEAM_API_KEY || null,
   }
 }

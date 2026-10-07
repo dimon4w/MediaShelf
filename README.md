@@ -1,4 +1,4 @@
-# MediaDeck
+# MediaShell
 
 Личная библиотека игр, фильмов, сериалов и аниме. Каталоги подключены без ключей API, у каждого пользователя свой аккаунт, а все данные хранятся в одном файле SQLite на вашем компьютере.
 
@@ -91,9 +91,9 @@ HOST=0.0.0.0
 
 Сервер уже готов к публикации: пароли хешируются scrypt, сессии хранятся в HttpOnly-cookie (в базе — только хеш токена), есть защита от CSRF по Origin, ограничение попыток входа, строгий CSP и заголовки безопасности.
 
-1. Поставьте перед MediaDeck HTTPS-прокси. Например, Caddy: `media.example.com { reverse_proxy 127.0.0.1:4173 }`.
+1. Поставьте перед MediaShell HTTPS-прокси. Например, Caddy: `media.example.com { reverse_proxy 127.0.0.1:4173 }`.
 2. В `.env`: `TRUST_PROXY=true`, после создания своих аккаунтов — `ALLOW_REGISTRATION=false`.
-3. Или Docker: `docker compose up -d --build`. Данные хранятся в томе `mediadeck-data`.
+3. Или Docker: `docker compose up -d --build`. Данные хранятся в томе `mediashelf-data`.
 
 ## Откуда данные
 
@@ -137,7 +137,7 @@ tests/e2e/         сквозные тесты Playwright
 
 ## English summary
 
-MediaDeck is a self-hosted library for games, movies, series and anime. It has accounts, episode and playthrough tracking, a status board, stats, Shuffle (random pick), a Ctrl K command palette, and Russian and English UI in light and dark themes.
+MediaShell is a self-hosted library for games, movies, series and anime. It has accounts, episode and playthrough tracking, a status board, stats, Shuffle (random pick), a Ctrl K command palette, and Russian and English UI in light and dark themes.
 
 **Run:** install Node.js 24, then `npm install && npm run build && npm start` and open http://localhost:4175. On Windows you can double-click `start.cmd` instead. Data lives in `data/mediashelf.db`. Settings are in `.env.example`.
 

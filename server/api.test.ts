@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { testApp } from './test-utils.ts'
+import { registerAccount, testApp } from './test-utils.ts'
 
 const account = { name: 'Дима', email: 'Dima@Example.com', password: 'correct horse battery' }
 
 async function signedIn() {
   const t = testApp()
-  const res = await t.request('POST', '/api/auth/register', account)
+  const res = await registerAccount(t, account)
   expect(res.status).toBe(201)
   return t
 }
@@ -16,7 +16,7 @@ describe('auth', () => {
     const anonymous = await t.request('GET', '/api/auth/session')
     expect(anonymous.body).toEqual({ user: null, registrationOpen: true })
 
-    const registered = await t.request('POST', '/api/auth/register', account)
+    const registered = await registerAccount(t, account)
     expect(registered.status).toBe(201)
     expect(registered.body.user.email).toBe('Dima@Example.com')
     expect(registered.headers.get('set-cookie')).toMatch(/ms_session=.+HttpOnly/i)
@@ -44,13 +44,13 @@ describe('auth', () => {
 
   it('rejects duplicate emails and weak input with field codes', async () => {
     const t = await signedIn()
-    const duplicate = await t.request('POST', '/api/auth/register', {
+    const duplicate = await t.request('POST', '/api/auth/register/start', {
       ...account,
       email: 'dima@example.com',
     })
     expect(duplicate.status).toBe(409)
     expect(duplicate.body.error.fields).toEqual({ email: 'taken' })
-    const invalid = await t.request('POST', '/api/auth/register', {
+    const invalid = await t.request('POST', '/api/auth/register/start', {
       name: '',
       email: 'x',
       password: '123',
@@ -61,6 +61,65 @@ describe('auth', () => {
       email: 'email',
       password: 'password_short',
     })
+  })
+
+  it('verifies email codes: wrong code fails, resend is throttled, then it succeeds', async () => {
+    const t = testApp()
+    const start = await t.request('POST', '/api/auth/register/start', {
+      ...account,
+      email: 'coded@example.com',
+    })
+    expect(start.status).toBe(202)
+    expect(start.body.devCode).toMatch(/^\d{6}$/)
+
+    const missing = await t.request('POST', '/api/auth/register/verify', {
+      email: 'nobody@example.com',
+      code: '123456',
+    })
+    expect(missing.status).toBe(404)
+    expect(missing.body.error.code).toBe('NO_PENDING')
+
+    const wrong = await t.request('POST', '/api/auth/register/verify', {
+      email: 'coded@example.com',
+      code: '000000',
+    })
+    expect(wrong.status).toBe(400)
+    expect(wrong.body.error.code).toBe('CODE_WRONG')
+
+    const soon = await t.request('POST', '/api/auth/register/resend', {
+      email: 'coded@example.com',
+    })
+    expect(soon.status).toBe(429)
+    expect(soon.body.error.code).toBe('RESEND_TOO_SOON')
+
+    const done = await t.request('POST', '/api/auth/register/verify', {
+      email: 'coded@example.com',
+      code: start.body.devCode,
+    })
+    expect(done.status).toBe(201)
+    expect(done.body.user.email).toBe('coded@example.com')
+
+    const reused = await t.request('POST', '/api/auth/register/verify', {
+      email: 'coded@example.com',
+      code: start.body.devCode,
+    })
+    expect(reused.status).toBe(404)
+  })
+
+  it('keeps Steam ids server-side: patch cannot forge them, import needs a link', async () => {
+    const t = await signedIn()
+    const forged = await t.request('PATCH', '/api/me', {
+      preferences: { steamId: '76561198000000000' },
+    })
+    expect(forged.status).toBe(200)
+    expect(forged.body.user.preferences.steamId).toBeUndefined()
+
+    const status = await t.request('GET', '/api/me/steam')
+    expect(status.body).toEqual({ steamId: null, importReady: true })
+
+    const unlinked = await t.request('POST', '/api/me/steam/import', {})
+    expect(unlinked.status).toBe(400)
+    expect(unlinked.body.error.code).toBe('STEAM_NOT_LINKED')
   })
 
   it('blocks cross-origin writes and non-JSON bodies', async () => {
@@ -278,7 +337,8 @@ describe('library', () => {
     expect(exported.body.entries).toHaveLength(3)
 
     const other = testApp()
-    await other.request('POST', '/api/auth/register', { ...account, email: 'other@example.com' })
+    const otherRegistered = await registerAccount(other, { ...account, email: 'other@example.com' })
+    expect(otherRegistered.status).toBe(201)
     const imported = await other.request('POST', '/api/me/import', exported.body)
     expect(imported.body).toEqual({ imported: 3, skipped: 0 })
     const library = await other.request('GET', '/api/library')

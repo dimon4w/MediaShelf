@@ -5,12 +5,12 @@ import { Hono } from 'hono'
 import { describe, expect, it } from 'vitest'
 import { computeStats } from './library/stats.ts'
 import { staticFiles } from './static.ts'
-import { sampleTitles, testApp } from './test-utils.ts'
+import { sampleTitles, testApp, registerAccount } from './test-utils.ts'
 
 const account = { name: 'Дима', email: 'dima@example.com', password: 'correct horse battery' }
 
 async function signedIn(email = account.email, t = testApp()) {
-  expect((await t.request('POST', '/api/auth/register', { ...account, email })).status).toBe(201)
+  expect((await registerAccount(t, { ...account, email })).status).toBe(201)
   return t
 }
 
@@ -181,7 +181,7 @@ describe('streaks for imported libraries', () => {
 describe('login throttling', () => {
   it('locks an account after repeated failures and resets after a success', async () => {
     const t = testApp(undefined, { limits: true })
-    expect((await t.request('POST', '/api/auth/register', account)).status).toBe(201)
+    expect((await registerAccount(t, account)).status).toBe(201)
     t.clearCookie()
     const attempt = (password: string) =>
       t.request('POST', '/api/auth/login', { email: account.email, password })

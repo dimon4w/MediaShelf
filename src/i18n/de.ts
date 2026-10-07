@@ -3,7 +3,7 @@ import type { DeepPartial, Messages } from './ru.ts'
 
 export const de: DeepPartial<Messages> = {
   app: {
-    name: 'MediaDeck',
+    name: 'MediaShell',
     tagline: 'Spiele, Filme, Serien und Anime — in einer Bibliothek',
   },
   common: {
@@ -151,7 +151,7 @@ export const de: DeepPartial<Messages> = {
     guestText:
       'Fortschritt und Folgen markieren, Durchgänge auf verschiedenen Plattformen führen, Bewertungen vergeben und den Abend planen.',
     featureEpisodesTitle: 'Folgen und Staffeln',
-    featureEpisodesText: 'Folgen abhaken — MediaDeck sagt Ihnen, welche als Nächstes kommt.',
+    featureEpisodesText: 'Folgen abhaken — MediaShell sagt Ihnen, welche als Nächstes kommt.',
     featurePlaythroughsTitle: 'Durchgänge',
     featurePlaythroughsText: 'Mehrere Durchgänge eines Spiels: PC, Konsole, eigener Fortschritt.',
     featureShuffleTitle: 'Zufallswahl',
@@ -208,10 +208,10 @@ export const de: DeepPartial<Messages> = {
     loginForLibrary: 'Melden Sie sich an, um aus Ihrer Bibliothek zu wählen.',
   },
   auth: {
-    loginTitle: 'Anmelden bei MediaDeck',
+    loginTitle: 'Anmelden bei MediaShell',
     loginSubtitle: 'Willkommen zurück! Ihre Bibliothek wartet.',
     registerTitle: 'Konto erstellen',
-    registerSubtitle: 'Die Bibliothek wird auf diesem MediaDeck-Server gespeichert.',
+    registerSubtitle: 'Die Bibliothek wird auf diesem MediaShell-Server gespeichert.',
     name: 'Name',
     namePlaceholder: 'Wie sollen wir Sie nennen',
     email: 'E-Mail',
@@ -264,7 +264,7 @@ export const de: DeepPartial<Messages> = {
   },
   errors: {
     generic: 'Etwas ist schiefgelaufen. Bitte erneut versuchen.',
-    network: 'Keine Verbindung zum MediaDeck-Server.',
+    network: 'Keine Verbindung zum MediaShell-Server.',
     UNAUTHORIZED: 'Bitte anmelden.',
     INVALID_CREDENTIALS: 'Falsche E-Mail oder falsches Passwort.',
     EMAIL_TAKEN: 'Diese E-Mail ist bereits registriert.',

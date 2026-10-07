@@ -49,7 +49,7 @@ function AvatarPicker({ user }: { user: User }) {
                   : 'ring-line hover:bg-hover hover:ring-line-strong',
               )}
             >
-              <AvatarArt id={id} color={currentColor} className="size-[62%]" />
+              <AvatarArt id={id} color={currentColor} userId={user.id} className="size-[62%]" />
             </button>
           ))}
         </div>

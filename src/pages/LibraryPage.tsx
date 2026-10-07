@@ -4,6 +4,7 @@ import { Link, useSearchParams } from 'react-router'
 import { STATUS_ORDER } from '@shared/status.ts'
 import { KINDS, type Kind, type LibraryEntry, type Status } from '@shared/types.ts'
 import { PageBody, PageHeader } from '@/app/PageHeader'
+import { BrandIcon } from '@/components/BrandIcon'
 import { StatusIcon } from '@/components/StatusIcon'
 import { TitleCard, TitleCardSkeleton, TitleGrid } from '@/components/TitleCard'
 import { Button } from '@/components/ui/button'
@@ -305,6 +306,15 @@ export default function LibraryPage() {
                         <span className="truncate">
                           {t(statusLabelKey(entry.kind, entry.status))}
                         </span>
+                        {entry.store === 'steam' ? (
+                          <>
+                            <span aria-hidden="true">·</span>
+                            <span className="inline-flex items-center gap-1">
+                              <BrandIcon id="steam" className="size-3" />
+                              Steam
+                            </span>
+                          </>
+                        ) : null}
                         {progress ? (
                           <>
                             <span aria-hidden="true">·</span>

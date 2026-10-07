@@ -103,7 +103,7 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle(
         {!collapsed ? (
           <Link to="/" className="flex items-center gap-2.5 rounded-md">
             <BrandMark />
-            <span className="text-md font-semibold tracking-[-0.01em]">MediaDeck</span>
+            <span className="text-md font-semibold tracking-[-0.01em]">MediaShell</span>
           </Link>
         ) : null}
         <Tooltip content={collapsed ? t('nav.expand') : t('nav.collapse')} side="right">

@@ -1,4 +1,4 @@
-# MediaDeck — product
+# MediaShell — product
 
 <!-- impeccable:product-schema 1 -->
 

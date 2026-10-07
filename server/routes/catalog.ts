@@ -6,6 +6,7 @@ import { LOCALES } from '../../shared/types.ts'
 import { limit, requestLocale, requestRegion, type AppDeps, type AppEnv } from '../context.ts'
 import { clientIp } from '../http/security.ts'
 import { episodeList, titleDetails, withTimeout } from '../library/resolve.ts'
+import { gameAchievements } from '../catalog/steam-achievements.ts'
 import { ApiError } from '../http/errors.ts'
 
 const localeQuery = z.object({
@@ -74,6 +75,18 @@ export function catalogRoutes(deps: AppDeps) {
       15_000,
     ).catch(() => [])
     return c.json({ offers })
+  })
+
+  app.get('/catalog/steam/:appid/achievements', async (c) => {
+    const appid = c.req.param('appid')
+    if (!/^\d{1,12}$/.test(appid)) throw new ApiError(400, 'BAD_REQUEST', 'Bad app id')
+    const query = localeQuery.parse(c.req.query())
+    const achievements = await withTimeout(
+      gameAchievements(appid, requestLocale(c, query.lang), config.steamApiKey),
+      15_000,
+    ).catch(() => [])
+    c.header('Cache-Control', 'private, max-age=3600')
+    return c.json({ achievements })
   })
 
   return app

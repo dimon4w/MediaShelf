@@ -155,3 +155,25 @@ export function testApp(catalog: CatalogService = fakeCatalog(), { limits = fals
   }
   return { app, db, request, clearCookie: () => (cookie = '') }
 }
+
+export interface TestAccount {
+  name: string
+  email: string
+  password: string
+}
+
+/** Two-step registration; the test config has no SMTP so the code comes back inline. */
+export async function registerAccount(
+  t: ReturnType<typeof testApp>,
+  account: TestAccount,
+  extra: Record<string, unknown> = {},
+) {
+  const start = await t.request('POST', '/api/auth/register/start', account)
+  if (start.status !== 202 || !start.body.devCode)
+    throw new Error(`register/start failed: ${start.status} ${JSON.stringify(start.body)}`)
+  return t.request('POST', '/api/auth/register/verify', {
+    email: account.email,
+    code: start.body.devCode,
+    ...extra,
+  })
+}

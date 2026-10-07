@@ -27,6 +27,7 @@ import {
 } from '@/lib/titles'
 import { DetailsSection } from './title/DetailsSection'
 import { AddPanel, EntryPanel } from './title/EntryPanel'
+import { AchievementsSection } from './title/AchievementsSection'
 import { EpisodesSection } from './title/EpisodesSection'
 import { Gallery, TrailerDialog } from './title/Gallery'
 import { OffersSection } from './title/OffersSection'
@@ -299,6 +300,7 @@ export default function TitlePage() {
                   <EpisodesSection title={title} entry={entry} />
                 ) : null}
                 {title.kind === 'game' && entry ? <PlaythroughsSection entry={entry} /> : null}
+                {title.externalIds?.steam ? <AchievementsSection title={title} /> : null}
                 {title.screenshots?.length ? (
                   <Gallery images={title.screenshots} title={name ?? ''} />
                 ) : null}

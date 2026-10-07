@@ -73,7 +73,7 @@ export function staticFiles(root: string): MiddlewareHandler {
     }
     if (!found) {
       if (extname(path)) return c.text('Not found', 404)
-      return c.text('MediaDeck is not built yet. Run "npm run build" first.', 503)
+      return c.text('MediaShell is not built yet. Run "npm run build" first.', 503)
     }
     const headers: Record<string, string> = {
       'Content-Type': found.type,

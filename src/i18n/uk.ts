@@ -3,7 +3,7 @@ import type { DeepPartial, Messages } from './ru.ts'
 
 export const uk: DeepPartial<Messages> = {
   app: {
-    name: 'MediaDeck',
+    name: 'MediaShell',
     tagline: 'Ігри, фільми, серіали та аніме — в одній бібліотеці',
   },
   common: {
@@ -151,7 +151,7 @@ export const uk: DeepPartial<Messages> = {
     guestText:
       'Відзначайте прогрес і серії, ведіть проходження на різних платформах, ставте оцінки та знаходьте, що ввімкнути ввечері.',
     featureEpisodesTitle: 'Серії та сезони',
-    featureEpisodesText: 'Відзначайте епізоди — MediaDeck підкаже, яку серію дивитися далі.',
+    featureEpisodesText: 'Відзначайте епізоди — MediaShell підкаже, яку серію дивитися далі.',
     featurePlaythroughsTitle: 'Проходження',
     featurePlaythroughsText: 'Кілька проходжень однієї гри: ПК, консоль, свій прогрес у кожного.',
     featureShuffleTitle: 'Жереб',
@@ -211,10 +211,10 @@ export const uk: DeepPartial<Messages> = {
     loginForLibrary: 'Увійдіть, щоб обирати зі своєї бібліотеки.',
   },
   auth: {
-    loginTitle: 'Вхід до MediaDeck',
+    loginTitle: 'Вхід до MediaShell',
     loginSubtitle: 'З поверненням! Ваша бібліотека чекає.',
     registerTitle: 'Створіть акаунт',
-    registerSubtitle: 'Бібліотека зберігатиметься на цьому сервері MediaDeck.',
+    registerSubtitle: 'Бібліотека зберігатиметься на цьому сервері MediaShell.',
     name: "Ім'я",
     namePlaceholder: 'Як до вас звертатися',
     email: 'Ел. пошта',
@@ -267,7 +267,7 @@ export const uk: DeepPartial<Messages> = {
   },
   errors: {
     generic: 'Щось пішло не так. Спробуйте ще раз.',
-    network: 'Немає зв’язку з сервером MediaDeck.',
+    network: 'Немає зв’язку з сервером MediaShell.',
     UNAUTHORIZED: 'Увійдіть в акаунт.',
     INVALID_CREDENTIALS: 'Невірна пошта або пароль.',
     EMAIL_TAKEN: 'Ця пошта вже зареєстрована.',

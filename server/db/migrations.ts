@@ -121,6 +121,20 @@ const MIGRATIONS: string[] = [
   ALTER TABLE titles ADD COLUMN verified INTEGER NOT NULL DEFAULT 1;
   ALTER TABLE episode_marks ADD COLUMN auto INTEGER NOT NULL DEFAULT 0;
   `,
+  // v3: pending email verifications for the two-step registration.
+  `
+  CREATE TABLE pending_registrations (
+    email TEXT NOT NULL,
+    email_normalized TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
+    code_hash TEXT NOT NULL,
+    attempts INTEGER NOT NULL DEFAULT 0,
+    sent_at INTEGER NOT NULL,
+    expires_at INTEGER NOT NULL
+  ) STRICT;
+  CREATE INDEX pending_registrations_expiry ON pending_registrations(expires_at);
+  `,
 ]
 
 export function migrate(db: DatabaseSync) {
@@ -129,7 +143,7 @@ export function migrate(db: DatabaseSync) {
   }
   if (current > MIGRATIONS.length)
     throw new Error(
-      `Database schema v${current} is newer than this build (v${MIGRATIONS.length}). Update MediaDeck.`,
+      `Database schema v${current} is newer than this build (v${MIGRATIONS.length}). Update MediaShell.`,
     )
   for (let version = current; version < MIGRATIONS.length; version++) {
     db.exec('BEGIN IMMEDIATE')

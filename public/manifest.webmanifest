@@ -1,6 +1,6 @@
 {
-  "name": "MediaDeck",
-  "short_name": "MediaDeck",
+  "name": "MediaShell",
+  "short_name": "MediaShell",
   "description": "Personal library for games, movies, series and anime",
   "start_url": "/",
   "display": "standalone",

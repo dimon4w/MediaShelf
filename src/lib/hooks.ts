@@ -23,7 +23,7 @@ export function useMediaQuery(query: string) {
 
 export function useDocumentTitle(title: string | null | undefined) {
   useEffect(() => {
-    document.title = title ? `${title} · MediaDeck` : 'MediaDeck'
+    document.title = title ? `${title} · MediaShell` : 'MediaShell'
   }, [title])
 }
 

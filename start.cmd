@@ -1,5 +1,5 @@
 @echo off
-rem MediaDeck for Windows: installs, builds on first run and starts the server.
+rem MediaShell for Windows: installs, builds on first run and starts the server.
 setlocal
 cd /d "%~dp0"
 
@@ -16,11 +16,11 @@ if not exist node_modules (
 )
 
 if not exist dist\index.html (
-  echo Building MediaDeck...
+  echo Building MediaShell...
   call npm run build || goto :failed
 )
 
-echo Starting MediaDeck. Open http://localhost:4175 in your browser. Close this window to stop.
+echo Starting MediaShell. Open http://localhost:4175 in your browser. Close this window to stop.
 node --env-file-if-exists=.env server/main.ts
 goto :eof
 

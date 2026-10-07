@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import type { User } from '@shared/types.ts'
 import { cn } from '@/lib/cn'
+import { customAvatar } from '@/lib/device'
 
 /**
  * Monochrome avatars: OpenMoji "black" set (CC BY-SA 4.0,
@@ -67,7 +68,6 @@ export type AvatarId = (typeof AVATARS)[number]
 /** Fill colours for the avatar line art. `auto` follows the theme foreground. */
 export const AVATAR_COLOR_HEX: Record<string, string> = {
   auto: 'var(--fg)',
-  white: '#ffffff',
   blue: '#3b82f6',
   violet: '#8b5cf6',
   pink: '#ec4899',
@@ -89,10 +89,14 @@ function hashSeed(value: string) {
   return Math.abs(hash)
 }
 
-/** The chosen avatar, or a stable one derived from the user id. */
-export function avatarFor(user: Pick<User, 'id' | 'preferences'>): AvatarId {
+/** An uploaded picture lives on this device; 'custom' without one falls back to a beast. */
+export const CUSTOM_AVATAR_ID = 'custom'
+
+/** The chosen avatar id, or a stable one derived from the user id. */
+export function avatarFor(user: Pick<User, 'id' | 'preferences'>): string {
   const chosen = user.preferences.avatar
-  if (isAvatarId(chosen)) return chosen
+  if (chosen === CUSTOM_AVATAR_ID && customAvatar(user.id)) return CUSTOM_AVATAR_ID
+  if (chosen && isAvatarId(chosen)) return chosen
   return AVATARS[hashSeed(user.id) % AVATARS.length]
 }
 
@@ -105,12 +109,26 @@ export function avatarColorFor(user: Pick<User, 'id' | 'preferences'>): string {
 export function AvatarArt({
   id,
   color,
+  userId,
   className,
 }: {
-  id: AvatarId
+  id: string
   color: string
+  userId?: string
   className?: string
 }) {
+  if (id === CUSTOM_AVATAR_ID && userId) {
+    const src = customAvatar(userId)
+    if (src)
+      return (
+        <img
+          src={src}
+          alt=""
+          draggable={false}
+          className={cn('size-[88%] rounded-full object-cover', className)}
+        />
+      )
+  }
   const style = {
     '--art': `url(/avatars/${id}.svg)`,
     backgroundColor: AVATAR_COLOR_HEX[color] ?? AVATAR_COLOR_HEX.auto,
@@ -134,7 +152,7 @@ export function UserAvatar({
         className,
       )}
     >
-      <AvatarArt id={id} color={avatarColorFor(user)} className="size-[62%]" />
+      <AvatarArt id={id} color={avatarColorFor(user)} userId={user.id} className="size-[62%]" />
     </span>
   )
 }

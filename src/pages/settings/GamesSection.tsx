@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { isRegion, regionLabel, REGIONS, type RegionCode } from '@shared/regions.ts'
 import { PLATFORMS, STORES, type PlatformId, type StoreId, type User } from '@shared/types.ts'
 import { useErrorMessage } from '@/components/library-actions'
+import { AccountsList } from '@/components/SteamAccount'
 import { Chip } from '@/components/ui/misc'
 import { Select } from '@/components/ui/select'
 import { useI18n } from '@/i18n'
@@ -111,6 +112,11 @@ export function GamesSection({ user }: { user: User }) {
             />
           }
         />
+      </Group>
+      <Group title={t('settings.accounts')} description={t('settings.accountsHint')}>
+        <div className="px-4 py-5 sm:px-5">
+          <AccountsList user={user} />
+        </div>
       </Group>
     </>
   )

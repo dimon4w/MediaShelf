@@ -39,6 +39,22 @@ export const registerSchema = z.object({
   theme: z.enum(THEMES).optional(),
 })
 
+export const registerStartSchema = registerSchema
+
+export const registerVerifySchema = z.object({
+  email: emailSchema,
+  code: z
+    .string({ error: 'required' })
+    .trim()
+    .regex(/^\d{6}$/, 'invalid'),
+  locale: z.enum(LOCALES).optional(),
+  theme: z.enum(THEMES).optional(),
+})
+
+export const registerResendSchema = z.object({
+  email: emailSchema,
+})
+
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string({ error: 'required' }).min(1, 'required').max(200, 'too_long'),

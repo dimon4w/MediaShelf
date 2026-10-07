@@ -1,4 +1,4 @@
-# MediaDeck — design
+# MediaShell — design
 
 Strict black and white, in the spirit of Apple and ChatGPT. The layout follows Hoplite: a sidebar with the content in an inset rounded panel. Colour comes only from posters and backdrops, never from UI chrome. Error red is the single semantic exception.
 

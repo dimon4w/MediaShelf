@@ -115,8 +115,8 @@ const entrySchema = z.object({
 })
 
 export const importSchema = z.object({
-  // 'mediashelf' is accepted so exports from the original app keep importing.
-  format: z.enum(['mediadeck', 'mediashelf']),
+  // Legacy 'mediadeck' files still import after the rename to MediaShell.
+  format: z.enum(['mediashelf', 'mediadeck']),
   version: z.literal(4),
   entries: z.array(z.unknown()).max(MAX_ENTRIES),
 })
@@ -160,7 +160,7 @@ export function exportLibrary(db: DB, user: User) {
     }
   })
   return {
-    format: 'mediadeck' as const,
+    format: 'mediashelf' as const,
     version: 4 as const,
     exportedAt: new Date().toISOString(),
     profile: { name: user.name, preferences: user.preferences },

@@ -47,6 +47,7 @@ export function ListView({ entries }: { entries: LibraryEntry[] }) {
                   <span className="block truncate text-xs text-fg-3">
                     {t(`kind.${entry.kind}`)}
                     {year ? ` · ${year}` : ''}
+                    {entry.store === 'steam' ? ' · Steam' : ''}
                     <span className="lg:hidden">{progress ? ` · ${progress}` : ''}</span>
                   </span>
                 </span>
