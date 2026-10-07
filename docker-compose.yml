@@ -1,0 +1,15 @@
+services:
+  mediadeck:
+    build: .
+    ports:
+      - '4175:4175'
+    environment:
+      PORT: '4175'
+      ALLOW_REGISTRATION: 'true'
+      # Behind an HTTPS reverse proxy also set TRUST_PROXY: 'true'
+    volumes:
+      - mediadeck-data:/data
+    restart: unless-stopped
+
+volumes:
+  mediadeck-data:

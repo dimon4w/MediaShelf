@@ -1,0 +1,65 @@
+{
+ "id": 52991,
+ "name": "Sousou no Frieren",
+ "russian": "Провожающая в последний путь Фрирен",
+ "image": {
+  "original": "/system/animes/original/52991.jpg?1710731127",
+  "preview": "/system/animes/preview/52991.jpg?1710731127",
+  "x96": "/system/animes/x96/52991.jpg?1710731127",
+  "x48": "/system/animes/x48/52991.jpg?1710731127"
+ },
+ "url": "/animes/52991-sousou-no-frieren",
+ "kind": "tv",
+ "score": "9.25",
+ "status": "released",
+ "episodes": 28,
+ "episodes_aired": 27,
+ "aired_on": "2023-09-29",
+ "released_on": "2024-03-22",
+ "rating": "pg_13",
+ "english": [
+  "Frieren: Beyond Journey's End"
+ ],
+ "japanese": [
+  "葬送のフリーレン"
+ ],
+ "synonyms": [
+  "Фрирен, провожающая в последний путь",
+  "Frieren at the Funeral"
+ ],
+ "duration": 24,
+ "description": "Одержав победу над Королём демонов, отряд героя [character=186854]Химмеля[/character] вернулся домой. Приключение, растянувшееся на десятилетие, подошло к завершению. Волшебница-эльф [character=184947]Фрирен[/character] и её отважные товарищи принесли людям мир и разошлись в разные стороны, чтобы спокойно прожить остаток жизни. Однако не всех членов отряда ждёт одинаковая участь. Для эльфов время течёт иначе, поэтому",
+ "myanimelist_id": 52991,
+ "genres": [
+  {
+   "id": 2,
+   "name": "Adventure",
+   "russian": "Приключения",
+   "kind": "genre"
+  },
+  {
+   "id": 8,
+   "name": "Drama",
+   "russian": "Драма",
+   "kind": "genre"
+  },
+  {
+   "id": 10,
+   "name": "Fantasy",
+   "russian": "Фэнтези",
+   "kind": "genre"
+  },
+  {
+   "id": 27,
+   "name": "Shounen",
+   "russian": "Сёнен",
+   "kind": "genre"
+  }
+ ],
+ "studios": [
+  {
+   "id": 11,
+   "name": "Madhouse"
+  }
+ ]
+}

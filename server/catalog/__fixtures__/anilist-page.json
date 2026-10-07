@@ -1,0 +1,102 @@
+{
+ "data": {
+  "Page": {
+   "pageInfo": {
+    "hasNextPage": true
+   },
+   "media": [
+    {
+     "id": 182205,
+     "idMal": 59970,
+     "title": {
+      "romaji": "Tensei Shitara Slime Datta Ken 4th Season Part 1 & 2",
+      "english": "That Time I Got Reincarnated as a Slime Season 4",
+      "native": "転生したらスライムだった件 第4期 第1&2クール"
+     },
+     "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182205-q2AeO1owuQbO.jpg"
+     },
+     "bannerImage": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/182205-fRUoKv6f2JAq.jpg",
+     "genres": [
+      "Action",
+      "Adventure",
+      "Comedy",
+      "Fantasy"
+     ],
+     "averageScore": 83,
+     "popularity": 137745,
+     "episodes": 24,
+     "duration": 24,
+     "status": "FINISHED",
+     "seasonYear": 2026,
+     "format": "TV",
+     "startDate": {
+      "year": 2026,
+      "month": 4,
+      "day": 3
+     }
+    },
+    {
+     "id": 217331,
+     "idMal": 63129,
+     "title": {
+      "romaji": "Tensei Shitara Slime Datta Ken 4th Season Part 3",
+      "english": null,
+      "native": "転生したらスライムだった件 第4期 第3クール"
+     },
+     "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx217331-iennFNPU2f7K.png"
+     },
+     "bannerImage": null,
+     "genres": [
+      "Action",
+      "Adventure",
+      "Comedy",
+      "Fantasy"
+     ],
+     "averageScore": null,
+     "popularity": 0,
+     "episodes": null,
+     "duration": null,
+     "status": "NOT_YET_RELEASED",
+     "seasonYear": 2027,
+     "format": "TV",
+     "startDate": {
+      "year": 2027,
+      "month": 7,
+      "day": null
+     }
+    },
+    {
+     "id": 217329,
+     "idMal": null,
+     "title": {
+      "romaji": "Kore Kaite Shine 2nd Season",
+      "english": null,
+      "native": "これ描いて死ね 第2期"
+     },
+     "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx217329-Dquyz6oVKqEE.jpg"
+     },
+     "bannerImage": null,
+     "genres": [
+      "Comedy",
+      "Slice of Life"
+     ],
+     "averageScore": null,
+     "popularity": 0,
+     "episodes": null,
+     "duration": null,
+     "status": "NOT_YET_RELEASED",
+     "seasonYear": null,
+     "format": "TV",
+     "startDate": {
+      "year": null,
+      "month": null,
+      "day": null
+     }
+    }
+   ]
+  }
+ }
+}

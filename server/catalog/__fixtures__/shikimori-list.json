@@ -1,0 +1,59 @@
+[
+ {
+  "id": 52991,
+  "name": "Sousou no Frieren",
+  "russian": "Провожающая в последний путь Фрирен",
+  "image": {
+   "original": "/system/animes/original/52991.jpg?1710731127",
+   "preview": "/system/animes/preview/52991.jpg?1710731127",
+   "x96": "/system/animes/x96/52991.jpg?1710731127",
+   "x48": "/system/animes/x48/52991.jpg?1710731127"
+  },
+  "url": "/animes/52991-sousou-no-frieren",
+  "kind": "tv",
+  "score": "9.25",
+  "status": "released",
+  "episodes": 28,
+  "episodes_aired": 27,
+  "aired_on": "2023-09-29",
+  "released_on": "2024-03-22"
+ },
+ {
+  "id": 63816,
+  "name": "Sousou no Frieren: Ougonkyou-hen",
+  "russian": "Провожающая в последний путь Фрирен: Золотая земля",
+  "image": {
+   "original": "/assets/globals/missing_original.jpg",
+   "preview": "/assets/globals/missing_preview.jpg",
+   "x96": "/assets/globals/missing_x96.jpg",
+   "x48": "/assets/globals/missing_x48.jpg"
+  },
+  "url": "/animes/63816-sousou-no-frieren-ougonkyou-hen",
+  "kind": "tv",
+  "score": "0.0",
+  "status": "anons",
+  "episodes": 0,
+  "episodes_aired": 0,
+  "aired_on": "2027-10-01",
+  "released_on": null
+ },
+ {
+  "id": 21,
+  "name": "One Piece",
+  "russian": "Ван-Пис",
+  "image": {
+   "original": "/system/animes/original/21.jpg?1718520367",
+   "preview": "/system/animes/preview/21.jpg?1718520367",
+   "x96": "/system/animes/x96/21.jpg?1718520367",
+   "x48": "/system/animes/x48/21.jpg?1718520367"
+  },
+  "url": "/animes/21-one-piece",
+  "kind": "tv",
+  "score": "8.72",
+  "status": "ongoing",
+  "episodes": 0,
+  "episodes_aired": 1179,
+  "aired_on": "1999-10-20",
+  "released_on": null
+ }
+]

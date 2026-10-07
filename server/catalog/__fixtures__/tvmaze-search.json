@@ -1,0 +1,67 @@
+[
+ {
+  "score": 1.1920755,
+  "show": {
+   "id": 169,
+   "url": "https://www.tvmaze.com/shows/169/breaking-bad",
+   "name": "Breaking Bad",
+   "type": "Scripted",
+   "language": "English",
+   "genres": [
+    "Drama",
+    "Crime",
+    "Thriller"
+   ],
+   "status": "Ended",
+   "runtime": 60,
+   "averageRuntime": 60,
+   "premiered": "2008-01-20",
+   "ended": "2019-10-11",
+   "rating": {
+    "average": 9.2
+   },
+   "weight": 100,
+   "externals": {
+    "tvrage": 18164,
+    "thetvdb": 81189,
+    "imdb": "tt0903747"
+   },
+   "image": {
+    "medium": "https://static.tvmaze.com/uploads/images/medium_portrait/501/1253519.jpg",
+    "original": "https://static.tvmaze.com/uploads/images/original_untouched/501/1253519.jpg"
+   }
+  }
+ },
+ {
+  "score": 0.87588984,
+  "show": {
+   "id": 27845,
+   "url": "https://www.tvmaze.com/shows/27845/breaking-bad-original-minisodes",
+   "name": "Breaking Bad: Original Minisodes",
+   "type": "Scripted",
+   "language": "English",
+   "genres": [
+    "Comedy",
+    "Crime"
+   ],
+   "status": "Ended",
+   "runtime": 5,
+   "averageRuntime": 5,
+   "premiered": "2009-02-17",
+   "ended": "2011-07-11",
+   "rating": {
+    "average": 7
+   },
+   "weight": 62,
+   "externals": {
+    "tvrage": null,
+    "thetvdb": 356427,
+    "imdb": "tt2387761"
+   },
+   "image": {
+    "medium": "https://static.tvmaze.com/uploads/images/medium_portrait/216/540867.jpg",
+    "original": "https://static.tvmaze.com/uploads/images/original_untouched/216/540867.jpg"
+   }
+  }
+ }
+]

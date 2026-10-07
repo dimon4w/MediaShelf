@@ -1,0 +1,16 @@
+node_modules/
+dist/
+data/
+*.db
+*.db-wal
+*.db-shm
+*.tsbuildinfo
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+*.local
+.context/
+.hoplite/
+.opencode/skills/impeccable/scripts/bin/
