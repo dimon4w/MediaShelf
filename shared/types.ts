@@ -176,6 +176,8 @@ export interface UserPreferences {
   avatarColor?: string
   /** Linked SteamID64; set only by the server after Steam OpenID login. */
   steamId?: string
+  /** Profile banner preset or 'favorite' for the first favourite title's backdrop. */
+  banner?: BannerId
 }
 
 export const AVATAR_COLORS = [
@@ -191,12 +193,47 @@ export const AVATAR_COLORS = [
 ] as const
 export type AvatarColor = (typeof AVATAR_COLORS)[number]
 
+/** Preset profile banners: colour gradients or the favourite title's backdrop. */
+export const BANNERS = [
+  'none',
+  'favorite',
+  'sunset',
+  'ocean',
+  'forest',
+  'lavender',
+  'candy',
+  'steel',
+  'sunrise',
+  'midnight',
+] as const
+export type BannerId = (typeof BANNERS)[number]
+
 export interface User {
   id: string
   email: string
   name: string
   createdAt: string
   preferences: UserPreferences
+}
+
+/** Public-facing account info shown on a profile page; no email or private fields. */
+export interface PublicUser {
+  id: string
+  name: string
+  createdAt: string
+  avatar?: string
+  avatarColor?: string
+  banner: BannerId
+}
+
+export interface UserProfile {
+  user: PublicUser
+  stats: LibraryStats
+  activity: ActivityItem[]
+  favorites: LibraryEntry[]
+  completed: LibraryEntry[]
+  /** Backdrop of the first favourite title, for the 'favorite' banner. */
+  bannerImage: string | null
 }
 
 export interface SessionInfo {

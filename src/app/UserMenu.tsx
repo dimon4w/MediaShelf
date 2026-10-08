@@ -7,6 +7,7 @@ import {
   Moon,
   Settings,
   Sun,
+  User as UserIcon,
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'sonner'
@@ -64,6 +65,12 @@ function MenuBody() {
         </div>
       ) : null}
       {user ? <MenuSeparator /> : null}
+      {user ? (
+        <MenuItem onSelect={() => navigate(`/users/${user.id}`)}>
+          <UserIcon />
+          {t('profile.me')}
+        </MenuItem>
+      ) : null}
       {user ? (
         <MenuItem onSelect={() => navigate('/settings')}>
           <Settings />

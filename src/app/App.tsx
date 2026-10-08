@@ -17,6 +17,7 @@ const LibraryPage = lazy(() => import('@/pages/LibraryPage'))
 const ShufflePage = lazy(() => import('@/pages/ShufflePage'))
 const StatsPage = lazy(() => import('@/pages/StatsPage'))
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
+const UserPage = lazy(() => import('@/pages/UserPage'))
 const AuthPage = lazy(() => import('@/pages/AuthPage'))
 const VerifyEmailPage = lazy(() => import('@/pages/VerifyEmailPage'))
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'))
@@ -156,6 +157,14 @@ const router = createBrowserRouter([
             element: page(
               <RequireAuth>
                 <StatsPage />
+              </RequireAuth>,
+            ),
+          },
+          {
+            path: 'users/:id',
+            element: page(
+              <RequireAuth>
+                <UserPage />
               </RequireAuth>,
             ),
           },

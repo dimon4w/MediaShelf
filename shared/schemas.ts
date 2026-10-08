@@ -3,6 +3,7 @@ import { TITLE_ID_PATTERN } from './ids.ts'
 import { isRegion } from './regions.ts'
 import {
   AVATAR_COLORS,
+  BANNERS,
   CHART_LISTS,
   KINDS,
   LOCALES,
@@ -72,6 +73,7 @@ export const preferencesPatchSchema = z
       .regex(/^[a-z]+$/, 'invalid')
       .max(30),
     avatarColor: z.enum(AVATAR_COLORS),
+    banner: z.enum(BANNERS),
   })
   .partial()
 

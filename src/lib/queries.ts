@@ -28,6 +28,7 @@ import type {
   StoreOffer,
   TitleRecord,
   User,
+  UserProfile,
 } from '@shared/types.ts'
 import { useI18n } from '@/i18n'
 import { api, get, query } from './api'
@@ -38,6 +39,7 @@ export const keys = {
   stats: ['stats'] as const,
   activity: ['activity'] as const,
   sessions: ['sessions'] as const,
+  profile: (id: string) => ['profile', id] as const,
   charts: (kind: Kind, list: ChartList, locale: string, region: string) =>
     ['charts', kind, list, locale, region] as const,
   search: (q: string, kind: string, locale: string) => ['search', q, kind, locale] as const,
@@ -483,6 +485,17 @@ export function useActivity(limit = 20) {
       ),
     enabled: Boolean(user),
     staleTime: 30_000,
+  })
+}
+
+export function useUserProfile(id: string | undefined) {
+  const user = useUser()
+  return useQuery({
+    queryKey: keys.profile(id ?? ''),
+    queryFn: ({ signal }) => get<UserProfile>(`/users/${id}/profile`, signal),
+    enabled: Boolean(user) && Boolean(id),
+    staleTime: 30_000,
+    retry: (count, error) => count < 1 && (error as { status?: number }).status !== 404,
   })
 }
 

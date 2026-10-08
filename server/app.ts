@@ -15,6 +15,7 @@ import { authRoutes } from './routes/auth.ts'
 import { catalogRoutes } from './routes/catalog.ts'
 import { libraryRoutes } from './routes/library.ts'
 import { meRoutes } from './routes/me.ts'
+import { usersRoutes } from './routes/users.ts'
 import { staticFiles } from './static.ts'
 
 const MB = 1024 * 1024
@@ -72,6 +73,7 @@ export function createApp(deps: AppDeps) {
   api.route('/auth', authRoutes(deps))
   api.route('/me', meRoutes(deps))
   api.route('/library', libraryRoutes(deps))
+  api.route('/users', usersRoutes(deps))
   api.route('/', catalogRoutes(deps))
   api.all('*', () => {
     throw new ApiError(404, 'NOT_FOUND', 'Unknown API route')
