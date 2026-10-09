@@ -172,7 +172,7 @@ export function CommandPalette({
       <D.Portal>
         <D.Overlay className="anim-fade fixed inset-0 z-50 bg-scrim" />
         <D.Content
-          className="anim-pop fixed top-[10vh] left-1/2 z-50 w-[calc(100vw-24px)] max-w-[640px] -translate-x-1/2 overflow-hidden rounded-xl bg-floating shadow-floating outline-none max-sm:top-3"
+          className="anim-pop fixed top-[10vh] left-1/2 z-50 w-[calc(100vw-24px)] max-w-[640px] -translate-x-1/2 overflow-hidden rounded-xl liquid-float outline-none max-sm:top-3"
           aria-describedby={undefined}
         >
           <D.Title className="sr-only">{t('nav.search')}</D.Title>

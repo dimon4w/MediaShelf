@@ -17,10 +17,7 @@ export function PopoverContent({
       <P.Content
         sideOffset={sideOffset}
         collisionPadding={8}
-        className={cn(
-          'anim-menu z-50 rounded-xl bg-floating p-3 shadow-floating outline-none',
-          className,
-        )}
+        className={cn('anim-menu z-50 rounded-xl liquid-float p-3 outline-none', className)}
         {...props}
       />
     </P.Portal>

@@ -56,7 +56,7 @@ export function Select<T extends string>({
           position="popper"
           sideOffset={6}
           collisionPadding={8}
-          className="anim-menu z-50 max-h-[min(var(--radix-select-content-available-height),360px)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg bg-floating shadow-floating"
+          className="anim-menu z-50 max-h-[min(var(--radix-select-content-available-height),360px)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg liquid-float"
         >
           <S.Viewport className="p-1">
             {options.map((option) => (
