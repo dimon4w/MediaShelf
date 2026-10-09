@@ -64,13 +64,20 @@ export function sameOriginOnly(config: Config): MiddlewareHandler {
   return async (c, next) => {
     if (SAFE_METHODS.has(c.req.method)) return next()
     const origin = c.req.header('origin')
+    const isCodespaces =
+      (origin && (origin.endsWith('.github.dev') || origin.endsWith('.app.github.dev'))) ||
+      c.req.header('x-forwarded-host')?.endsWith('.github.dev') ||
+      c.req.header('x-forwarded-host')?.endsWith('.app.github.dev')
+    if (isCodespaces) {
+      // Codespaces proxy injects sec-fetch-site: cross-site from the iframe/proxy layer.
+      return next()
+    }
     if (origin) {
       // The node adapter builds the request URL from the Host header.
-      const isCodespaces = origin.endsWith('.github.dev') || origin.endsWith('.app.github.dev')
       const host =
         (config.trustProxy && c.req.header('x-forwarded-host')) || new URL(c.req.url).host
       const expected = `${requestProtocol(c, config)}://${host}`
-      if (origin !== expected && !config.allowedOrigins.includes(origin) && !isCodespaces)
+      if (origin !== expected && !config.allowedOrigins.includes(origin))
         throw new ApiError(403, 'FORBIDDEN', 'Cross-origin request rejected')
     } else {
       const site = c.req.header('sec-fetch-site')
