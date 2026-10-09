@@ -31,8 +31,11 @@ function calendar({ timeZone, offsetMinutes = 0 }: StatsZone) {
   const offset = Math.max(-840, Math.min(840, Math.round(offsetMinutes))) * 60_000
   return (ms: number) => {
     if (format) {
-      const [y, m, d] = format.format(ms).split('-').map(Number)
-      return { y, m, d }
+      // formatToParts: the literal layout of en-CA changed in ICU 78 (Node 24), parts did not.
+      const parts = Object.fromEntries(
+        format.formatToParts(ms).map((part) => [part.type, part.value]),
+      )
+      return { y: Number(parts.year), m: Number(parts.month), d: Number(parts.day) }
     }
     const date = new Date(ms + offset)
     return { y: date.getUTCFullYear(), m: date.getUTCMonth() + 1, d: date.getUTCDate() }

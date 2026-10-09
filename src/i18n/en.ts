@@ -559,7 +559,8 @@ export const en: Messages = {
       'Steam only gives the full game list with a site key. Without one, only the recent games from the profile showcase are imported.',
     steamKeyStep1: 'Open the Steam key page and sign in.',
     steamKeyStep2: 'Register a key: the “domain” field can be localhost.',
-    steamKeyStep3: 'Copy the key and add STEAM_API_KEY=your_key to the .env file next to the project.',
+    steamKeyStep3:
+      'Copy the key and add STEAM_API_KEY=your_key to the .env file next to the project.',
     steamKeyStep4: 'Restart the server, press “Import library” — all games are added.',
     steamKeyProfile:
       'Your Steam profile must be open: Settings → Privacy → “Game details” and “Game list” set to public.',
