@@ -1,7 +1,8 @@
+import { Heart } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { profilePatchSchema } from '@shared/schemas.ts'
-import { AVATAR_COLORS } from '@shared/types.ts'
+import { AVATAR_COLORS, BANNERS } from '@shared/types.ts'
 import type { User } from '@shared/types.ts'
 import {
   AVATARS,
@@ -14,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Field, Input, PasswordInput } from '@/components/ui/input'
 import { useI18n } from '@/i18n'
+import { bannerBackground } from '@/lib/banners'
 import { cn } from '@/lib/cn'
 import { useUpdateProfile } from '@/lib/queries'
 import { useFormErrors, type FormErrors } from './forms'
@@ -80,7 +82,43 @@ function AvatarPicker({ user }: { user: User }) {
           ))}
         </div>
       </Row>
+      <BannerPicker user={user} />
     </>
+  )
+}
+
+function BannerPicker({ user }: { user: User }) {
+  const { t } = useI18n()
+  const update = useUpdateProfile()
+  const current = user.preferences.banner ?? 'none'
+  return (
+    <Row title={t('profile.bannerTitle')} description={t('profile.bannerHint')}>
+      <div
+        role="radiogroup"
+        aria-label={t('profile.bannerTitle')}
+        className="grid grid-cols-5 gap-2"
+      >
+        {BANNERS.map((id) => (
+          <button
+            key={id}
+            type="button"
+            role="radio"
+            aria-checked={current === id}
+            aria-label={t(`profile.banners.${id}`)}
+            title={t(`profile.banners.${id}`)}
+            disabled={update.isPending}
+            onClick={() => update.mutate({ preferences: { banner: id } })}
+            className={cn(
+              'grid h-10 place-items-center rounded-lg text-white/80 ring-1 transition-[box-shadow,transform] hover:scale-[1.03] [&_svg]:size-4',
+              current === id ? 'ring-2 ring-fg ring-offset-2 ring-offset-panel' : 'ring-line',
+            )}
+            style={{ background: bannerBackground(id) }}
+          >
+            {id === 'favorite' ? <Heart aria-hidden="true" /> : null}
+          </button>
+        ))}
+      </div>
+    </Row>
   )
 }
 

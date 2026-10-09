@@ -380,3 +380,33 @@ describe('catalog', () => {
     expect((await t.request('GET', '/api/nope')).status).toBe(404)
   })
 })
+
+describe('public profile', () => {
+  it('shows library highlights without private fields', async () => {
+    const t = await signedIn()
+    const me = (await t.request('GET', '/api/auth/session')).body.user
+    await t.request('POST', '/api/library', {
+      titleId: 'series-tt0903747',
+      status: 'completed',
+      favorite: true,
+      rating: 9,
+    })
+    const patched = await t.request('PATCH', '/api/me', { preferences: { banner: 'ocean' } })
+    expect(patched.status).toBe(200)
+
+    const res = await t.request('GET', `/api/users/${me.id}/profile`)
+    expect(res.status).toBe(200)
+    expect(res.body.user).toMatchObject({ id: me.id, name: account.name, banner: 'ocean' })
+    expect(res.body.user.email).toBeUndefined()
+    expect(res.body.stats.total).toBe(1)
+    expect(res.body.favorites.map((e: { titleId: string }) => e.titleId)).toEqual([
+      'series-tt0903747',
+    ])
+    expect(res.body.completed).toHaveLength(1)
+    expect(res.body.bannerImage).toBeNull()
+
+    expect((await t.request('GET', '/api/users/nobody/profile')).status).toBe(404)
+    await t.request('POST', '/api/auth/logout', {})
+    expect((await t.request('GET', `/api/users/${me.id}/profile`)).status).toBe(401)
+  })
+})

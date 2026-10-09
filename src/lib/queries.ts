@@ -126,16 +126,22 @@ export function useRegisterResend() {
   })
 }
 
+/**
+ * The caller applies the session itself via the returned `signIn`, once its success animation
+ * is done. Setting it here would let the guest-only route guard redirect to "/" first and the
+ * page's own delayed navigate('/welcome') would then yank the user away from wherever they went.
+ */
 export function useRegisterVerify() {
   const client = useQueryClient()
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: (input: { email: string; code: string; locale: string; theme: string }) =>
       api<{ user: User }>('POST', '/auth/register/verify', input),
-    onSuccess: ({ user }) => {
-      resetUserData(client)
-      client.setQueryData<SessionResponse>(keys.session, { registrationOpen: true, user })
-    },
   })
+  const signIn = (user: User) => {
+    resetUserData(client)
+    client.setQueryData<SessionResponse>(keys.session, { registrationOpen: true, user })
+  }
+  return Object.assign(mutation, { signIn })
 }
 
 export function useLogout() {

@@ -124,7 +124,9 @@ export default function AuthPage({ mode }: { mode: 'login' | 'register' }) {
             toast(t('auth.welcome', { name: user.name }))
             const fresh =
               next && next.startsWith('/') && !next.startsWith('//') ? target : '/welcome'
+            // Navigate first, then sign in: the route change wins over the guest-only guard.
             navigate(fresh, { replace: true })
+            verify.signIn(user)
           }, 750)
         },
         onError: (error) => {
