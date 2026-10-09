@@ -9,8 +9,7 @@ export const MenuGroup = M.Group
 export const MenuRadioGroup = M.RadioGroup
 export const MenuSub = M.Sub
 
-const surface =
-  'anim-menu z-50 min-w-44 overflow-hidden rounded-lg bg-floating p-1 shadow-floating outline-none'
+const surface = 'anim-menu z-50 min-w-44 overflow-hidden rounded-lg liquid-float p-1 outline-none'
 const item = cn(
   'relative flex h-8 cursor-default items-center gap-2 rounded-md px-2 text-base text-fg outline-none select-none',
   'data-[highlighted]:bg-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-40',

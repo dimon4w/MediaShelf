@@ -82,7 +82,9 @@ export function TitleCard({
           ) : null}
         </div>
         <div className="mt-2 px-0.5">
-          <p className="line-clamp-2 min-h-9 text-sm leading-[18px] font-medium text-fg">{name}</p>
+          <p className="truncate text-sm leading-[18px] font-medium text-fg" title={name}>
+            {name}
+          </p>
           <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-fg-3">
             {meta ?? (
               <>

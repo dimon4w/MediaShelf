@@ -35,7 +35,7 @@ export function DialogContent({
       <D.Content
         className={cn(
           'anim-pop fixed top-1/2 left-1/2 z-50 max-h-[calc(100dvh-32px)] w-[calc(100vw-24px)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto',
-          'rounded-xl bg-floating p-5 shadow-floating outline-none sm:p-6',
+          'rounded-xl liquid-float p-5 outline-none sm:p-6',
           widths[size],
           className,
         )}
