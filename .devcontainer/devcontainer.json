@@ -1,5 +1,5 @@
 {
-  "name": "MediaShelf",
+  "name": "MediaShell",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
@@ -8,17 +8,16 @@
   },
   "containerEnv": {
     "HOST": "0.0.0.0",
-    "PORT": "4175"
+    "PORT": "4175",
+    "TRUST_PROXY": "true"
   },
-  "forwardPorts": [
-    4175
-  ],
+  "forwardPorts": [4175],
   "portsAttributes": {
     "4175": {
-      "label": "MediaShelf",
+      "label": "MediaShell",
       "onAutoForward": "openBrowser"
     }
   },
   "postCreateCommand": "npm ci && npm run build",
-  "postStartCommand": "nohup npm start > /tmp/mediashelf.log 2>&1 &"
+  "postStartCommand": "bash -c 'export PUBLIC_URL=\"https://${CODESPACE_NAME}-4175.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}\"; export ALLOWED_ORIGINS=\"$PUBLIC_URL\"; setsid nohup npm start > /tmp/mediashell.log 2>&1 < /dev/null &'"
 }
