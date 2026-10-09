@@ -66,10 +66,11 @@ export function sameOriginOnly(config: Config): MiddlewareHandler {
     const origin = c.req.header('origin')
     if (origin) {
       // The node adapter builds the request URL from the Host header.
+      const isCodespaces = origin.endsWith('.github.dev') || origin.endsWith('.app.github.dev')
       const host =
         (config.trustProxy && c.req.header('x-forwarded-host')) || new URL(c.req.url).host
       const expected = `${requestProtocol(c, config)}://${host}`
-      if (origin !== expected && !config.allowedOrigins.includes(origin))
+      if (origin !== expected && !config.allowedOrigins.includes(origin) && !isCodespaces)
         throw new ApiError(403, 'FORBIDDEN', 'Cross-origin request rejected')
     } else {
       const site = c.req.header('sec-fetch-site')
