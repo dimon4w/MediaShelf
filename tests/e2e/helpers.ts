@@ -8,7 +8,17 @@ export async function register(page: Page, name = 'Дмитрий') {
   await page.getByLabel('Имя').fill(name)
   await page.getByLabel('Эл. почта').fill(email)
   await page.getByLabel('Пароль', { exact: true }).fill('correct-horse-42')
+  // Registration is two steps since email verification: without SMTP the server returns the
+  // code as devCode, which is exactly what a user sees on screen in a local install.
+  const started = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/api/auth/register/start') && response.request().method() === 'POST',
+  )
   await page.getByRole('button', { name: 'Создать аккаунт' }).click()
+  const { devCode } = (await (await started).json()) as { devCode?: string }
+  if (!devCode) throw new Error('register: the server did not return a dev code (SMTP configured?)')
+  await expect(page.getByRole('heading', { level: 1, name: 'Проверьте почту' })).toBeVisible()
+  await page.locator('input[autocomplete="one-time-code"]').fill(devCode)
   await expect(page.getByRole('heading', { level: 1, name: new RegExp(name) })).toBeVisible()
   return { email, password: 'correct-horse-42' }
 }
