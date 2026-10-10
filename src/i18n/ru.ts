@@ -1,12 +1,17 @@
+import { profileLookRu } from './sections/profile-look.ts'
+import { steamConnectRu } from './sections/steam-connect.ts'
 // Source of truth for UI copy. English (en.ts) must provide exactly the same keys.
 // Plural objects use Intl.PluralRules categories; {count} and other {vars} are interpolated.
 
 export const ru = {
+  profileLook: profileLookRu,
+  steamConnect: steamConnectRu,
   app: {
     name: 'MediaShell',
     tagline: 'Игры, фильмы, сериалы и аниме — в одной библиотеке',
   },
   common: {
+    toTop: 'Наверх',
     save: 'Сохранить',
     saved: 'Сохранено',
     cancel: 'Отмена',
@@ -753,6 +758,7 @@ export const ru = {
     signedOut: 'Вы вышли из аккаунта',
   },
   palette: {
+    recent: 'Недавние',
     placeholder: 'Поиск по библиотеке и каталогу…',
     addPlaceholder: 'Найдите игру, фильм, сериал или аниме…',
     library: 'В библиотеке',
@@ -806,7 +812,7 @@ export const ru = {
     WRONG_PASSWORD: 'Неверный пароль.',
     STATUS_NOT_ALLOWED: 'Этот статус недоступен для такого тайтла.',
     TITLE_NOT_FOUND: 'Тайтл не найден.',
-    CATALOG_UNAVAILABLE: 'Внешний каталог временно недоступен.',
+    CATALOG_UNAVAILABLE: 'Каталог не ответил вовремя. Попробуйте ещё раз через пару секунд.',
     LIMIT_REACHED: 'Достигнут предел.',
     PAYLOAD_TOO_LARGE: 'Файл слишком большой.',
     INTERNAL: 'Ошибка сервера. Попробуйте позже.',

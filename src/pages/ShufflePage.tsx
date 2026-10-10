@@ -207,6 +207,7 @@ export default function ShufflePage() {
 
   const entry = result ? libraryMap.get(result.id) : undefined
   const idle = !reel.length
+  const landed = Boolean(result) && !rolling
   const preview = idle ? pool.slice(0, 7) : reel
 
   // The result card sits below the reel; bring it into view once the reel stops.
@@ -292,12 +293,18 @@ export default function ShufflePage() {
           <div
             ref={scope}
             className={cn(
-              'absolute top-0 left-0 flex gap-4 will-change-transform',
+              'absolute top-4 left-0 flex gap-4 will-change-transform',
               idle && 'left-1/2 -translate-x-1/2 opacity-40',
             )}
           >
             {preview.map((title, index) => (
-              <div key={`${title.id}-${index}`} className="w-[140px] shrink-0 sm:w-[172px]">
+              <div
+                key={`${title.id}-${index}`}
+                className={cn(
+                  'w-[140px] shrink-0 transition-transform duration-500 ease-out sm:w-[172px]',
+                  landed && index === WINNER_INDEX && 'scale-[1.035]',
+                )}
+              >
                 <Poster
                   src={title.poster}
                   alt={idle ? '' : titleName(title.names, locale)}
@@ -308,13 +315,18 @@ export default function ShufflePage() {
               </div>
             ))}
           </div>
+          {/* Selection frame: sits 6px outside the poster on every side (the reel viewport
+              leaves 10px above it, so the ring is never clipped) with pointer notches. */}
           <div
             aria-hidden="true"
             className={cn(
-              'pointer-events-none absolute top-[-6px] left-1/2 aspect-[2/3] w-[152px] -translate-x-1/2 rounded-lg ring-2 ring-fg transition-opacity duration-300 sm:w-[184px]',
+              'pointer-events-none absolute top-2.5 left-1/2 aspect-[2/3] w-[152px] -translate-x-1/2 rounded-[14px] ring-2 ring-fg transition-opacity duration-300 sm:w-[184px]',
               idle || rolling ? 'opacity-30' : 'opacity-100',
             )}
-          />
+          >
+            <span className="absolute -top-[7px] left-1/2 size-2.5 -translate-x-1/2 rotate-45 rounded-[2px] bg-fg" />
+            <span className="absolute -bottom-[7px] left-1/2 size-2.5 -translate-x-1/2 rotate-45 rounded-[2px] bg-fg" />
+          </div>
           {idle && !pool.length ? (
             <div className="absolute inset-0 grid place-items-center px-6 text-center">
               <div>

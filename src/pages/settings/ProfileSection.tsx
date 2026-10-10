@@ -1,22 +1,13 @@
-import { Heart } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { profilePatchSchema } from '@shared/schemas.ts'
-import { AVATAR_COLORS, BANNERS } from '@shared/types.ts'
 import type { User } from '@shared/types.ts'
-import {
-  AVATARS,
-  AVATAR_COLOR_HEX,
-  AvatarArt,
-  UserAvatar,
-  avatarColorFor,
-  avatarFor,
-} from '@/components/avatar'
+import { AvatarPicker as AvatarStudio } from '@/components/AvatarPicker'
+import { CoverPicker } from '@/components/CoverPicker'
+import { UserAvatar } from '@/components/avatar'
 import { Button } from '@/components/ui/button'
 import { Field, Input, PasswordInput } from '@/components/ui/input'
 import { useI18n } from '@/i18n'
-import { bannerBackground } from '@/lib/banners'
-import { cn } from '@/lib/cn'
 import { useUpdateProfile } from '@/lib/queries'
 import { useFormErrors, type FormErrors } from './forms'
 import { Group, GroupFooter, Row, SectionHeading } from './layout'
@@ -25,62 +16,10 @@ const FIELDS = ['name', 'email', 'currentPassword'] as const
 
 function AvatarPicker({ user }: { user: User }) {
   const { t } = useI18n()
-  const update = useUpdateProfile()
-  const current = avatarFor(user)
-  const currentColor = avatarColorFor(user)
   return (
     <>
-      <Row title={t('settings.avatar')} description={t('settings.avatarHint')}>
-        <div
-          role="radiogroup"
-          aria-label={t('settings.avatar')}
-          className="grid grid-cols-8 gap-2 sm:grid-cols-10"
-        >
-          {AVATARS.map((id) => (
-            <button
-              key={id}
-              type="button"
-              role="radio"
-              aria-checked={current === id}
-              disabled={update.isPending}
-              onClick={() => update.mutate({ preferences: { avatar: id } })}
-              className={cn(
-                'grid aspect-square place-items-center rounded-lg bg-raised ring-1 transition-colors',
-                current === id
-                  ? 'ring-2 ring-fg'
-                  : 'ring-line hover:bg-hover hover:ring-line-strong',
-              )}
-            >
-              <AvatarArt id={id} color={currentColor} userId={user.id} className="size-[62%]" />
-            </button>
-          ))}
-        </div>
-      </Row>
-      <Row title={t('settings.avatarColor')} description={t('settings.avatarColorHint')}>
-        <div
-          role="radiogroup"
-          aria-label={t('settings.avatarColor')}
-          className="flex flex-wrap gap-2"
-        >
-          {AVATAR_COLORS.map((color) => (
-            <button
-              key={color}
-              type="button"
-              role="radio"
-              aria-checked={currentColor === color}
-              title={t(`settings.colors.${color}`)}
-              disabled={update.isPending}
-              onClick={() => update.mutate({ preferences: { avatarColor: color } })}
-              className={cn(
-                'size-9 rounded-full ring-1 transition-transform hover:scale-105',
-                currentColor === color
-                  ? 'ring-2 ring-fg ring-offset-2 ring-offset-panel'
-                  : 'ring-line',
-              )}
-              style={{ backgroundColor: AVATAR_COLOR_HEX[color] }}
-            />
-          ))}
-        </div>
+      <Row title={t('settings.avatar')} description={t('profileLook.pickerHint')}>
+        <AvatarStudio user={user} />
       </Row>
       <BannerPicker user={user} />
     </>
@@ -89,35 +28,9 @@ function AvatarPicker({ user }: { user: User }) {
 
 function BannerPicker({ user }: { user: User }) {
   const { t } = useI18n()
-  const update = useUpdateProfile()
-  const current = user.preferences.banner ?? 'none'
   return (
-    <Row title={t('profile.bannerTitle')} description={t('profile.bannerHint')}>
-      <div
-        role="radiogroup"
-        aria-label={t('profile.bannerTitle')}
-        className="grid grid-cols-5 gap-2"
-      >
-        {BANNERS.map((id) => (
-          <button
-            key={id}
-            type="button"
-            role="radio"
-            aria-checked={current === id}
-            aria-label={t(`profile.banners.${id}`)}
-            title={t(`profile.banners.${id}`)}
-            disabled={update.isPending}
-            onClick={() => update.mutate({ preferences: { banner: id } })}
-            className={cn(
-              'grid h-10 place-items-center rounded-lg text-white/80 ring-1 transition-[box-shadow,transform] hover:scale-[1.03] [&_svg]:size-4',
-              current === id ? 'ring-2 ring-fg ring-offset-2 ring-offset-panel' : 'ring-line',
-            )}
-            style={{ background: bannerBackground(id) }}
-          >
-            {id === 'favorite' ? <Heart aria-hidden="true" /> : null}
-          </button>
-        ))}
-      </div>
+    <Row title={t('profileLook.coverTitle')} description={t('profileLook.coverHint')}>
+      <CoverPicker user={user} />
     </Row>
   )
 }

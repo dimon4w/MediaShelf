@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { TITLE_ID_PATTERN } from './ids.ts'
 import { isRegion } from './regions.ts'
 import {
-  AVATAR_COLORS,
+  AVATAR_BG_IDS,
   BANNERS,
   CHART_LISTS,
   KINDS,
@@ -56,6 +56,19 @@ export const registerResendSchema = z.object({
   email: emailSchema,
 })
 
+/** A Steam Web API key is 32 hex characters. */
+export const steamKeySchema = z.object({
+  key: z
+    .string({ error: 'required' })
+    .trim()
+    .regex(/^[A-Fa-f0-9]{32}$/, 'invalid'),
+})
+
+/** The cover picture as a data URL (JSON-only API); the server checks type and size itself. */
+export const coverUploadSchema = z.object({
+  dataUrl: z.string({ error: 'required' }).max(2_400_000, 'too_long'),
+})
+
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string({ error: 'required' }).min(1, 'required').max(200, 'too_long'),
@@ -72,8 +85,13 @@ export const preferencesPatchSchema = z
       .string()
       .regex(/^[a-z]+$/, 'invalid')
       .max(30),
-    avatarColor: z.enum(AVATAR_COLORS),
+    avatarBg: z.enum([...AVATAR_BG_IDS, 'auto']),
+    avatarVariant: z.number().int().min(0).max(7),
     banner: z.enum(BANNERS),
+    bannerTitleId: z
+      .string()
+      .regex(/^[a-z]+-[A-Za-z0-9_-]+$/, 'invalid')
+      .max(80),
   })
   .partial()
 

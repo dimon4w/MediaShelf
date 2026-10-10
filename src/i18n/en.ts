@@ -1,13 +1,18 @@
+import { profileLookEn } from './sections/profile-look.ts'
+import { steamConnectEn } from './sections/steam-connect.ts'
 import type { Messages } from './ru.ts'
 
 const p = (one: string, other: string) => ({ one, few: other, many: other, other })
 
 export const en: Messages = {
+  profileLook: profileLookEn,
+  steamConnect: steamConnectEn,
   app: {
     name: 'MediaShell',
     tagline: 'Games, movies, series and anime — one library',
   },
   common: {
+    toTop: 'Back to top',
     save: 'Save',
     saved: 'Saved',
     cancel: 'Cancel',
@@ -687,6 +692,7 @@ export const en: Messages = {
     signedOut: 'You have signed out',
   },
   palette: {
+    recent: 'Recent',
     placeholder: 'Search your library and the catalog…',
     addPlaceholder: 'Find a game, movie, series or anime…',
     library: 'In your library',
@@ -740,7 +746,7 @@ export const en: Messages = {
     WRONG_PASSWORD: 'Wrong password.',
     STATUS_NOT_ALLOWED: 'This status is not available for this title.',
     TITLE_NOT_FOUND: 'Title not found.',
-    CATALOG_UNAVAILABLE: 'The external catalog is temporarily unavailable.',
+    CATALOG_UNAVAILABLE: 'The catalog did not answer in time. Try again in a few seconds.',
     LIMIT_REACHED: 'Limit reached.',
     PAYLOAD_TOO_LARGE: 'The file is too large.',
     INTERNAL: 'Server error. Please try again later.',

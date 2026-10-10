@@ -115,7 +115,12 @@ describe('auth', () => {
     expect(forged.body.user.preferences.steamId).toBeUndefined()
 
     const status = await t.request('GET', '/api/me/steam')
-    expect(status.body).toEqual({ steamId: null, importReady: true })
+    expect(status.body).toEqual({
+      steamId: null,
+      importReady: true,
+      ownKeyHint: null,
+      siteKey: false,
+    })
 
     const unlinked = await t.request('POST', '/api/me/steam/import', {})
     expect(unlinked.status).toBe(400)

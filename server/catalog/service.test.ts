@@ -172,6 +172,22 @@ describe('search', () => {
     expect(result.items.length).toBeGreaterThan(5)
   })
 
+  it('answers without a source that hangs past the deadline', async () => {
+    const hang = () => new Promise(() => undefined)
+    const fake = fakeFetch([[/shikimori\.io/, hang], ...DEFAULT_ROUTES])
+    const catalog = createCatalogService({
+      cache: memoryCache(),
+      http: testHttp(fake.fetch),
+      now: () => new Date('2026-09-25T12:00:00Z'),
+      searchDeadlineMs: 50,
+    })
+    const started = Date.now()
+    const result = await catalog.search('witcher', 'all', en)
+    expect(Date.now() - started).toBeLessThan(2_000)
+    expect(result.failed).toEqual(['shikimori'])
+    expect(result.items.length).toBeGreaterThan(5)
+  })
+
   it('throws CatalogUnavailableError when every source fails', async () => {
     const { catalog } = setup([[/./, new TypeError('fetch failed')]])
     await expect(catalog.search('witcher', 'all', en)).rejects.toBeInstanceOf(

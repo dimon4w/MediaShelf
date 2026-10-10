@@ -65,7 +65,7 @@ if (!userId) {
     theme: 'dark',
     region: 'RU',
     avatar: 'cat',
-    avatarColor: 'orange',
+    avatarBg: 'lavender',
     banner: 'ocean',
     platforms: ['pc', 'playstation5', 'switch'],
     stores: ['steam', 'gog'],

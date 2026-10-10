@@ -135,6 +135,23 @@ const MIGRATIONS: string[] = [
   ) STRICT;
   CREATE INDEX pending_registrations_expiry ON pending_registrations(expires_at);
   `,
+  // v4: a user's own Steam Web API key for the full library import.
+  `
+  CREATE TABLE steam_keys (
+    user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    api_key TEXT NOT NULL,
+    updated_at INTEGER NOT NULL
+  ) STRICT;
+  `,
+  // v5: the profile cover picture a user uploads (shown on the public profile).
+  `
+  CREATE TABLE user_covers (
+    user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    mime TEXT NOT NULL,
+    data BLOB NOT NULL,
+    updated_at INTEGER NOT NULL
+  ) STRICT;
+  `,
 ]
 
 export function migrate(db: DatabaseSync) {

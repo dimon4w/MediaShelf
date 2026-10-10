@@ -55,7 +55,7 @@ describe('steam import', () => {
       { appid: 400, name: 'Portal', playtimeMinutes: 750 },
       { appid: 620, name: 'Portal 2', playtimeMinutes: 0 },
     ])
-    expect(result).toEqual({ total: 2, imported: 2, skipped: 0 })
+    expect(result).toEqual({ total: 2, imported: 2, existing: 0, failed: 0, skipped: 0 })
     const library = await t.request('GET', '/api/library')
     const byId = Object.fromEntries(
       (
@@ -69,6 +69,6 @@ describe('steam import', () => {
       importSteamLibrary(t.db, new TitleStore(t.db), userId, [
         { appid: 400, name: 'Portal', playtimeMinutes: 750 },
       ]),
-    ).toEqual({ total: 1, imported: 0, skipped: 1 })
+    ).toEqual({ total: 1, imported: 0, existing: 1, failed: 0, skipped: 1 })
   })
 })

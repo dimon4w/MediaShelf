@@ -548,6 +548,10 @@ export function useSearch(q: string, kind: Kind | 'all') {
     enabled: trimmed.length >= 2,
     placeholderData: keepPreviousData,
     staleTime: 10 * 60_000,
+    // A source that missed the server deadline keeps loading in the background: ask again soon,
+    // a few times at most, so its results join the list without the user retyping.
+    refetchInterval: (query) =>
+      query.state.data?.failed.length && query.state.dataUpdateCount < 4 ? 3_000 : false,
   })
 }
 

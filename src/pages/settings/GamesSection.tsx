@@ -113,7 +113,11 @@ export function GamesSection({ user }: { user: User }) {
           }
         />
       </Group>
-      <Group title={t('settings.accounts')} description={t('settings.accountsHint')}>
+      <Group
+        title={t('settings.accounts')}
+        description={t('settings.accountsHint')}
+        className="mt-10"
+      >
         <div className="px-4 py-5 sm:px-5">
           <AccountsList user={user} />
         </div>

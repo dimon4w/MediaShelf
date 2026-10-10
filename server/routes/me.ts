@@ -3,6 +3,8 @@ import {
   deleteAccountSchema,
   passwordChangeSchema,
   profilePatchSchema,
+  steamKeySchema,
+  coverUploadSchema,
 } from '../../shared/schemas.ts'
 import { hashPassword, verifyPassword } from '../auth/password.ts'
 import {
@@ -11,12 +13,14 @@ import {
   deleteSessionByPublicId,
   listSessions,
 } from '../auth/sessions.ts'
+import { COVER_MAX_BYTES, decodeImageDataUrl, deleteCover, setCover } from '../auth/covers.ts'
+import { deleteSteamKey, getSteamKey, keyHint, setSteamKey } from '../auth/steam-keys.ts'
 import { deleteUser, findUserByEmail, findUserById, toUser, updateUser } from '../auth/users.ts'
 import { limit, requireUser, type AppDeps, type AppEnv } from '../context.ts'
 import { ApiError, notFound } from '../http/errors.ts'
 import { exportLibrary, importLibrary } from '../library/transfer.ts'
 import { fetchOwnedGames, importSteamLibrary } from '../library/steam-import.ts'
-import { refreshEpisodeCounters } from '../library/entries.ts'
+import { getEntry, refreshEpisodeCounters } from '../library/entries.ts'
 import { sql } from '../db/index.ts'
 
 export function meRoutes(deps: AppDeps) {
@@ -41,6 +45,9 @@ export function meRoutes(deps: AppDeps) {
           fields: { email: 'taken' },
         })
     }
+    // A cover title must be one the user actually has in their library.
+    if (patch.preferences?.bannerTitleId && !getEntry(db, user.id, patch.preferences.bannerTitleId))
+      throw new ApiError(404, 'TITLE_NOT_FOUND', 'Title is not in your library')
     const current = toUser(user).preferences
     updateUser(db, user.id, {
       name: patch.name,
@@ -124,10 +131,48 @@ export function meRoutes(deps: AppDeps) {
     return c.json({ user: toUser({ ...user, preferences: JSON.stringify(preferences) }) })
   })
 
+  app.put('/cover', async (c) => {
+    const user = requireUser(c)
+    limit(limits, 'sensitive', user.id)
+    const { dataUrl } = coverUploadSchema.parse(await c.req.json())
+    const image = decodeImageDataUrl(dataUrl)
+    if (!image) throw new ApiError(400, 'BAD_REQUEST', 'Cover must be a JPEG, PNG or WebP image')
+    if (image.bytes.length > COVER_MAX_BYTES)
+      throw new ApiError(413, 'PAYLOAD_TOO_LARGE', 'Cover is too large')
+    setCover(db, user.id, image.mime, image.bytes)
+    return c.json({ ok: true })
+  })
+
+  app.delete('/cover', (c) => {
+    const user = requireUser(c)
+    deleteCover(db, user.id)
+    return c.json({ ok: true })
+  })
+
   app.get('/steam', (c) => {
     const user = requireUser(c)
     const { steamId } = JSON.parse(user.preferences) as { steamId?: string }
-    return c.json({ steamId: steamId ?? null, importReady: true })
+    const key = getSteamKey(db, user.id)
+    return c.json({
+      steamId: steamId ?? null,
+      importReady: true,
+      ownKeyHint: key ? keyHint(key) : null,
+      siteKey: Boolean(config.steamApiKey),
+    })
+  })
+
+  app.put('/steam/key', async (c) => {
+    const user = requireUser(c)
+    limit(limits, 'sensitive', user.id)
+    const { key } = steamKeySchema.parse(await c.req.json())
+    setSteamKey(db, user.id, key)
+    return c.json({ ownKeyHint: keyHint(key) })
+  })
+
+  app.delete('/steam/key', (c) => {
+    const user = requireUser(c)
+    deleteSteamKey(db, user.id)
+    return c.json({ ownKeyHint: null })
   })
 
   app.post('/steam/import', async (c) => {
@@ -135,7 +180,8 @@ export function meRoutes(deps: AppDeps) {
     limit(limits, 'sensitive', user.id)
     const { steamId } = JSON.parse(user.preferences) as { steamId?: string }
     if (!steamId) throw new ApiError(400, 'STEAM_NOT_LINKED', 'Steam is not linked')
-    const { games, partial } = await fetchOwnedGames(config.steamApiKey, steamId)
+    const apiKey = getSteamKey(db, user.id) ?? config.steamApiKey
+    const { games, partial } = await fetchOwnedGames(apiKey, steamId)
     return c.json({ ...importSteamLibrary(db, titles, user.id, games), partial })
   })
 
