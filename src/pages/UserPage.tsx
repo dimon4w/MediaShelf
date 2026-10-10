@@ -9,7 +9,7 @@ import {
   Star,
   UserRound,
 } from 'lucide-react'
-import { useMemo, type CSSProperties, type ReactNode } from 'react'
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router'
 import { toast } from 'sonner'
 import { genreLabel } from '@shared/genres.ts'
@@ -28,12 +28,14 @@ import { Backdrop, Poster } from '@/components/Poster'
 import { KindIcon, StatusIcon } from '@/components/StatusIcon'
 import { Shelf, TitleCard } from '@/components/TitleCard'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { EmptyState, SectionHeader, Skeleton } from '@/components/ui/misc'
 import { useI18n } from '@/i18n'
 import { bannerBackground } from '@/lib/banners'
 import { cn } from '@/lib/cn'
 import { useDocumentTitle } from '@/lib/hooks'
 import { useSession, useUserProfile } from '@/lib/queries'
+import { shareLink } from '@/lib/share'
 import { statusLabelKey, titleHref, titleName } from '@/lib/titles'
 
 /** UserAvatar reads only id + avatar prefs; a public profile carries exactly those. */
@@ -63,8 +65,10 @@ function Banner({ profile, accent }: { profile: UserProfile; accent: string }) {
   const glow = `radial-gradient(120% 90% at 50% 0%, ${accent}66 0%, transparent 60%), radial-gradient(80% 80% at 100% 0%, ${accent}33 0%, transparent 60%), #0d0d0d`
   const background =
     user.banner === 'none' && !heroPosters.length ? glow : bannerBackground(user.banner)
+  // The collage stands in for "no background" and for a favourite without a backdrop. A chosen
+  // gradient preset is the background itself, so posters must not cover it.
   const collage =
-    !bannerImage && user.banner !== 'none' ? heroPosters : user.banner === 'none' ? heroPosters : []
+    !bannerImage && (user.banner === 'none' || user.banner === 'favorite') ? heroPosters : []
   return (
     <div
       aria-hidden="true"
@@ -124,18 +128,12 @@ function Header({ profile, own }: { profile: UserProfile; own: boolean }) {
   const { t, fmt } = useI18n()
   const { user } = profile
   const accent = accentOf(user)
+  const [manualUrl, setManualUrl] = useState<string | null>(null)
   const share = async () => {
     const url = `${window.location.origin}/users/${user.id}`
-    try {
-      if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
-        await navigator.share({ title: user.name, url })
-        return
-      }
-      await navigator.clipboard.writeText(url)
-      toast(t('profile.linkCopied'))
-    } catch {
-      /* the user dismissed the share sheet */
-    }
+    const result = await shareLink(url, user.name)
+    if (result === 'copied') toast(t('profile.linkCopied'))
+    else if (result === 'manual') setManualUrl(url)
   }
   const ring: CSSProperties = {
     boxShadow: `0 0 0 4px var(--panel), 0 0 0 6px ${accent}aa, 0 12px 40px -6px ${accent}88`,
@@ -169,6 +167,22 @@ function Header({ profile, own }: { profile: UserProfile; own: boolean }) {
           </Button>
         </div>
       </div>
+      <Dialog open={manualUrl !== null} onOpenChange={(open) => !open && setManualUrl(null)}>
+        <DialogContent
+          title={t('profile.shareTitle')}
+          description={t('profile.shareManual')}
+          size="sm"
+        >
+          <input
+            readOnly
+            autoFocus
+            value={manualUrl ?? ''}
+            aria-label={t('profile.shareTitle')}
+            onFocus={(event) => event.currentTarget.select()}
+            className="h-10 w-full rounded-lg bg-raised px-3 text-base text-fg ring-1 ring-line outline-none ring-inset focus-visible:ring-2 focus-visible:ring-fg/40"
+          />
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }
@@ -182,10 +196,11 @@ function StatsStrip({ profile }: { profile: UserProfile }) {
   const hours = Math.round(
     (stats.minutes.movies + stats.minutes.episodes + stats.minutes.games) / 60,
   )
-  const cells: { label: string; value: string }[] = [
+  const cells: { label: string; value: string; hint?: string }[] = [
     { label: t('profile.total'), value: fmt.number(stats.total) },
     { label: t('profile.completedCount'), value: fmt.number(stats.byStatus.completed) },
-    { label: t('profile.hours'), value: fmt.number(hours) },
+    // Partly an estimate (default runtimes for films and episodes), so say so.
+    { label: t('profile.hours'), value: `≈${fmt.number(hours)}`, hint: t('stats.hoursHint') },
     {
       label: t('profile.avgRating'),
       value: stats.averageRating
@@ -198,9 +213,14 @@ function StatsStrip({ profile }: { profile: UserProfile }) {
     <section aria-label={t('profile.stats')} className="liquid mt-6 overflow-hidden rounded-2xl">
       <dl className="grid grid-cols-4 divide-x divide-line">
         {cells.map((cell) => (
-          <div key={cell.label} className="min-w-0 px-1 py-3 text-center sm:py-4">
-            <dd className="display truncate text-xl tabular-nums sm:text-3xl">{cell.value}</dd>
+          // dt comes first for screen readers ("Total: 16"); flex-col-reverse keeps the number on top.
+          <div
+            key={cell.label}
+            title={cell.hint}
+            className="flex min-w-0 flex-col-reverse px-1 py-3 text-center sm:py-4"
+          >
             <dt className="mt-0.5 truncate text-xs text-fg-3 sm:text-sm">{cell.label}</dt>
+            <dd className="display truncate text-xl tabular-nums sm:text-3xl">{cell.value}</dd>
           </div>
         ))}
       </dl>
@@ -545,10 +565,33 @@ function ProfileContent({ profile, own }: { profile: UserProfile; own: boolean }
   )
 }
 
+/** A shared profile link opened by someone who is not signed in. */
+function GuestProfile({ id }: { id: string }) {
+  const { t } = useI18n()
+  const next = encodeURIComponent(`/users/${id}`)
+  return (
+    <EmptyState
+      icon={<UserRound />}
+      title={t('profile.guestTitle')}
+      text={t('profile.guestText')}
+      action={
+        <div className="flex flex-wrap justify-center gap-2">
+          <Button asChild variant="primary" size="sm">
+            <Link to={`/login?next=${next}`}>{t('nav.signIn')}</Link>
+          </Button>
+          <Button asChild variant="secondary" size="sm">
+            <Link to={`/register?next=${next}`}>{t('nav.signUp')}</Link>
+          </Button>
+        </div>
+      }
+    />
+  )
+}
+
 export default function UserPage() {
   const { t } = useI18n()
   const { id } = useParams<{ id: string }>()
-  const { user: viewer } = useSession()
+  const { user: viewer, isLoading: sessionLoading } = useSession()
   const profile = useUserProfile(id)
   const data = profile.data
   const own = Boolean(viewer && data && viewer.id === data.user.id)
@@ -559,7 +602,9 @@ export default function UserPage() {
     <>
       <PageHeader title={data?.user.name ?? t('profile.title')} back revealTitle={Boolean(data)} />
       <PageBody>
-        {profile.isLoading ? (
+        {!viewer && !sessionLoading && id ? (
+          <GuestProfile id={id} />
+        ) : sessionLoading || profile.isLoading ? (
           <ProfileSkeleton />
         ) : !data ? (
           <EmptyState

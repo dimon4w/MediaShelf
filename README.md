@@ -48,7 +48,7 @@ Codespaces бесплатен в пределах месячного лимит�
 
 1. Установите **Node.js 24 LTS** с <https://nodejs.org>.
 2. Дважды щёлкните `start.cmd` в папке проекта. При первом запуске он сам установит зависимости и соберёт сайт.
-3. Откройте <http://localhost:4175> и создайте аккаунт.
+3. Откройте <http://localhost:4173> и создайте аккаунт. Точный адрес сервер пишет в окне.
 
 Остановить сервер — закрыть окно. Данные лежат в `data\mediashelf.db`.
 
@@ -57,7 +57,7 @@ Codespaces бесплатен в пределах месячного лимит�
 ```powershell
 npm install
 npm run build
-npm start          # http://localhost:4175
+npm start          # http://localhost:4173
 ```
 
 Режим разработки (горячая перезагрузка интерфейса и API):
@@ -147,7 +147,7 @@ tests/e2e/         сквозные тесты Playwright
 
 MediaShell is a self-hosted library for games, movies, series and anime. It has accounts, episode and playthrough tracking, a status board, stats, Shuffle (random pick), a Ctrl K command palette, and Russian and English UI in light and dark themes.
 
-**Run:** install Node.js 24, then `npm install && npm run build && npm start` and open http://localhost:4175. On Windows you can double-click `start.cmd` instead. Data lives in `data/mediashelf.db`. Settings are in `.env.example`.
+**Run:** install Node.js 24, then `npm install && npm run build && npm start` and open http://localhost:4173. On Windows you can double-click `start.cmd` instead. Data lives in `data/mediashelf.db`. Settings are in `.env.example`.
 
 ## Credits
 

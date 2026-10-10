@@ -67,7 +67,13 @@ export function usersRoutes(deps: AppDeps) {
     ].slice(0, 6)
 
     const activity = listActivity(db, id, 10) as ActivityItem[]
-    const stats = computeStats(db, id)
+    // Count days and "this year" in the viewer's zone, exactly like /api/library/stats.
+    const offset = Number(c.req.query('tz') ?? 0)
+    const zone = c.req.query('zone')
+    const stats = computeStats(db, id, {
+      timeZone: zone && zone.length <= 64 ? zone : undefined,
+      offsetMinutes: Number.isFinite(offset) ? offset : 0,
+    })
 
     const bannerImage =
       prefs.banner === 'favorite' ? (favourites[0]?.title?.backdrop ?? null) : null
