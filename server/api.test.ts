@@ -398,6 +398,10 @@ describe('public profile', () => {
     expect(res.status).toBe(200)
     expect(res.body.user).toMatchObject({ id: me.id, name: account.name, banner: 'ocean' })
     expect(res.body.user.email).toBeUndefined()
+    expect(res.body.user.steamId).toBeUndefined()
+    expect(res.body.user.steamLinked).toBe(false)
+    expect(res.body.inProgress).toEqual([])
+    expect(Array.isArray(res.body.heroPosters)).toBe(true)
     expect(res.body.stats.total).toBe(1)
     expect(res.body.favorites.map((e: { titleId: string }) => e.titleId)).toEqual([
       'series-tt0903747',
