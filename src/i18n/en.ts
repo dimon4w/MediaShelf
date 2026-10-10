@@ -610,6 +610,10 @@ export const en: Messages = {
     emptyStep3: 'Heart the best: that is your Top 4',
     openDiscover: 'Open Discover',
     emptyOther: 'Nothing here yet',
+    shareTitle: 'Profile link',
+    shareManual: 'Your browser blocked automatic copying. Select the link and copy it.',
+    guestTitle: 'This is a MediaShell profile',
+    guestText: 'Sign in or create an account on this server to see it.',
     banners: {
       none: 'No background',
       favorite: 'From favourites',

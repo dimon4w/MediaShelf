@@ -64,15 +64,17 @@ export function sameOriginOnly(config: Config): MiddlewareHandler {
   return async (c, next) => {
     if (SAFE_METHODS.has(c.req.method)) return next()
     const origin = c.req.header('origin')
-    const isCodespaces =
-      (origin && (origin.endsWith('.github.dev') || origin.endsWith('.app.github.dev'))) ||
-      c.req.header('x-forwarded-host')?.endsWith('.github.dev') ||
-      c.req.header('x-forwarded-host')?.endsWith('.app.github.dev')
-    if (isCodespaces) {
-      // Codespaces proxy injects sec-fetch-site: cross-site from the iframe/proxy layer.
-      return next()
-    }
-    if (origin) {
+    // The Codespaces port proxy reports sec-fetch-site: cross-site even for the codespace's own
+    // pages. Accept that only for requests that came through our trusted proxy for a
+    // *.app.github.dev host AND whose Origin (when present) is that same host. Another
+    // codespace has a different host, so it still gets the regular checks below.
+    const forwardedHost = config.trustProxy ? c.req.header('x-forwarded-host') : undefined
+    const ownCodespace =
+      Boolean(forwardedHost?.endsWith('.app.github.dev')) &&
+      (!origin || origin === `https://${forwardedHost}`)
+    if (ownCodespace) {
+      // Origin is ours; the JSON check below still applies.
+    } else if (origin) {
       // The node adapter builds the request URL from the Host header.
       const host =
         (config.trustProxy && c.req.header('x-forwarded-host')) || new URL(c.req.url).host

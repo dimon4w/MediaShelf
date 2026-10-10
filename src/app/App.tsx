@@ -160,14 +160,8 @@ const router = createBrowserRouter([
               </RequireAuth>,
             ),
           },
-          {
-            path: 'users/:id',
-            element: page(
-              <RequireAuth>
-                <UserPage />
-              </RequireAuth>,
-            ),
-          },
+          // Not behind RequireAuth: a guest with a shared link gets an explanation, not a bare redirect.
+          { path: 'users/:id', element: page(<UserPage />) },
           {
             path: 'settings/:section?',
             element: page(
