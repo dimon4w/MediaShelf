@@ -498,7 +498,15 @@ export function useUserProfile(id: string | undefined) {
   const user = useUser()
   return useQuery({
     queryKey: keys.profile(id ?? ''),
-    queryFn: ({ signal }) => get<UserProfile>(`/users/${id}/profile`, signal),
+    // Same zone parameters as /library/stats, so both pages count "this year" alike.
+    queryFn: ({ signal }) =>
+      get<UserProfile>(
+        `/users/${id}/profile${query({
+          tz: -new Date().getTimezoneOffset(),
+          zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        })}`,
+        signal,
+      ),
     enabled: Boolean(user) && Boolean(id),
     staleTime: 30_000,
     retry: (count, error) => count < 1 && (error as { status?: number }).status !== 404,

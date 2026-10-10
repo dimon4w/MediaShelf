@@ -295,6 +295,25 @@ export default function LibraryPage() {
             <TitleGrid>
               {visible.map((entry, index) => {
                 const progress = entryProgressText(entry, t)
+                const status = t(statusLabelKey(entry.kind, entry.status))
+                const parts = [
+                  entry.store === 'steam' ? (
+                    <span key="steam" className="inline-flex shrink-0 items-center gap-1">
+                      <BrandIcon id="steam" className="size-3" />
+                      Steam
+                    </span>
+                  ) : null,
+                  progress ? (
+                    <span key="progress" className="tabular shrink-0">
+                      {progress}
+                    </span>
+                  ) : null,
+                  entry.rating ? (
+                    <span key="rating" className="tabular shrink-0">
+                      ★ {entry.rating}
+                    </span>
+                  ) : null,
+                ].filter(Boolean)
                 return (
                   <TitleCard
                     key={entry.titleId}
@@ -303,30 +322,26 @@ export default function LibraryPage() {
                     eager={index < 12}
                     meta={
                       <>
-                        <span className="truncate">
-                          {t(statusLabelKey(entry.kind, entry.status))}
+                        {/* Phone cards are ~110px wide: the status word used to shrink to
+                            "С…". It is already on the poster badge, so with other details
+                            to show it gives way on small screens (still read by screen readers). */}
+                        <span
+                          className={`flex min-w-0 items-center gap-1${parts.length ? ' max-sm:hidden' : ''}`}
+                        >
+                          <span className="truncate">{status}</span>
+                          {parts.length ? <span aria-hidden="true">·</span> : null}
                         </span>
-                        {entry.store === 'steam' ? (
-                          <>
-                            <span aria-hidden="true">·</span>
-                            <span className="inline-flex items-center gap-1">
-                              <BrandIcon id="steam" className="size-3" />
-                              Steam
-                            </span>
-                          </>
-                        ) : null}
-                        {progress ? (
-                          <>
-                            <span aria-hidden="true">·</span>
-                            <span className="tabular">{progress}</span>
-                          </>
-                        ) : null}
-                        {entry.rating ? (
-                          <>
-                            <span aria-hidden="true">·</span>
-                            <span className="tabular">★ {entry.rating}</span>
-                          </>
-                        ) : null}
+                        {parts.length ? <span className="sr-only sm:hidden">{status}</span> : null}
+                        {parts.flatMap((part, i) =>
+                          i
+                            ? [
+                                <span key={`sep-${i}`} aria-hidden="true">
+                                  ·
+                                </span>,
+                                part,
+                              ]
+                            : [part],
+                        )}
                       </>
                     }
                   />

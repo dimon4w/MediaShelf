@@ -173,45 +173,54 @@ function Hero({ title, onRemove }: { title: TitleRecord; onRemove(): void }) {
               ))}
             </div>
           ) : null}
+          {/* On a phone the row doesn't fit: the status button takes the first line and the icon
+              buttons wrap together onto the second, instead of leaving "…" alone on a line. */}
           <div className="mt-6 flex flex-wrap items-center gap-2">
-            <LibraryButton title={title} size="lg" onRemove={onRemove} />
-            {entry ? <FavoriteButton entry={entry} size="icon-lg" /> : null}
-            {entry ? <RatingButton entry={entry} /> : null}
-            {title.trailer ? (
-              <Button variant="secondary" size="lg" onClick={() => setTrailer(true)}>
-                <Play className="fill-current" />
-                {t('title.trailer')}
-              </Button>
-            ) : null}
-            {links.length || entry ? (
-              <Menu>
-                <MenuTrigger asChild>
-                  <Button variant="secondary" size="icon-lg" aria-label={t('common.more')}>
-                    <MoreHorizontal />
-                  </Button>
-                </MenuTrigger>
-                <MenuContent align="end">
-                  {links.map((link) => (
-                    <MenuItem key={link.url} asChild>
-                      <a href={link.url} target="_blank" rel="noopener noreferrer">
-                        <BrandIcon id={link.source} />
-                        {t('title.openOn', { source: t(`sources.${link.source}`) })}
-                        <ExternalLink className="ml-auto !size-3.5" />
-                      </a>
-                    </MenuItem>
-                  ))}
-                  {entry ? (
-                    <>
-                      {links.length ? <MenuSeparator /> : null}
-                      <MenuItem destructive onSelect={onRemove}>
-                        <Trash2 />
-                        {t('title.removeFromLibrary')}
+            <LibraryButton
+              title={title}
+              size="lg"
+              onRemove={onRemove}
+              className="max-sm:flex-1 max-sm:justify-center"
+            />
+            <div className="flex items-center gap-2">
+              {entry ? <FavoriteButton entry={entry} size="icon-lg" /> : null}
+              {entry ? <RatingButton entry={entry} /> : null}
+              {title.trailer ? (
+                <Button variant="secondary" size="lg" onClick={() => setTrailer(true)}>
+                  <Play className="fill-current" />
+                  {t('title.trailer')}
+                </Button>
+              ) : null}
+              {links.length || entry ? (
+                <Menu>
+                  <MenuTrigger asChild>
+                    <Button variant="secondary" size="icon-lg" aria-label={t('common.more')}>
+                      <MoreHorizontal />
+                    </Button>
+                  </MenuTrigger>
+                  <MenuContent align="end">
+                    {links.map((link) => (
+                      <MenuItem key={link.url} asChild>
+                        <a href={link.url} target="_blank" rel="noopener noreferrer">
+                          <BrandIcon id={link.source} />
+                          {t('title.openOn', { source: t(`sources.${link.source}`) })}
+                          <ExternalLink className="ml-auto !size-3.5" />
+                        </a>
                       </MenuItem>
-                    </>
-                  ) : null}
-                </MenuContent>
-              </Menu>
-            ) : null}
+                    ))}
+                    {entry ? (
+                      <>
+                        {links.length ? <MenuSeparator /> : null}
+                        <MenuItem destructive onSelect={onRemove}>
+                          <Trash2 />
+                          {t('title.removeFromLibrary')}
+                        </MenuItem>
+                      </>
+                    ) : null}
+                  </MenuContent>
+                </Menu>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>

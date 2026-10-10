@@ -162,7 +162,9 @@ export function EntryPanel({ entry, onRemove }: { entry: LibraryEntry; onRemove(
           />
         </div>
       </Row>
-      {episodic || entry.kind === 'game' ? (
+      {/* Games show and edit progress in the main playthrough panel right above; a second,
+          read-only bar here only repeated it. */}
+      {episodic ? (
         <Row label={t('title.progress')}>
           <div className="flex items-center gap-3">
             <ProgressBar value={entry.progress} className="flex-1" label={t('title.progress')} />

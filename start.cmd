@@ -20,7 +20,7 @@ if not exist dist\index.html (
   call npm run build || goto :failed
 )
 
-echo Starting MediaShell. Open http://localhost:4175 in your browser. Close this window to stop.
+echo Starting MediaShell. Open the address printed below (http://localhost:4173 by default). Close this window to stop.
 node --env-file-if-exists=.env server/main.ts
 goto :eof
 
