@@ -224,6 +224,8 @@ export interface PublicUser {
   avatar?: string
   avatarColor?: string
   banner: BannerId
+  /** A Steam account is linked; the SteamID itself stays private. */
+  steamLinked: boolean
 }
 
 export interface UserProfile {
@@ -232,6 +234,10 @@ export interface UserProfile {
   activity: ActivityItem[]
   favorites: LibraryEntry[]
   completed: LibraryEntry[]
+  /** In progress right now, most recently touched first. */
+  inProgress: LibraryEntry[]
+  /** Up to 6 posters for the header collage: favourites, then completed, then in progress. */
+  heroPosters: string[]
   /** Backdrop of the first favourite title, for the 'favorite' banner. */
   bannerImage: string | null
 }

@@ -27,11 +27,21 @@ export function usersRoutes(deps: AppDeps) {
       avatar: prefs.avatar,
       avatarColor: prefs.avatarColor,
       banner: (prefs.banner ?? 'none') as BannerId,
+      steamLinked: Boolean(prefs.steamId),
     }
 
     const all = listEntries(db, id)
     const favourites = all.filter((e) => e.favorite).slice(0, 12)
     const completed = all.filter((e) => e.status === 'completed').slice(0, 12)
+    const inProgress = all.filter((e) => e.status === 'in_progress').slice(0, 8)
+    // listEntries is newest first, so every list below is "most recent first".
+    const heroPosters = [
+      ...new Set(
+        [...favourites, ...completed, ...inProgress]
+          .map((e) => e.title?.poster)
+          .filter((src): src is string => Boolean(src)),
+      ),
+    ].slice(0, 6)
 
     const activity = listActivity(db, id, 10) as ActivityItem[]
     const stats = computeStats(db, id)
@@ -44,7 +54,9 @@ export function usersRoutes(deps: AppDeps) {
       stats,
       activity,
       favorites: favourites,
-      completed: completed,
+      completed,
+      inProgress,
+      heroPosters,
       bannerImage,
     }
     return c.json(profile)
