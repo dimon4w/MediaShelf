@@ -129,7 +129,9 @@ export function TitleCard({
       >
         {rank}
       </span>
-      {card}
+      {/* flex-1: without it the card shrinks to its title's width, so every poster in a chart
+          row came out a different size ("Cyberpunk 2077" narrower than "Ведьмак 3: Дикая Охота"). */}
+      <div className="min-w-0 flex-1">{card}</div>
     </div>
   )
 }

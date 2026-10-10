@@ -9,7 +9,7 @@ import {
   Star,
   UserRound,
 } from 'lucide-react'
-import { useMemo, type CSSProperties, type ReactNode } from 'react'
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router'
 import { toast } from 'sonner'
 import { genreLabel } from '@shared/genres.ts'
@@ -23,17 +23,20 @@ import {
 } from '@shared/types.ts'
 import { PageBody, PageHeader } from '@/app/PageHeader'
 import { ActivityRow } from '@/components/ActivityRow'
-import { AVATAR_COLOR_HEX, UserAvatar, avatarColorFor } from '@/components/avatar'
+import { UserAvatar } from '@/components/avatar'
 import { Backdrop, Poster } from '@/components/Poster'
 import { KindIcon, StatusIcon } from '@/components/StatusIcon'
 import { Shelf, TitleCard } from '@/components/TitleCard'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { EmptyState, SectionHeader, Skeleton } from '@/components/ui/misc'
 import { useI18n } from '@/i18n'
+import { mergeActivity } from '@/lib/activity'
 import { bannerBackground } from '@/lib/banners'
 import { cn } from '@/lib/cn'
 import { useDocumentTitle } from '@/lib/hooks'
 import { useSession, useUserProfile } from '@/lib/queries'
+import { shareLink } from '@/lib/share'
 import { statusLabelKey, titleHref, titleName } from '@/lib/titles'
 
 /** UserAvatar reads only id + avatar prefs; a public profile carries exactly those. */
@@ -44,32 +47,30 @@ function avatarUser(user: PublicUser): Pick<User, 'id' | 'preferences'> {
   }
 }
 
-/** The avatar's colour as a real hex (for glows); "auto" falls back to a neutral grey. */
-function accentOf(user: PublicUser): string {
-  const hex = AVATAR_COLOR_HEX[avatarColorFor(avatarUser(user))]
-  return hex && hex.startsWith('#') ? hex : '#a3a3a3'
-}
-
 // ---------------------------------------------------------------------------
 // Header
 
 /**
- * Full-bleed banner that fades into the page, Apple Music style. Layers, bottom up:
- * banner preset or an avatar-coloured glow, a blurred collage of the user's own posters,
- * or the chosen favourite backdrop. The blur sits on a static layer, so it is painted once.
+ * Full-bleed banner that fades into the page. Layers, bottom up: the chosen gradient preset
+ * or a quiet surface in the theme's own colour, then a blurred collage of the user's posters
+ * or the favourite's backdrop. Colour comes only from posters and the user's own choice
+ * (DESIGN.md): no avatar-coloured glow, and no black slab on top of a light page.
  */
-function Banner({ profile, accent }: { profile: UserProfile; accent: string }) {
+function Banner({ profile }: { profile: UserProfile }) {
   const { user, bannerImage, heroPosters } = profile
-  const glow = `radial-gradient(120% 90% at 50% 0%, ${accent}66 0%, transparent 60%), radial-gradient(80% 80% at 100% 0%, ${accent}33 0%, transparent 60%), #0d0d0d`
-  const background =
-    user.banner === 'none' && !heroPosters.length ? glow : bannerBackground(user.banner)
-  const collage =
-    !bannerImage && user.banner !== 'none' ? heroPosters : user.banner === 'none' ? heroPosters : []
+  const preset = user.banner !== 'none' && user.banner !== 'favorite'
+  // The collage stands in for "no background" and for a favourite without a backdrop. A chosen
+  // gradient preset is the background itself, so posters must not cover it.
+  const collage = !bannerImage && !preset ? heroPosters : []
+  const imagery = Boolean(bannerImage) || collage.length > 0 || preset
   return (
     <div
       aria-hidden="true"
-      className="relative -mx-4 h-44 overflow-hidden [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] sm:-mx-6 sm:h-56 lg:mx-0 lg:h-64 lg:rounded-t-3xl"
-      style={{ background }}
+      className={cn(
+        'relative -mx-4 h-44 overflow-hidden [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] sm:-mx-6 sm:h-56 lg:mx-0 lg:h-64 lg:rounded-t-3xl',
+        !imagery && 'bg-raised',
+      )}
+      style={preset ? { background: bannerBackground(user.banner) } : undefined}
     >
       {bannerImage ? (
         <Backdrop src={bannerImage} className="absolute inset-0 size-full" />
@@ -90,7 +91,9 @@ function Banner({ profile, accent }: { profile: UserProfile; accent: string }) {
           })}
         </div>
       ) : null}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/40" />
+      {imagery ? (
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/40" />
+      ) : null}
     </div>
   )
 }
@@ -105,14 +108,14 @@ function KindChips({ profile }: { profile: UserProfile }) {
         <li
           key={kind}
           title={t(`kind.${kind}`)}
-          className="liquid flex h-7 shrink-0 items-center gap-1.5 rounded-full px-2.5 text-sm text-fg-2"
+          className="flex h-7 shrink-0 items-center gap-1.5 rounded-full px-2.5 text-sm text-fg-2 bg-raised ring-1 ring-line ring-inset"
         >
           <KindIcon kind={kind} className="size-3.5" />
           <span className="tabular-nums">{fmt.number(profile.stats.byKind[kind])}</span>
         </li>
       ))}
       {profile.user.steamLinked ? (
-        <li className="liquid flex h-7 shrink-0 items-center rounded-full px-2.5 text-sm text-fg-2">
+        <li className="flex h-7 shrink-0 items-center rounded-full px-2.5 text-sm text-fg-2 bg-raised ring-1 ring-line ring-inset">
           Steam
         </li>
       ) : null}
@@ -123,26 +126,21 @@ function KindChips({ profile }: { profile: UserProfile }) {
 function Header({ profile, own }: { profile: UserProfile; own: boolean }) {
   const { t, fmt } = useI18n()
   const { user } = profile
-  const accent = accentOf(user)
+  const [manualUrl, setManualUrl] = useState<string | null>(null)
   const share = async () => {
     const url = `${window.location.origin}/users/${user.id}`
-    try {
-      if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
-        await navigator.share({ title: user.name, url })
-        return
-      }
-      await navigator.clipboard.writeText(url)
-      toast(t('profile.linkCopied'))
-    } catch {
-      /* the user dismissed the share sheet */
-    }
+    const result = await shareLink(url, user.name)
+    if (result === 'copied') toast(t('profile.linkCopied'))
+    else if (result === 'manual') setManualUrl(url)
   }
+  // A gap in the page colour and a hairline, like every other surface. The coloured glow was
+  // the one place where UI chrome carried colour, against DESIGN.md.
   const ring: CSSProperties = {
-    boxShadow: `0 0 0 4px var(--panel), 0 0 0 6px ${accent}aa, 0 12px 40px -6px ${accent}88`,
+    boxShadow: '0 0 0 4px var(--panel), 0 0 0 5px var(--line-strong)',
   }
   return (
     <section>
-      <Banner profile={profile} accent={accent} />
+      <Banner profile={profile} />
       <div className="relative -mt-16 flex flex-col items-center text-center sm:-mt-20 lg:-mt-24 lg:flex-row lg:items-end lg:gap-6 lg:px-8 lg:text-left">
         <div className="shrink-0 rounded-full" style={ring}>
           <UserAvatar user={avatarUser(user)} className="size-28 bg-panel sm:size-32" />
@@ -169,6 +167,22 @@ function Header({ profile, own }: { profile: UserProfile; own: boolean }) {
           </Button>
         </div>
       </div>
+      <Dialog open={manualUrl !== null} onOpenChange={(open) => !open && setManualUrl(null)}>
+        <DialogContent
+          title={t('profile.shareTitle')}
+          description={t('profile.shareManual')}
+          size="sm"
+        >
+          <input
+            readOnly
+            autoFocus
+            value={manualUrl ?? ''}
+            aria-label={t('profile.shareTitle')}
+            onFocus={(event) => event.currentTarget.select()}
+            className="h-10 w-full rounded-lg bg-raised px-3 text-base text-fg ring-1 ring-line outline-none ring-inset focus-visible:ring-2 focus-visible:ring-fg/40"
+          />
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }
@@ -182,10 +196,11 @@ function StatsStrip({ profile }: { profile: UserProfile }) {
   const hours = Math.round(
     (stats.minutes.movies + stats.minutes.episodes + stats.minutes.games) / 60,
   )
-  const cells: { label: string; value: string }[] = [
+  const cells: { label: string; value: string; hint?: string }[] = [
     { label: t('profile.total'), value: fmt.number(stats.total) },
     { label: t('profile.completedCount'), value: fmt.number(stats.byStatus.completed) },
-    { label: t('profile.hours'), value: fmt.number(hours) },
+    // Partly an estimate (default runtimes for films and episodes), so say so.
+    { label: t('profile.hours'), value: `≈${fmt.number(hours)}`, hint: t('stats.hoursHint') },
     {
       label: t('profile.avgRating'),
       value: stats.averageRating
@@ -195,12 +210,20 @@ function StatsStrip({ profile }: { profile: UserProfile }) {
   ]
   const shades = ['bg-fg', 'bg-fg/60', 'bg-fg/35', 'bg-fg/15']
   return (
-    <section aria-label={t('profile.stats')} className="liquid mt-6 overflow-hidden rounded-2xl">
+    <section
+      aria-label={t('profile.stats')}
+      className="mt-6 overflow-hidden rounded-xl bg-raised ring-1 ring-line ring-inset"
+    >
       <dl className="grid grid-cols-4 divide-x divide-line">
         {cells.map((cell) => (
-          <div key={cell.label} className="min-w-0 px-1 py-3 text-center sm:py-4">
-            <dd className="display truncate text-xl tabular-nums sm:text-3xl">{cell.value}</dd>
+          // dt comes first for screen readers ("Total: 16"); flex-col-reverse keeps the number on top.
+          <div
+            key={cell.label}
+            title={cell.hint}
+            className="flex min-w-0 flex-col-reverse px-1 py-3 text-center sm:py-4"
+          >
             <dt className="mt-0.5 truncate text-xs text-fg-3 sm:text-sm">{cell.label}</dt>
+            <dd className="display truncate text-xl tabular-nums sm:text-3xl">{cell.value}</dd>
           </div>
         ))}
       </dl>
@@ -345,7 +368,7 @@ function NowSection({ entries }: { entries: PublicEntry[] }) {
   return (
     <section className="mt-8">
       <SectionHeader title={t('profile.now')} />
-      <ul className="liquid divide-y divide-line overflow-hidden rounded-2xl">
+      <ul className="divide-y divide-line overflow-hidden rounded-xl bg-raised ring-1 ring-line ring-inset">
         {entries.map((entry) => (
           <NowRow key={entry.titleId} entry={entry} />
         ))}
@@ -370,7 +393,7 @@ function Genres({ profile }: { profile: UserProfile }) {
             key={item.genre}
             className={cn(
               'flex h-8 max-w-full items-center gap-1.5 rounded-full px-3 text-sm',
-              index < 3 ? 'bg-fg text-panel' : 'liquid text-fg-2',
+              index < 3 ? 'bg-fg text-panel' : 'bg-raised ring-1 ring-line ring-inset text-fg-2',
             )}
           >
             <span className="truncate">{genreLabel(item.genre, locale)}</span>
@@ -416,14 +439,14 @@ function groupActivity(items: ActivityItem[]) {
 
 function Activity({ items }: { items: ActivityItem[] }) {
   const { t, fmt } = useI18n()
-  const groups = useMemo(() => groupActivity(items), [items])
+  const groups = useMemo(() => groupActivity(mergeActivity(items)), [items])
   if (!items.length) return null
   const today = new Date().toDateString()
   const yesterday = new Date(Date.now() - 86_400_000).toDateString()
   return (
     <section className="mt-8">
       <SectionHeader title={t('profile.activity')} />
-      <div className="liquid rounded-2xl p-1.5">
+      <div className="rounded-xl p-1.5 bg-raised ring-1 ring-line ring-inset">
         {groups.map((group) => (
           <div key={group.day}>
             <p className="truncate px-2 pt-2 pb-1 text-xs font-semibold tracking-wide text-fg-3 uppercase">
@@ -465,7 +488,7 @@ function Step({ n, icon, text }: { n: number; icon: ReactNode; text: string }) {
 function StartShelf() {
   const { t } = useI18n()
   return (
-    <section className="liquid mt-6 rounded-3xl p-5 sm:p-6">
+    <section className="mt-6 rounded-xl p-5 sm:p-6 bg-raised ring-1 ring-line ring-inset">
       <p className="flex items-center gap-2 text-sm font-medium text-fg-3">
         <Sparkles className="size-4 shrink-0" aria-hidden="true" />
         <span className="truncate">{t('profile.emptyOwnKicker')}</span>
@@ -545,10 +568,33 @@ function ProfileContent({ profile, own }: { profile: UserProfile; own: boolean }
   )
 }
 
+/** A shared profile link opened by someone who is not signed in. */
+function GuestProfile({ id }: { id: string }) {
+  const { t } = useI18n()
+  const next = encodeURIComponent(`/users/${id}`)
+  return (
+    <EmptyState
+      icon={<UserRound />}
+      title={t('profile.guestTitle')}
+      text={t('profile.guestText')}
+      action={
+        <div className="flex flex-wrap justify-center gap-2">
+          <Button asChild variant="primary" size="sm">
+            <Link to={`/login?next=${next}`}>{t('nav.signIn')}</Link>
+          </Button>
+          <Button asChild variant="secondary" size="sm">
+            <Link to={`/register?next=${next}`}>{t('nav.signUp')}</Link>
+          </Button>
+        </div>
+      }
+    />
+  )
+}
+
 export default function UserPage() {
   const { t } = useI18n()
   const { id } = useParams<{ id: string }>()
-  const { user: viewer } = useSession()
+  const { user: viewer, isLoading: sessionLoading } = useSession()
   const profile = useUserProfile(id)
   const data = profile.data
   const own = Boolean(viewer && data && viewer.id === data.user.id)
@@ -559,7 +605,9 @@ export default function UserPage() {
     <>
       <PageHeader title={data?.user.name ?? t('profile.title')} back revealTitle={Boolean(data)} />
       <PageBody>
-        {profile.isLoading ? (
+        {!viewer && !sessionLoading && id ? (
+          <GuestProfile id={id} />
+        ) : sessionLoading || profile.isLoading ? (
           <ProfileSkeleton />
         ) : !data ? (
           <EmptyState

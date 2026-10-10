@@ -20,7 +20,8 @@
     "test:e2e": "vite build && playwright test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "seed:demo": "node --env-file-if-exists=.env server/scripts/seed-demo.ts"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",

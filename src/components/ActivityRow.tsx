@@ -23,6 +23,11 @@ export function ActivityRow({ item }: { item: ActivityItem }) {
               : item.type === 'playthrough'
                 ? t('activity.playthrough')
                 : t('activity.removed')
+  // mergeActivity folds a rating made together with a status change into the status line.
+  const withRating =
+    (item.type === 'added' || item.type === 'status') && item.data.rating
+      ? `${text} · ${t('activity.rated', { rating: item.data.rating })}`
+      : text
   return (
     <li>
       <Link
@@ -41,11 +46,12 @@ export function ActivityRow({ item }: { item: ActivityItem }) {
           <span className="block truncate text-base">
             {item.title ? titleName(item.title.names, locale) : item.titleId}
           </span>
-          <span className="flex items-center gap-1.5 truncate text-sm text-fg-3">
+          {/* truncate on the inner span: on a flex container it clips without an ellipsis. */}
+          <span className="flex min-w-0 items-center gap-1.5 text-sm text-fg-3">
             {item.data.status ? (
-              <StatusIcon status={item.data.status} className="size-3.5" />
+              <StatusIcon status={item.data.status} className="size-3.5 shrink-0" />
             ) : null}
-            {text}
+            <span className="truncate">{withRating}</span>
           </span>
         </span>
         <span className="shrink-0 text-xs text-fg-3">{fmt.relative(item.createdAt)}</span>
