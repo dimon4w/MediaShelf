@@ -16,7 +16,7 @@ import { genreLabel } from '@shared/genres.ts'
 import {
   KINDS,
   type ActivityItem,
-  type LibraryEntry,
+  type PublicEntry,
   type PublicUser,
   type User,
   type UserProfile,
@@ -225,7 +225,7 @@ function StatsStrip({ profile }: { profile: UserProfile }) {
 // ---------------------------------------------------------------------------
 // Top 4
 
-function TopFour({ entries, own }: { entries: LibraryEntry[]; own: boolean }) {
+function TopFour({ entries, own }: { entries: PublicEntry[]; own: boolean }) {
   const { t, locale } = useI18n()
   const top = entries.slice(0, 4)
   if (!top.length && !own) return null
@@ -282,14 +282,14 @@ function TopFour({ entries, own }: { entries: LibraryEntry[]; own: boolean }) {
 // ---------------------------------------------------------------------------
 // Now playing / watching
 
-function progressOf(entry: LibraryEntry): number | null {
+function progressOf(entry: PublicEntry): number | null {
   if (entry.kind === 'game') return entry.progress > 0 ? entry.progress : null
   if (entry.totalEpisodes && entry.totalEpisodes > 0 && entry.watchedEpisodes > 0)
     return Math.min(100, Math.round((entry.watchedEpisodes / entry.totalEpisodes) * 100))
   return null
 }
 
-function NowRow({ entry }: { entry: LibraryEntry }) {
+function NowRow({ entry }: { entry: PublicEntry }) {
   const { t, locale, fmt } = useI18n()
   const progress = progressOf(entry)
   const detail =
@@ -339,7 +339,7 @@ function NowRow({ entry }: { entry: LibraryEntry }) {
   )
 }
 
-function NowSection({ entries }: { entries: LibraryEntry[] }) {
+function NowSection({ entries }: { entries: PublicEntry[] }) {
   const { t } = useI18n()
   if (!entries.length) return null
   return (
@@ -384,7 +384,7 @@ function Genres({ profile }: { profile: UserProfile }) {
   )
 }
 
-function RecentlyCompleted({ entries, own }: { entries: LibraryEntry[]; own: boolean }) {
+function RecentlyCompleted({ entries }: { entries: PublicEntry[] }) {
   const { t } = useI18n()
   if (!entries.length) return null
   return (
@@ -392,13 +392,9 @@ function RecentlyCompleted({ entries, own }: { entries: LibraryEntry[]; own: boo
       <SectionHeader title={t('profile.recentlyCompleted')} />
       <Shelf label={t('profile.recentlyCompleted')}>
         {entries.map((entry, index) => (
-          // On someone else's profile the cards show the viewer's own library state.
-          <TitleCard
-            key={entry.titleId}
-            title={entry.title}
-            entry={own ? entry : undefined}
-            eager={index < 6}
-          />
+          // Cards read the viewer's own library: the same data on one's own profile,
+          // and the profile only carries public fields anyway.
+          <TitleCard key={entry.titleId} title={entry.title} eager={index < 6} />
         ))}
       </Shelf>
     </section>
@@ -536,7 +532,7 @@ function ProfileContent({ profile, own }: { profile: UserProfile; own: boolean }
             <div className="min-w-0">
               <TopFour entries={profile.favorites} own={own} />
               <NowSection entries={profile.inProgress} />
-              <RecentlyCompleted entries={profile.completed} own={own} />
+              <RecentlyCompleted entries={profile.completed} />
             </div>
             <aside className="min-w-0 lg:pt-8">
               <Genres profile={profile} />

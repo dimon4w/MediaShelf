@@ -228,14 +228,32 @@ export interface PublicUser {
   steamLinked: boolean
 }
 
+/**
+ * The part of a library entry that other signed-in users see on a profile. Notes,
+ * playthroughs (with their notes), dates, platform and store stay private.
+ */
+export type PublicEntry = Pick<
+  LibraryEntry,
+  | 'titleId'
+  | 'kind'
+  | 'status'
+  | 'rating'
+  | 'favorite'
+  | 'progress'
+  | 'hours'
+  | 'watchedEpisodes'
+  | 'totalEpisodes'
+  | 'title'
+>
+
 export interface UserProfile {
   user: PublicUser
   stats: LibraryStats
   activity: ActivityItem[]
-  favorites: LibraryEntry[]
-  completed: LibraryEntry[]
+  favorites: PublicEntry[]
+  completed: PublicEntry[]
   /** In progress right now, most recently touched first. */
-  inProgress: LibraryEntry[]
+  inProgress: PublicEntry[]
   /** Up to 6 posters for the header collage: favourites, then completed, then in progress. */
   heroPosters: string[]
   /** Backdrop of the first favourite title, for the 'favorite' banner. */
