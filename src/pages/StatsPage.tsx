@@ -1,4 +1,4 @@
-import { BarChart3, Heart, RotateCw, Star } from 'lucide-react'
+import { ArrowRight, BarChart3, Heart, RotateCw, Sparkles, Star } from 'lucide-react'
 import { Link } from 'react-router'
 import { STATUS_ORDER } from '@shared/status.ts'
 import { KINDS, type LibraryStats } from '@shared/types.ts'
@@ -95,6 +95,26 @@ export default function StatsPage() {
               <Skeleton className="h-4 w-64" />
             ) : null}
           </div>
+          {data && !empty ? (
+            <Link
+              to="/stats/year"
+              className="group/year mt-6 flex items-center gap-4 rounded-xl bg-raised p-4 ring-1 ring-line ring-inset transition-colors hover:bg-hover sm:p-5"
+            >
+              <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-fg text-panel">
+                <Sparkles className="size-5" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-md font-semibold">
+                  {t('year.open', { year: new Date().getFullYear() })}
+                </span>
+                <span className="block text-sm text-fg-2">{t('year.openText')}</span>
+              </span>
+              <ArrowRight
+                className="size-5 shrink-0 text-fg-2 transition-transform group-hover/year:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </Link>
+          ) : null}
         </section>
 
         <div className="mt-8">
