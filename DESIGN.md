@@ -30,7 +30,11 @@ Strict black and white, in the spirit of Apple and ChatGPT. The layout follows H
   - 150–250 ms for UI, springs with no bounce.
   - The Shuffle reel decelerates over 2.6 s.
   - Everything respects reduced motion.
-- **Blur:** only on the sticky title bar after scrolling and on the mobile tab bar.
+- **Materials:**
+  - Flat surfaces (cards, panels, chips, lists) use `bg-raised` with a hairline (`ring-1 ring-line ring-inset`). Never glass.
+  - Glass (`.liquid-float`) only on layers that float above content: menus, popovers, selects, dialogs, the command palette, the mobile tab bar and the sticky title bar after scrolling.
+  - No coloured glows. The profile avatar sits in a page-coloured gap with a hairline ring, and an empty profile banner is a quiet `bg-raised` surface in the current theme, not a dark slab.
+  - Colour in the profile banner only comes from the user's posters, a favourite's backdrop or a gradient preset the user picked.
 - **Status glyphs**, distinguished by shape rather than colour:
   - dashed ring — planned
   - half-filled — in progress
