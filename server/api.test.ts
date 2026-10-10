@@ -391,11 +391,32 @@ describe('public profile', () => {
       favorite: true,
       rating: 9,
     })
+    const note = 'private note: rewatch the finale'
+    const noted = await t.request('PATCH', '/api/library/series-tt0903747', { notes: note })
+    expect(noted.status).toBe(200)
     const patched = await t.request('PATCH', '/api/me', { preferences: { banner: 'ocean' } })
     expect(patched.status).toBe(200)
 
     const res = await t.request('GET', `/api/users/${me.id}/profile`)
     expect(res.status).toBe(200)
+    // Entries carry public fields only: no notes, playthroughs, dates, platform or store.
+    expect(JSON.stringify(res.body)).not.toContain(note)
+    for (const list of [res.body.favorites, res.body.completed, res.body.inProgress])
+      for (const entry of list)
+        expect(Object.keys(entry).sort()).toEqual(
+          [
+            'favorite',
+            'hours',
+            'kind',
+            'progress',
+            'rating',
+            'status',
+            'title',
+            'titleId',
+            'totalEpisodes',
+            'watchedEpisodes',
+          ].sort(),
+        )
     expect(res.body.user).toMatchObject({ id: me.id, name: account.name, banner: 'ocean' })
     expect(res.body.user.email).toBeUndefined()
     expect(res.body.user.steamId).toBeUndefined()

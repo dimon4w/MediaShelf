@@ -1,5 +1,12 @@
 import { Hono } from 'hono'
-import type { ActivityItem, BannerId, PublicUser, UserProfile } from '../../shared/types.ts'
+import type {
+  ActivityItem,
+  BannerId,
+  LibraryEntry,
+  PublicEntry,
+  PublicUser,
+  UserProfile,
+} from '../../shared/types.ts'
 import type { AppDeps, AppEnv } from '../context.ts'
 import { requireUser } from '../context.ts'
 import { notFound } from '../http/errors.ts'
@@ -7,6 +14,22 @@ import { listActivity } from '../library/activity.ts'
 import { listEntries } from '../library/entries.ts'
 import { computeStats } from '../library/stats.ts'
 import { findUserById, toUser } from '../auth/users.ts'
+
+/** Whitelist, not blacklist: a new private field on LibraryEntry stays private by default. */
+function toPublicEntry(entry: LibraryEntry): PublicEntry {
+  return {
+    titleId: entry.titleId,
+    kind: entry.kind,
+    status: entry.status,
+    rating: entry.rating,
+    favorite: entry.favorite,
+    progress: entry.progress,
+    hours: entry.hours,
+    watchedEpisodes: entry.watchedEpisodes,
+    totalEpisodes: entry.totalEpisodes,
+    title: entry.title,
+  }
+}
 
 export function usersRoutes(deps: AppDeps) {
   const { db } = deps
@@ -53,9 +76,9 @@ export function usersRoutes(deps: AppDeps) {
       user: publicUser,
       stats,
       activity,
-      favorites: favourites,
-      completed,
-      inProgress,
+      favorites: favourites.map(toPublicEntry),
+      completed: completed.map(toPublicEntry),
+      inProgress: inProgress.map(toPublicEntry),
       heroPosters,
       bannerImage,
     }
