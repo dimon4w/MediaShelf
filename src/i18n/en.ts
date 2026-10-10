@@ -195,12 +195,11 @@ export const en: Messages = {
     guestText:
       'Track progress and episodes, keep playthroughs across platforms, rate what you love and find something for tonight.',
     featureEpisodesTitle: 'Seasons & episodes',
-    featureEpisodesText: 'Tick off episodes — MediaShell knows what to watch next.',
+    featureEpisodesText: 'Tick off episodes and MediaShell shows which one is next.',
     featurePlaythroughsTitle: 'Playthroughs',
     featurePlaythroughsText: 'Several runs of one game: PC, console, each with its own progress.',
     featureShuffleTitle: 'Shuffle',
-    featureShuffleText:
-      'Not sure where to start? A random pick from your plans or what is popular.',
+    featureShuffleText: 'A random pick from your plans or what is popular, when you cannot decide.',
     privateNote: 'Your library lives on your own server. No ads, no trackers.',
   },
   discover: {
@@ -276,7 +275,7 @@ export const en: Messages = {
     notFoundText: 'The link may be outdated or the source removed this page.',
     loadError: 'Could not load this page',
     offlineCopy: 'Showing a saved copy — the source is unavailable right now.',
-    notesPlaceholder: 'Thoughts, impressions, favourite moments…',
+    notesPlaceholder: 'Only you see this: impressions, where you stopped, who to watch with…',
     notesSaved: 'Note saved',
     started: 'Started',
     finished: 'Finished',
@@ -635,7 +634,7 @@ export const en: Messages = {
   },
   auth: {
     loginTitle: 'Sign in to MediaShell',
-    loginSubtitle: 'Welcome back! Your library is waiting.',
+    loginSubtitle: 'Email and password for your account on this server.',
     registerTitle: 'Create your account',
     registerSubtitle: 'Your library will be stored on this MediaShell server.',
     name: 'Name',

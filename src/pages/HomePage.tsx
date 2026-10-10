@@ -1,13 +1,4 @@
-import {
-  ArrowRight,
-  ArrowUp,
-  Compass,
-  Dices,
-  Layers,
-  LibraryBig,
-  ListChecks,
-  Plus,
-} from 'lucide-react'
+import { ArrowRight, ArrowUp, Compass, Dices, LibraryBig, Plus } from 'lucide-react'
 import { useMemo, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { KINDS, type Kind, type LibraryEntry } from '@shared/types.ts'
@@ -21,6 +12,7 @@ import { Segmented } from '@/components/ui/segmented'
 import { ActivityRow } from '@/components/ActivityRow'
 import { useErrorMessage } from '@/components/library-actions'
 import { useI18n } from '@/i18n'
+import { mergeActivity } from '@/lib/activity'
 import { cn } from '@/lib/cn'
 import { useDocumentTitle } from '@/lib/hooks'
 import { useActivity, useCharts, useLibrary, useMarkNext, useSession } from '@/lib/queries'
@@ -208,7 +200,12 @@ function Trending() {
 function Dashboard({ name }: { name: string }) {
   const { t } = useI18n()
   const library = useLibrary()
-  const activity = useActivity(8)
+  // Ask for a few more than we show: folding "added" + "rated" pairs shortens the list.
+  const activity = useActivity(14)
+  const activityItems = useMemo(
+    () => mergeActivity(activity.data ?? []).slice(0, 8),
+    [activity.data],
+  )
   const entries = useMemo(() => library.data ?? [], [library.data])
   const active = entries.filter((entry) => entry.status === 'in_progress')
   const planned = entries.filter((entry) => entry.status === 'planned').slice(0, 20)
@@ -249,8 +246,10 @@ function Dashboard({ name }: { name: string }) {
         <HomeSearch />
       </section>
 
-      {/* Popular first: the shelf is interesting even with an empty library. */}
-      {failed ? null : <Trending />}
+      {/* What you are in the middle of comes first. Popular leads only when there is nothing
+          to continue (it keeps an empty library interesting). While the library loads we assume
+          a returning user, so the order does not jump once it arrives. */}
+      {failed ? null : library.isLoading || active.length ? null : <Trending />}
 
       {failed ? null : (
         <section className="mt-12" aria-labelledby="continue-heading">
@@ -274,6 +273,8 @@ function Dashboard({ name }: { name: string }) {
           )}
         </section>
       )}
+
+      {failed ? null : library.isLoading || active.length ? <Trending /> : null}
 
       {failed ? null : planned.length ? (
         <section className="mt-12" aria-labelledby="planned-heading">
@@ -315,8 +316,10 @@ function Dashboard({ name }: { name: string }) {
         </section>
       )}
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_360px]">
-        {activity.data?.length ? (
+      {/* minmax(0,1fr): a bare 1fr track grows to the longest untruncated title, which pushed
+          the activity times off-screen and scrolled the phone layout sideways by 9px. */}
+      <div className="mt-12 grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        {activityItems.length ? (
           <section aria-labelledby="activity-heading">
             <SectionHeader
               id="activity-heading"
@@ -330,8 +333,8 @@ function Dashboard({ name }: { name: string }) {
                 </Button>
               }
             />
-            <ul className="-mx-2 grid">
-              {activity.data.map((item) => (
+            <ul className="-mx-2 grid grid-cols-[minmax(0,1fr)]">
+              {activityItems.map((item) => (
                 <ActivityRow key={item.id} item={item} />
               ))}
             </ul>
@@ -395,17 +398,9 @@ function Welcome() {
   const { t } = useI18n()
   const { openPalette } = useShell()
   const features = [
-    {
-      icon: ListChecks,
-      title: t('home.featureEpisodesTitle'),
-      text: t('home.featureEpisodesText'),
-    },
-    {
-      icon: Layers,
-      title: t('home.featurePlaythroughsTitle'),
-      text: t('home.featurePlaythroughsText'),
-    },
-    { icon: Dices, title: t('home.featureShuffleTitle'), text: t('home.featureShuffleText') },
+    { title: t('home.featureEpisodesTitle'), text: t('home.featureEpisodesText') },
+    { title: t('home.featurePlaythroughsTitle'), text: t('home.featurePlaythroughsText') },
+    { title: t('home.featureShuffleTitle'), text: t('home.featureShuffleText') },
   ]
   return (
     <>
@@ -425,14 +420,14 @@ function Welcome() {
         <p className="mt-4 text-sm text-fg-3">{t('home.privateNote')}</p>
       </section>
       <PosterWall />
-      <section className="relative -mt-10 grid gap-3 sm:grid-cols-3">
+      {/* Plain list with hairlines: three boxed icon cards were the stock landing-page look. */}
+      <section className="relative mt-4 grid border-t border-line sm:grid-cols-3 sm:divide-x sm:divide-line">
         {features.map((feature) => (
           <div
             key={feature.title}
-            className="relative rounded-xl bg-raised p-5 ring-1 ring-line ring-inset"
+            className="border-b border-line py-5 sm:border-b-0 sm:px-6 sm:first:pl-0 sm:last:pr-0"
           >
-            <feature.icon className="size-5 text-fg-2" />
-            <h2 className="mt-3 text-lg font-semibold tracking-tight">{feature.title}</h2>
+            <h2 className="text-md font-semibold tracking-tight">{feature.title}</h2>
             <p className="mt-1 text-base text-fg-2">{feature.text}</p>
           </div>
         ))}
