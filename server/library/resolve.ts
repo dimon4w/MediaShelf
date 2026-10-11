@@ -65,7 +65,10 @@ export async function titleDetails(
     const record = await withTimeout(fetchDetails(deps, id, locale, region), 15_000)
     if (record) return record
   } catch (error) {
+    // A slow or unreachable catalog should not hide a title the user just saw in a list.
     if (stored) return stored.record
+    const recent = deps.titles.recent(id)
+    if (recent) return recent
     throw error
   }
   if (stored) return stored.record

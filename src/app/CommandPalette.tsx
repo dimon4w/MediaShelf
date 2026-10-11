@@ -13,6 +13,7 @@ import { Kbd } from '@/components/ui/misc'
 import { useI18n } from '@/i18n'
 import { cn } from '@/lib/cn'
 import { useDebounced } from '@/lib/hooks'
+import { readRecent } from '@/lib/recent'
 import { useLibrary, useLibraryMap, useLogout, useSearch, useUser } from '@/lib/queries'
 import { titleHref, titleName, yearRange } from '@/lib/titles'
 import { NAV_ITEMS } from './Sidebar'
@@ -54,15 +55,23 @@ export function CommandPalette({
   }
 
   const query = normalise(value.trim())
+  // Opened lately: offered first when the palette is empty, so the way back is one keystroke.
+  const recent = useMemo(
+    () => (open && mode === 'search' && !query ? readRecent() : []),
+    [open, mode, query],
+  )
   const libraryMatches = useMemo(() => {
     if (!entries) return []
-    if (!query) return mode === 'search' ? entries.slice(0, 5) : []
+    if (!query)
+      return mode === 'search'
+        ? entries.filter((entry) => !recent.some((item) => item.id === entry.titleId)).slice(0, 5)
+        : []
     return entries
       .filter((entry) =>
         Object.values(entry.title.names).some((name) => name && normalise(name).includes(query)),
       )
       .slice(0, 6)
-  }, [entries, query, mode])
+  }, [entries, query, mode, recent])
 
   const catalogItems = (query.length >= 2 ? (search.data?.items ?? []) : []).filter(
     (item) => !libraryMatches.some((entry) => entry.titleId === item.id),
@@ -195,6 +204,9 @@ export function CommandPalette({
               )}
             </div>
             <Command.List className="max-h-[min(60vh,480px)] overflow-y-auto overscroll-contain p-2 [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-fg-3">
+              {recent.length ? (
+                <Command.Group heading={t('palette.recent')}>{recent.map(row)}</Command.Group>
+              ) : null}
               {libraryMatches.length ? (
                 <Command.Group heading={t('palette.library')}>
                   {libraryMatches.map((entry) => row(entry.title))}

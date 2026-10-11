@@ -94,6 +94,8 @@ export interface CatalogServiceOptions {
   now?: () => Date
   /** Longest a list waits for Russian titles from Wikidata (default 2.5 s). */
   labelBudgetMs?: number
+  /** Longest a search waits for any single source before answering without it (default 4 s). */
+  searchDeadlineMs?: number
 }
 
 export const PAGE_SIZE = 30
@@ -103,6 +105,9 @@ const SEARCH_TTL = 10 * MINUTE
 const DETAILS_TTL = 6 * HOUR
 const OFFERS_TTL = HOUR
 const PARTIAL_TTL = 2 * MINUTE
+/** A search that lost a slow source is retried soon: the late reply is already in the HTTP cache. */
+const SEARCH_PARTIAL_TTL = 2_000
+const SEARCH_SOURCE_DEADLINE_MS = 4_000
 const MIN_TOP_REVIEWS = 10_000
 const MIN_NEW_REVIEWS = 100
 
@@ -124,6 +129,23 @@ function settle<T>(promise: Promise<T>): Promise<{ value: T } | undefined> {
     (value) => ({ value }),
     () => undefined,
   )
+}
+
+/** Rejects when `promise` is still pending after `ms`; the promise itself is left running. */
+function beforeDeadline<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('Source deadline exceeded')), ms)
+    promise.then(
+      (value) => {
+        clearTimeout(timer)
+        resolve(value)
+      },
+      (error: unknown) => {
+        clearTimeout(timer)
+        reject(error)
+      },
+    )
+  })
 }
 
 function createMemo() {
@@ -201,6 +223,7 @@ export function createCatalogService(options: CatalogServiceOptions): CatalogSer
   const http = options.http ?? createHttpClient({ fetch: options.fetch })
   const now = options.now ?? (() => new Date())
   const cache = options.cache
+  const searchDeadlineMs = options.searchDeadlineMs ?? SEARCH_SOURCE_DEADLINE_MS
   const labels = createRuLabelResolver(http, cache, { budgetMs: options.labelBudgetMs })
   const memo = createMemo()
 
@@ -641,7 +664,11 @@ export function createCatalogService(options: CatalogServiceOptions): CatalogSer
       tasks.push({ source: 'shikimori', run: () => animeCandidates(query) })
     if (isCyrillic(query)) tasks.push({ source: 'wikidata', run: () => wikidataCandidates(query) })
 
-    const settled = await Promise.allSettled(tasks.map((task) => task.run()))
+    // A slow source is reported as failed instead of holding the whole answer back. Its request
+    // keeps running, and the reply lands in the HTTP cache for the next (soon repeated) search.
+    const settled = await Promise.allSettled(
+      tasks.map((task) => beforeDeadline(task.run(), searchDeadlineMs)),
+    )
     const failed = unique(
       tasks.filter((_, index) => settled[index].status === 'rejected').map((task) => task.source),
     )
@@ -661,7 +688,7 @@ export function createCatalogService(options: CatalogServiceOptions): CatalogSer
     if (normalized.length < 2) return { items: [], failed: [] }
     const result = await memo(
       `search:${kind}:${normalized.toLowerCase()}`,
-      (value: SearchResult) => (value.failed.length ? PARTIAL_TTL : SEARCH_TTL),
+      (value: SearchResult) => (value.failed.length ? SEARCH_PARTIAL_TTL : SEARCH_TTL),
       () => runSearch(normalized, kind),
     )
     return structuredClone({ items: await localise(result.items, ctx), failed: result.failed })

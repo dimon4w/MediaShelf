@@ -1,85 +1,57 @@
-import type { CSSProperties } from 'react'
 import type { User } from '@shared/types.ts'
 import { cn } from '@/lib/cn'
 import { customAvatar } from '@/lib/device'
+import {
+  AVATAR_IDS,
+  AvatarFigure,
+  isAvatarId,
+  isBackgroundId,
+  variantCount,
+  type AvatarId,
+  type BackgroundId,
+} from './avatar-art'
 
-/**
- * Monochrome avatars: OpenMoji "black" set (CC BY-SA 4.0,
- * https://openmoji.org) served from /public/avatars. The SVGs are black line
- * art, so they render through a CSS mask over a solid fill — the fill colour
- * is the user-chosen outline colour.
- */
-export const AVATARS = [
-  'dog',
-  'cat',
-  'mouse',
-  'hamster',
-  'rabbit',
-  'fox',
-  'bear',
-  'panda',
-  'raccoon',
-  'koala',
-  'tiger',
-  'lion',
-  'cow',
-  'pig',
-  'frog',
-  'monkey',
-  'unicorn',
-  'horse',
-  'zebra',
-  'sheep',
-  'goat',
-  'chicken',
-  'penguin',
-  'owl',
-  'duck',
-  'swan',
-  'parrot',
-  'turtle',
-  'fish',
-  'blowfish',
-  'whale',
-  'dolphin',
-  'octopus',
-  'crab',
-  'snail',
-  'butterfly',
-  'bee',
-  'ladybug',
-  'elephant',
-  'gorilla',
-  'computer',
-  'laptop',
-  'gamepad',
-  'joystick',
-  'tv',
-  'film',
-  'popcorn',
-  'rocket',
-  'robot',
-  'alien',
-  'ghost',
-  'dino',
-] as const
-export type AvatarId = (typeof AVATARS)[number]
+export const AVATARS = AVATAR_IDS
+export type { AvatarId, BackgroundId }
 
-/** Fill colours for the avatar line art. `auto` follows the theme foreground. */
-export const AVATAR_COLOR_HEX: Record<string, string> = {
-  auto: 'var(--fg)',
-  blue: '#3b82f6',
-  violet: '#8b5cf6',
-  pink: '#ec4899',
-  orange: '#f97316',
-  red: '#ef4444',
-  sky: '#38bdf8',
-  yellow: '#eab308',
-  green: '#22c55e',
-}
+/** An uploaded picture lives on this device; 'custom' without one falls back to a character. */
+export const CUSTOM_AVATAR_ID = 'custom'
 
-export function isAvatarId(value: unknown): value is AvatarId {
-  return typeof value === 'string' && (AVATARS as readonly string[]).includes(value)
+/** Ids from the earlier line-art set map to the nearest illustrated character. */
+const LEGACY: Record<string, AvatarId> = {
+  chicken: 'chick',
+  duck: 'chick',
+  swan: 'chick',
+  bee: 'chick',
+  popcorn: 'chick',
+  hamster: 'bear',
+  mouse: 'rabbit',
+  cow: 'pig',
+  horse: 'unicorn',
+  zebra: 'unicorn',
+  butterfly: 'unicorn',
+  sheep: 'koala',
+  goat: 'koala',
+  elephant: 'koala',
+  parrot: 'owl',
+  turtle: 'frog',
+  snail: 'frog',
+  ladybug: 'frog',
+  dino: 'frog',
+  fish: 'penguin',
+  blowfish: 'penguin',
+  whale: 'penguin',
+  dolphin: 'penguin',
+  octopus: 'alien',
+  crab: 'raccoon',
+  gorilla: 'monkey',
+  computer: 'robot',
+  laptop: 'robot',
+  gamepad: 'robot',
+  joystick: 'robot',
+  tv: 'robot',
+  rocket: 'robot',
+  film: 'ghost',
 }
 
 function hashSeed(value: string) {
@@ -89,31 +61,50 @@ function hashSeed(value: string) {
   return Math.abs(hash)
 }
 
-/** An uploaded picture lives on this device; 'custom' without one falls back to a beast. */
-export const CUSTOM_AVATAR_ID = 'custom'
+type AvatarSource = Pick<User, 'id' | 'preferences'>
 
-/** The chosen avatar id, or a stable one derived from the user id. */
-export function avatarFor(user: Pick<User, 'id' | 'preferences'>): string {
+/** The chosen avatar id, a legacy id mapped to a character, or a stable one from the user id. */
+export function avatarFor(user: AvatarSource): string {
   const chosen = user.preferences.avatar
   if (chosen === CUSTOM_AVATAR_ID && customAvatar(user.id)) return CUSTOM_AVATAR_ID
   if (chosen && isAvatarId(chosen)) return chosen
-  return AVATARS[hashSeed(user.id) % AVATARS.length]
+  if (chosen && chosen in LEGACY) return LEGACY[chosen]
+  return AVATAR_IDS[hashSeed(user.id) % AVATAR_IDS.length]
 }
 
-/** The chosen outline colour, or `auto` when unset/unknown. */
-export function avatarColorFor(user: Pick<User, 'id' | 'preferences'>): string {
-  const chosen = user.preferences.avatarColor
-  return chosen && chosen in AVATAR_COLOR_HEX ? chosen : 'auto'
+/** Background pick, or undefined to keep the character's own. */
+export function avatarBgFor(user: AvatarSource): BackgroundId | undefined {
+  const chosen = user.preferences.avatarBg
+  return isBackgroundId(chosen) ? chosen : undefined
 }
 
+export function avatarVariantFor(user: AvatarSource): number {
+  const id = avatarFor(user)
+  const chosen = user.preferences.avatarVariant
+  if (!isAvatarId(id)) return 0
+  return Number.isInteger(chosen) &&
+    (chosen as number) >= 0 &&
+    (chosen as number) < variantCount(id)
+    ? (chosen as number)
+    : 0
+}
+
+/** Everything needed to draw a user's avatar. */
+export function avatarLookFor(user: AvatarSource) {
+  return { id: avatarFor(user), bg: avatarBgFor(user), variant: avatarVariantFor(user) }
+}
+
+/** The picture itself (character on its background, or the uploaded image), filling its box. */
 export function AvatarArt({
   id,
-  color,
+  bg,
+  variant,
   userId,
   className,
 }: {
   id: string
-  color: string
+  bg?: BackgroundId
+  variant?: number
   userId?: string
   className?: string
 }) {
@@ -125,25 +116,23 @@ export function AvatarArt({
           src={src}
           alt=""
           draggable={false}
-          className={cn('size-[88%] rounded-full object-cover', className)}
+          className={cn('size-full rounded-full object-cover', className)}
         />
       )
   }
-  const style = {
-    '--art': `url(/avatars/${id}.svg)`,
-    backgroundColor: AVATAR_COLOR_HEX[color] ?? AVATAR_COLOR_HEX.auto,
-  } as CSSProperties
-  return <span aria-hidden="true" style={style} className={cn('avatar-art', className)} />
+  const character = isAvatarId(id) ? id : AVATAR_IDS[0]
+  return (
+    <AvatarFigure
+      id={character}
+      bg={bg}
+      variant={variant}
+      className={cn('block size-full', className)}
+    />
+  )
 }
 
-export function UserAvatar({
-  user,
-  className,
-}: {
-  user: Pick<User, 'id' | 'preferences'>
-  className?: string
-}) {
-  const id = avatarFor(user)
+export function UserAvatar({ user, className }: { user: AvatarSource; className?: string }) {
+  const look = avatarLookFor(user)
   return (
     <span
       aria-hidden="true"
@@ -152,7 +141,7 @@ export function UserAvatar({
         className,
       )}
     >
-      <AvatarArt id={id} color={avatarColorFor(user)} userId={user.id} className="size-[62%]" />
+      <AvatarArt {...look} userId={user.id} />
     </span>
   )
 }

@@ -32,7 +32,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { EmptyState, SectionHeader, Skeleton } from '@/components/ui/misc'
 import { useI18n } from '@/i18n'
 import { mergeActivity } from '@/lib/activity'
-import { bannerBackground } from '@/lib/banners'
+import { bannerBackground, isGradientBanner } from '@/lib/banners'
 import { cn } from '@/lib/cn'
 import { useDocumentTitle } from '@/lib/hooks'
 import { useSession, useUserProfile } from '@/lib/queries'
@@ -43,7 +43,11 @@ import { statusLabelKey, titleHref, titleName } from '@/lib/titles'
 function avatarUser(user: PublicUser): Pick<User, 'id' | 'preferences'> {
   return {
     id: user.id,
-    preferences: { avatar: user.avatar, avatarColor: user.avatarColor } as User['preferences'],
+    preferences: {
+      avatar: user.avatar,
+      avatarBg: user.avatarBg,
+      avatarVariant: user.avatarVariant,
+    } as User['preferences'],
   }
 }
 
@@ -58,7 +62,7 @@ function avatarUser(user: PublicUser): Pick<User, 'id' | 'preferences'> {
  */
 function Banner({ profile }: { profile: UserProfile }) {
   const { user, bannerImage, heroPosters } = profile
-  const preset = user.banner !== 'none' && user.banner !== 'favorite'
+  const preset = isGradientBanner(user.banner)
   // The collage stands in for "no background" and for a favourite without a backdrop. A chosen
   // gradient preset is the background itself, so posters must not cover it.
   const collage = !bannerImage && !preset ? heroPosters : []

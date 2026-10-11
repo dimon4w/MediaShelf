@@ -170,41 +170,49 @@ export interface UserPreferences {
   region: string
   platforms: PlatformId[]
   stores: StoreId[]
-  /** OpenMoji avatar id; unset = derived from the user id. */
+  /** Illustrated avatar character id; unset = derived from the user id. */
   avatar?: string
-  /** Avatar outline colour id; unset = theme foreground. */
-  avatarColor?: string
+  /** Avatar background colour id ('auto' or unset = the character's own). */
+  avatarBg?: string
+  /** Index of the character's colour variant; unset = 0. */
+  avatarVariant?: number
   /** Linked SteamID64; set only by the server after Steam OpenID login. */
   steamId?: string
   /** Profile banner preset or 'favorite' for the first favourite title's backdrop. */
   banner?: BannerId
+  /** Library title whose backdrop is the cover when banner is 'title'. */
+  bannerTitleId?: string
 }
 
-export const AVATAR_COLORS = [
-  'auto',
-  'blue',
-  'violet',
-  'pink',
-  'orange',
-  'red',
+/** Background colours an avatar can sit on; 'auto' keeps each character's own. */
+export const AVATAR_BG_IDS = [
+  'mint',
   'sky',
-  'yellow',
-  'green',
+  'lavender',
+  'pink',
+  'peach',
+  'sun',
+  'coral',
+  'sage',
+  'slate',
+  'cream',
+  'night',
 ] as const
-export type AvatarColor = (typeof AVATAR_COLORS)[number]
+export type AvatarBgId = (typeof AVATAR_BG_IDS)[number]
 
-/** Preset profile banners: colour gradients or the favourite title's backdrop. */
+/**
+ * Profile cover: a collage of the user's posters ('none'), the first favourite's backdrop,
+ * the backdrop of a library title the user picked, an uploaded picture, or a quiet gradient.
+ */
 export const BANNERS = [
   'none',
   'favorite',
+  'title',
+  'image',
   'sunset',
   'ocean',
   'forest',
   'lavender',
-  'candy',
-  'steel',
-  'sunrise',
-  'midnight',
 ] as const
 export type BannerId = (typeof BANNERS)[number]
 
@@ -222,7 +230,8 @@ export interface PublicUser {
   name: string
   createdAt: string
   avatar?: string
-  avatarColor?: string
+  avatarBg?: string
+  avatarVariant?: number
   banner: BannerId
   /** A Steam account is linked; the SteamID itself stays private. */
   steamLinked: boolean

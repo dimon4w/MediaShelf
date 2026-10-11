@@ -173,6 +173,11 @@ export function steamAppRecord(appid: number, name: string): TitleRecord {
 export interface SteamImportResult {
   total: number
   imported: number
+  /** Already in the library: left untouched. */
+  existing: number
+  /** Could not be stored. */
+  failed: number
+  /** existing + failed, kept for older clients. */
   skipped: number
 }
 
@@ -184,7 +189,8 @@ export function importSteamLibrary(
   games: OwnedGame[],
 ): SteamImportResult {
   let imported = 0
-  let skipped = 0
+  let existing = 0
+  let failed = 0
   for (const game of games) {
     try {
       const record = steamAppRecord(game.appid, game.name)
@@ -193,7 +199,7 @@ export function importSteamLibrary(
         status: game.playtimeMinutes > 0 ? 'in_progress' : 'planned',
       }).created
       if (!created) {
-        skipped += 1
+        existing += 1
         continue
       }
       updateEntry(db, userId, record.id, {
@@ -203,8 +209,8 @@ export function importSteamLibrary(
       })
       imported += 1
     } catch {
-      skipped += 1
+      failed += 1
     }
   }
-  return { total: games.length, imported, skipped }
+  return { total: games.length, imported, existing, failed, skipped: existing + failed }
 }

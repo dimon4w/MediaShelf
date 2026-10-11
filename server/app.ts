@@ -45,8 +45,19 @@ export function createApp(deps: AppDeps) {
       throw new ApiError(413, 'PAYLOAD_TOO_LARGE', 'Request body too large')
     },
   })
+  // A cover is a base64 data URL in JSON: about a third bigger than the 1.5 MB picture itself.
+  const coverBody = bodyLimit({
+    maxSize: 3 * MB,
+    onError: () => {
+      throw new ApiError(413, 'PAYLOAD_TOO_LARGE', 'Request body too large')
+    },
+  })
   api.use('*', (c, next) =>
-    c.req.path === '/api/me/import' ? largeBody(c, next) : smallBody(c, next),
+    c.req.path === '/api/me/import'
+      ? largeBody(c, next)
+      : c.req.path === '/api/me/cover'
+        ? coverBody(c, next)
+        : smallBody(c, next),
   )
   api.use('*', sameOriginOnly(config))
   api.use('*', async (c, next) => {

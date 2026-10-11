@@ -281,6 +281,11 @@
     -webkit-mask-size: contain;
     mask-size: contain;
   }
+  /* While the shell scroller moves, the page ignores the pointer. The scroller itself still
+     receives wheel input; only hover states (lifting cards, zooming covers) pause. */
+  [data-scrolling] > * {
+    pointer-events: none;
+  }
   .no-scrollbar {
     scrollbar-width: none;
   }

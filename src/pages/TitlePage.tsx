@@ -1,5 +1,5 @@
 import { ExternalLink, MoreHorizontal, Play, SearchX, Trash2, WifiOff } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { parseTitleId } from '@shared/ids.ts'
 import type { TitleRecord } from '@shared/types.ts'
@@ -25,6 +25,7 @@ import {
   titleName,
   yearRange,
 } from '@/lib/titles'
+import { rememberTitle } from '@/lib/recent'
 import { DetailsSection } from './title/DetailsSection'
 import { AddPanel, EntryPanel } from './title/EntryPanel'
 import { AchievementsSection } from './title/AchievementsSection'
@@ -241,6 +242,10 @@ export default function TitlePage() {
   const { t, locale } = useI18n()
   const valid = Boolean(parseTitleId(id))
   const query = useTitle(id, valid)
+  const loaded = query.data
+  useEffect(() => {
+    if (loaded) rememberTitle(loaded)
+  }, [loaded])
   const entry = useEntry(id)
   const actions = useLibraryActions()
   const [confirmRemove, setConfirmRemove] = useState(false)

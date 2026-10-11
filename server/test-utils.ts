@@ -147,11 +147,15 @@ export function testApp(catalog: CatalogService = fakeCatalog(), { limits = fals
       cookie = /=$/.test(value) || /Max-Age=0/i.test(setCookie) ? '' : value
     }
     const text = await response.text()
-    return {
-      status: response.status,
-      headers: response.headers,
-      body: text ? JSON.parse(text) : null,
+    let parsed: any = null // eslint-disable-line @typescript-eslint/no-explicit-any
+    if (text) {
+      try {
+        parsed = JSON.parse(text)
+      } catch {
+        parsed = text // not JSON: an image or plain text
+      }
     }
+    return { status: response.status, headers: response.headers, body: parsed }
   }
   return { app, db, request, clearCookie: () => (cookie = '') }
 }

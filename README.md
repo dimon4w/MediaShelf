@@ -151,4 +151,4 @@ MediaShell is a self-hosted library for games, movies, series and anime. It has 
 
 ## Credits
 
-Animal avatars use [OpenMoji](https://openmoji.org) (black set), licensed CC BY-SA 4.0.
+Avatars are original vector characters drawn as SVG components (`src/components/avatar-art.tsx`).

@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 import {
   loginSchema,
   registerResendSchema,
@@ -20,7 +21,12 @@ import {
   deleteSession,
   writeSessionCookie,
 } from '../auth/sessions.ts'
-import { steamAuthUrl, verifySteamCallback } from '../auth/steam.ts'
+import {
+  steamAuthUrl,
+  steamLoginCancelled,
+  steamOrigin,
+  verifySteamCallback,
+} from '../auth/steam.ts'
 import {
   countUsers,
   defaultPreferences,
@@ -161,23 +167,49 @@ export function authRoutes(deps: AppDeps) {
 
   // Steam linking via OpenID: the user approves on steamcommunity.com,
   // Steam calls back, we verify and remember the SteamID64.
+  // Where the browser lands afterwards is kept in a short-lived cookie, so the same flow serves
+  // the welcome wizard and the settings page.
+  const STEAM_RETURN_COOKIE = 'steam_return'
+  const steamReturn = { welcome: '/welcome?step=stores', settings: '/settings/games' } as const
+
   app.get('/steam/start', (c) => {
     if (!c.get('user')) throw unauthorized()
-    if (!config.publicUrl) throw new ApiError(400, 'BAD_REQUEST', 'Public URL is not configured')
-    return c.redirect(steamAuthUrl(config))
+    const origin = steamOrigin(c, config)
+    const target = c.req.query('return') === 'settings' ? 'settings' : 'welcome'
+    setCookie(c, STEAM_RETURN_COOKIE, target, {
+      httpOnly: true,
+      sameSite: 'Lax',
+      secure: origin.startsWith('https://'),
+      path: '/api/auth/steam',
+      maxAge: 600,
+    })
+    return c.redirect(steamAuthUrl(origin))
   })
 
   app.get('/steam/callback', async (c) => {
     const user = c.get('user')
     if (!user) return c.redirect('/login?next=/welcome?step=stores', 302)
-    const steamId = await verifySteamCallback(c.req.query())
-    const preferences = {
-      ...defaultPreferences(),
-      ...JSON.parse(user.preferences),
-      steamId,
+    const back =
+      steamReturn[getCookie(c, STEAM_RETURN_COOKIE) === 'settings' ? 'settings' : 'welcome']
+    deleteCookie(c, STEAM_RETURN_COOKIE, { path: '/api/auth/steam' })
+    const landing = (status: string) =>
+      c.redirect(`${back}${back.includes('?') ? '&' : '?'}steam=${status}`, 302)
+    const query = c.req.query()
+    if (steamLoginCancelled(query)) return landing('cancelled')
+    try {
+      const steamId = await verifySteamCallback(query, steamOrigin(c, config))
+      const preferences = {
+        ...defaultPreferences(),
+        ...JSON.parse(user.preferences),
+        steamId,
+      }
+      updateUser(db, user.id, { preferences })
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error
+      // A readable message on the settings page beats a raw JSON error in the browser.
+      return landing(error.code === 'CATALOG_UNAVAILABLE' ? 'unreachable' : 'rejected')
     }
-    updateUser(db, user.id, { preferences })
-    return c.redirect('/welcome?step=stores&steam=connected', 302)
+    return landing('connected')
   })
 
   return app

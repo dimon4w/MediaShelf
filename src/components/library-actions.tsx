@@ -7,6 +7,14 @@ import { ApiError } from '@/lib/api'
 import { useAddEntry, useRemoveEntry, useUpdateEntry, useUser } from '@/lib/queries'
 import { statusLabelKey, titleName } from '@/lib/titles'
 
+/** Failures that usually pass on their own: worth offering "Try again". */
+function isTemporary(error: unknown) {
+  return (
+    error instanceof ApiError &&
+    (error.code === 'NETWORK' || error.code === 'CATALOG_UNAVAILABLE' || error.code === 'INTERNAL')
+  )
+}
+
 export function useErrorMessage() {
   const { t } = useI18n()
   return (error: unknown) => {
@@ -55,26 +63,34 @@ export function useLibraryActions() {
     pending: add.isPending || update.isPending || remove.isPending,
     add(title: TitleRecord, status: Status = 'planned') {
       if (!requireAuth()) return
-      add.mutate(
-        { title, status },
-        {
-          onSuccess: ({ entry, created }) =>
-            toast(
-              created
-                ? t('toast.added')
-                : t('toast.statusChanged', {
-                    title: titleName(title.names, locale),
-                    status: statusText(entry, status),
-                  }),
-              {
-                description: created
-                  ? `${titleName(title.names, locale)} · ${statusText(entry, status)}`
+      const attempt = () =>
+        add.mutate(
+          { title, status },
+          {
+            onSuccess: ({ entry, created }) =>
+              toast(
+                created
+                  ? t('toast.added')
+                  : t('toast.statusChanged', {
+                      title: titleName(title.names, locale),
+                      status: statusText(entry, status),
+                    }),
+                {
+                  description: created
+                    ? `${titleName(title.names, locale)} · ${statusText(entry, status)}`
+                    : undefined,
+                },
+              ),
+            onError: (error) =>
+              toast.error(
+                message(error),
+                isTemporary(error)
+                  ? { action: { label: t('common.retry'), onClick: attempt } }
                   : undefined,
-              },
-            ),
-          onError: (error) => toast.error(message(error)),
-        },
-      )
+              ),
+          },
+        )
+      attempt()
     },
     setStatus(entry: LibraryEntry, status: Status, extra: EntryPatch = {}) {
       if (entry.status === status && !Object.keys(extra).length) return

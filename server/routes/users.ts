@@ -9,6 +9,8 @@ import type {
 } from '../../shared/types.ts'
 import type { AppDeps, AppEnv } from '../context.ts'
 import { requireUser } from '../context.ts'
+import { coverVersion, getCover } from '../auth/covers.ts'
+import { BANNERS } from '../../shared/types.ts'
 import { notFound } from '../http/errors.ts'
 import { listActivity } from '../library/activity.ts'
 import { listEntries } from '../library/entries.ts'
@@ -35,6 +37,20 @@ export function usersRoutes(deps: AppDeps) {
   const { db } = deps
   const app = new Hono<AppEnv>()
 
+  app.get('/:id/cover', (c) => {
+    requireUser(c)
+    const cover = getCover(db, c.req.param('id'))
+    if (!cover) throw notFound('No cover')
+    // Revalidated on every use: a replaced cover shows up at once, an unchanged one costs a 304.
+    const etag = `"${cover.version}"`
+    const headers = { ETag: etag, 'Cache-Control': 'private, no-cache' }
+    if (c.req.header('if-none-match') === etag) return c.body(null, 304, headers)
+    return c.body(cover.data as Uint8Array<ArrayBuffer>, 200, {
+      ...headers,
+      'Content-Type': cover.mime,
+    })
+  })
+
   app.get('/:id/profile', (c) => {
     requireUser(c)
     const id = c.req.param('id')
@@ -43,13 +59,18 @@ export function usersRoutes(deps: AppDeps) {
 
     const user = toUser(row)
     const prefs = user.preferences
+    // Covers from the earlier preset list fall back to the poster collage.
+    const banner: BannerId = (BANNERS as readonly string[]).includes(prefs.banner ?? 'none')
+      ? (prefs.banner ?? 'none')
+      : 'none'
     const publicUser: PublicUser = {
       id: user.id,
       name: user.name,
       createdAt: user.createdAt,
       avatar: prefs.avatar,
-      avatarColor: prefs.avatarColor,
-      banner: (prefs.banner ?? 'none') as BannerId,
+      avatarBg: prefs.avatarBg,
+      avatarVariant: prefs.avatarVariant,
+      banner,
       steamLinked: Boolean(prefs.steamId),
     }
 
@@ -75,8 +96,15 @@ export function usersRoutes(deps: AppDeps) {
       offsetMinutes: Number.isFinite(offset) ? offset : 0,
     })
 
-    const bannerImage =
-      prefs.banner === 'favorite' ? (favourites[0]?.title?.backdrop ?? null) : null
+    let bannerImage: string | null = null
+    if (banner === 'favorite') bannerImage = favourites[0]?.title?.backdrop ?? null
+    else if (banner === 'title') {
+      const picked = all.find((entry) => entry.titleId === prefs.bannerTitleId)
+      bannerImage = picked?.title?.backdrop ?? picked?.title?.poster ?? null
+    } else if (banner === 'image') {
+      const version = coverVersion(db, id)
+      bannerImage = version ? `/api/users/${id}/cover?v=${version}` : null
+    }
 
     const profile: UserProfile = {
       user: publicUser,
