@@ -189,7 +189,8 @@ export function authRoutes(deps: AppDeps) {
   app.get('/steam/callback', async (c) => {
     const user = c.get('user')
     if (!user) return c.redirect('/login?next=/welcome?step=stores', 302)
-    const back = steamReturn[getCookie(c, STEAM_RETURN_COOKIE) === 'settings' ? 'settings' : 'welcome']
+    const back =
+      steamReturn[getCookie(c, STEAM_RETURN_COOKIE) === 'settings' ? 'settings' : 'welcome']
     deleteCookie(c, STEAM_RETURN_COOKIE, { path: '/api/auth/steam' })
     const landing = (status: string) =>
       c.redirect(`${back}${back.includes('?') ? '&' : '?'}steam=${status}`, 302)

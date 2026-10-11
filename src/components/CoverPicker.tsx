@@ -125,7 +125,10 @@ export function CoverPicker({ user }: { user: User }) {
   const coverUrl = `/api/users/${user.id}/cover?v=${stamp}`
 
   const refresh = () => client.invalidateQueries({ queryKey: keys.profile(user.id) })
-  const choose = (preferences: { banner: (typeof user.preferences)['banner']; bannerTitleId?: string }) =>
+  const choose = (preferences: {
+    banner: (typeof user.preferences)['banner']
+    bannerTitleId?: string
+  }) =>
     update.mutate(
       { preferences },
       { onSuccess: () => void refresh(), onError: (error) => toast.error(message(error)) },
@@ -176,7 +179,11 @@ export function CoverPicker({ user }: { user: User }) {
 
   return (
     <div className="grid gap-5">
-      <div role="radiogroup" aria-label={t('profileLook.coverTitle')} className="grid grid-cols-2 items-start gap-x-3 gap-y-4 sm:grid-cols-[repeat(4,minmax(0,1fr))]">
+      <div
+        role="radiogroup"
+        aria-label={t('profileLook.coverTitle')}
+        className="grid grid-cols-2 items-start gap-x-3 gap-y-4 sm:grid-cols-[repeat(4,minmax(0,1fr))]"
+      >
         <Tile
           active={current === 'none'}
           label={t('profileLook.coverCollage')}
@@ -186,7 +193,13 @@ export function CoverPicker({ user }: { user: User }) {
           {posters.length ? (
             <span className="absolute -inset-3 grid grid-cols-3 blur-lg saturate-150">
               {posters.slice(0, 3).map((src) => (
-                <img key={src} src={src} alt="" referrerPolicy="no-referrer" className="size-full object-cover" />
+                <img
+                  key={src}
+                  src={src}
+                  alt=""
+                  referrerPolicy="no-referrer"
+                  className="size-full object-cover"
+                />
               ))}
             </span>
           ) : null}
@@ -200,7 +213,12 @@ export function CoverPicker({ user }: { user: User }) {
           onClick={() => choose({ banner: 'favorite' })}
         >
           {favourite?.backdrop ? (
-            <img src={favourite.backdrop} alt="" referrerPolicy="no-referrer" className="absolute inset-0 size-full object-cover" />
+            <img
+              src={favourite.backdrop}
+              alt=""
+              referrerPolicy="no-referrer"
+              className="absolute inset-0 size-full object-cover"
+            />
           ) : (
             <Placeholder icon={<Heart />} text={t('profileLook.coverFavoriteEmpty')} />
           )}
@@ -241,11 +259,18 @@ export function CoverPicker({ user }: { user: User }) {
                 onError={() => setHasCover(false)}
               />
             ) : null}
-            {!hasCover ? <Placeholder icon={<ImagePlus />} text={t('profileLook.coverImageEmpty')} /> : null}
+            {!hasCover ? (
+              <Placeholder icon={<ImagePlus />} text={t('profileLook.coverImageEmpty')} />
+            ) : null}
           </Tile>
           {hasCover ? (
             <div className="mt-1 flex flex-wrap gap-x-1">
-              <Button variant="ghost" size="xs" disabled={busy} onClick={() => file.current?.click()}>
+              <Button
+                variant="ghost"
+                size="xs"
+                disabled={busy}
+                onClick={() => file.current?.click()}
+              >
                 {t('profileLook.coverReplace')}
               </Button>
               <Button variant="ghost" size="xs" disabled={busy} onClick={() => void removeCover()}>
@@ -270,7 +295,11 @@ export function CoverPicker({ user }: { user: User }) {
 
       <div className="grid gap-2">
         <p className="text-sm font-medium">{t('profileLook.coverColors')}</p>
-        <div role="radiogroup" aria-label={t('profileLook.coverColors')} className="flex flex-wrap gap-2.5">
+        <div
+          role="radiogroup"
+          aria-label={t('profileLook.coverColors')}
+          className="flex flex-wrap gap-2.5"
+        >
           {GRADIENT_BANNERS.map((id) => (
             <button
               key={id}
@@ -336,7 +365,9 @@ export function CoverPicker({ user }: { user: User }) {
             </div>
           ) : (
             <p className="py-10 text-center text-sm text-fg-3">
-              {library.data?.length ? t('profileLook.coverNoMatch') : t('profileLook.coverNoTitles')}
+              {library.data?.length
+                ? t('profileLook.coverNoMatch')
+                : t('profileLook.coverNoTitles')}
             </p>
           )}
         </DialogContent>

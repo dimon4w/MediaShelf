@@ -87,7 +87,15 @@ function Step({ n, children }: { n: number; children: ReactNode }) {
 }
 
 /** Own Steam Web API key: numbered mini-guide with the paste field right under it. */
-function KeyPanel({ status, open, onToggle }: { status: SteamStatus; open: boolean; onToggle(): void }) {
+function KeyPanel({
+  status,
+  open,
+  onToggle,
+}: {
+  status: SteamStatus
+  open: boolean
+  onToggle(): void
+}) {
   const { t } = useI18n()
   const client = useQueryClient()
   const message = useErrorMessage()
@@ -133,8 +141,12 @@ function KeyPanel({ status, open, onToggle }: { status: SteamStatus; open: boole
         className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-fg hover:bg-hover"
       >
         <KeyRound className="size-4 text-fg-3" />
-        <span className="flex-1">{open ? t('steamConnect.keyToggleClose') : t('steamConnect.keyToggleOpen')}</span>
-        <ChevronDown className={cn('size-4 text-fg-3 transition-transform', open && 'rotate-180')} />
+        <span className="flex-1">
+          {open ? t('steamConnect.keyToggleClose') : t('steamConnect.keyToggleOpen')}
+        </span>
+        <ChevronDown
+          className={cn('size-4 text-fg-3 transition-transform', open && 'rotate-180')}
+        />
       </button>
       {open ? (
         <div className="grid gap-4 border-t border-line px-3 py-4">
@@ -359,7 +371,11 @@ function SteamCard({ user }: { user: User }) {
         </div>
         <div className="flex items-center gap-1">
           <Button asChild variant="ghost" size="sm">
-            <a href={`https://steamcommunity.com/profiles/${steamId}`} target="_blank" rel="noreferrer">
+            <a
+              href={`https://steamcommunity.com/profiles/${steamId}`}
+              target="_blank"
+              rel="noreferrer"
+            >
               {t('steamConnect.openProfile')}
               <ExternalLink />
             </a>

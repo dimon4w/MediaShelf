@@ -54,7 +54,8 @@ export const profileLookRu = {
 
 export const profileLookEn: typeof profileLookRu = {
   title: 'Profile look',
-  pickerHint: '20 characters, each with its own background and colours. Or upload your own picture.',
+  pickerHint:
+    '20 characters, each with its own background and colours. Or upload your own picture.',
   characters: 'Character',
   background: 'Background',
   backgroundAuto: 'As designed',

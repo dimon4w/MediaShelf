@@ -45,7 +45,10 @@ export function usersRoutes(deps: AppDeps) {
     const etag = `"${cover.version}"`
     const headers = { ETag: etag, 'Cache-Control': 'private, no-cache' }
     if (c.req.header('if-none-match') === etag) return c.body(null, 304, headers)
-    return c.body(cover.data as Uint8Array<ArrayBuffer>, 200, { ...headers, 'Content-Type': cover.mime })
+    return c.body(cover.data as Uint8Array<ArrayBuffer>, 200, {
+      ...headers,
+      'Content-Type': cover.mime,
+    })
   })
 
   app.get('/:id/profile', (c) => {

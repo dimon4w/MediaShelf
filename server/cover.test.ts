@@ -35,7 +35,9 @@ describe('profile cover', () => {
   it('rejects anything that is not a real image', async () => {
     const { t } = await signedIn()
     const text = Buffer.from('<script>alert(1)</script>').toString('base64')
-    const fake = await t.request('PUT', '/api/me/cover', { dataUrl: `data:image/png;base64,${text}` })
+    const fake = await t.request('PUT', '/api/me/cover', {
+      dataUrl: `data:image/png;base64,${text}`,
+    })
     expect(fake.status).toBe(400)
     const svg = await t.request('PUT', '/api/me/cover', {
       dataUrl: `data:image/svg+xml;base64,${text}`,

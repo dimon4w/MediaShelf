@@ -10,7 +10,9 @@ const HOST_PATTERN = /^[a-z0-9.-]+(:\d{1,5})?$|^\[[0-9a-f:]+\](:\d{1,5})?$/i
 
 export function isLoopbackHost(hostname: string): boolean {
   const host = hostname.toLowerCase().replace(/^\[|\]$/g, '')
-  return host === 'localhost' || host.endsWith('.localhost') || host === '::1' || /^127\./.test(host)
+  return (
+    host === 'localhost' || host.endsWith('.localhost') || host === '::1' || /^127\./.test(host)
+  )
 }
 
 function firstValue(header: string | undefined): string | undefined {

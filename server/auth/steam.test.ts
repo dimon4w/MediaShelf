@@ -5,11 +5,7 @@ import { steamAuthUrl, steamLoginCancelled, steamOrigin, verifySteamCallback } f
 
 const ID = '76561198012345678'
 
-async function originFor(
-  url: string,
-  env: Record<string, string> = {},
-  headers: HeadersInit = {},
-) {
+async function originFor(url: string, env: Record<string, string> = {}, headers: HeadersInit = {}) {
   const config = loadConfig([], env)
   const app = new Hono().get('/*', (c) => c.text(steamOrigin(c, config)))
   const response = await app.request(url, { headers })
@@ -67,8 +63,7 @@ describe('verifySteamCallback', () => {
     'openid.return_to': `${origin}/api/auth/steam/callback`,
     'openid.sig': 'abc',
   })
-  const steamSays = (text: string) =>
-    (async () => new Response(text)) as unknown as typeof fetch
+  const steamSays = (text: string) => (async () => new Response(text)) as unknown as typeof fetch
 
   it('returns the SteamID64 once Steam confirms the signature', async () => {
     let sent = ''

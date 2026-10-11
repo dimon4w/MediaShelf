@@ -82,7 +82,9 @@ export function avatarVariantFor(user: AvatarSource): number {
   const id = avatarFor(user)
   const chosen = user.preferences.avatarVariant
   if (!isAvatarId(id)) return 0
-  return Number.isInteger(chosen) && (chosen as number) >= 0 && (chosen as number) < variantCount(id)
+  return Number.isInteger(chosen) &&
+    (chosen as number) >= 0 &&
+    (chosen as number) < variantCount(id)
     ? (chosen as number)
     : 0
 }

@@ -7,8 +7,7 @@ import { sql, type DB } from '../db/index.ts'
  */
 export function getSteamKey(db: DB, userId: string): string | null {
   const row = sql(db, 'SELECT api_key FROM steam_keys WHERE user_id = ?').get(userId) as
-    | { api_key: string }
-    | undefined
+    { api_key: string } | undefined
   return row?.api_key ?? null
 }
 

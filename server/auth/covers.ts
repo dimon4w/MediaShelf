@@ -35,7 +35,10 @@ export function setCover(db: DB, userId: string, mime: string, bytes: Uint8Array
   ).run(userId, mime, bytes, Date.now())
 }
 
-export function getCover(db: DB, userId: string): { mime: string; data: Uint8Array; version: number } | null {
+export function getCover(
+  db: DB,
+  userId: string,
+): { mime: string; data: Uint8Array; version: number } | null {
   const row = sql(db, 'SELECT mime, data, updated_at FROM user_covers WHERE user_id = ?').get(
     userId,
   ) as { mime: string; data: Uint8Array; updated_at: number } | undefined
@@ -45,8 +48,7 @@ export function getCover(db: DB, userId: string): { mime: string; data: Uint8Arr
 /** Cheap check for the profile: the version (upload time) without reading the image. */
 export function coverVersion(db: DB, userId: string): number | null {
   const row = sql(db, 'SELECT updated_at FROM user_covers WHERE user_id = ?').get(userId) as
-    | { updated_at: number }
-    | undefined
+    { updated_at: number } | undefined
   return row?.updated_at ?? null
 }
 
